@@ -1,13 +1,14 @@
-query  {
-    owners {
-        firstName
-        lastName
-        pets {
-            name
-            type {
-                name
-            }
-        }
 
-    }
-}
+
+                                                                    query {
+                                                                        owners {
+                                                                            firstName
+                                                                            name
+                                                                        }
+
+                                                                    }
+
+
+
+
+

@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Frontend Architecture</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <!--<link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">-->
+    <!--<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">-->
+    <!--<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">-->
+    <link rel="stylesheet" href="reveal.js/css/theme/solarized.css" id="theme">
+
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+    <style>
+        /*pre code {*/
+            /*display: block;*/
+            /*padding: 0.5em;*/
+            /*background: #FFFFFF !important;*/
+            /*color: #000000 !important;*/
+        /*}*/
+
+        .right-img {
+            margin-left: 10px !important;
+            float: right;
+            height: 500px;
+        }
+        .todo:before {
+            content: 'TODO: ';
+        }
+        .todo {
+            color: red !important;
+        }
+        code span.line-number {
+            color: lightcoral;
+        }
+        .reveal pre code {
+            max-height: 1000px !important;
+        }
+
+        .reveal h3 {
+          text-transform: none;
+        }
+
+        img {
+            border: 0 !important;
+            box-shadow:0 0 0 0 !important;
+        }
+
+        .reveal {
+            -ms-touch-action: auto !important;
+            touch-action: auto !important;
+        }
+
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-markdown class="preparation">
+        <script type="text/template">
+          ### Preparation
+
+          Run the application
+
+          Backend: ./mvnw spring-boot:run
+          Frontend: yarn install && yarn start
+
+          UI: http://localhost:8080
+          Backend (GraphiQL): http://localhost:9977
+
+        </script>
+      </section>
+
+      <section>
+        <h2>GraphQL</h2>
+        <h3><em>A query language for your API</em></h3>
+        <p><a href="http://graphql.org/">http://graphql.org/</a></p>
+      </section>
+
+      <section>
+        <h2>GraphQL @ Twitter</h2>
+        <img src="images/twitter-uses-graphql-tweet.png" />
+      </section>
+
+      <section>
+        <h2>GraphQL @ GitHub</h2>
+        <img src="images/github-announces-graphql-api.png" style="max-height: 500px"/>
+      </section>
+
+      <section>
+        <h2>GraphQL @ New York Times</h2>
+        <img src="images/nytime-uses-graphql.png" style="max-height: 500px"/>
+      </section>
+
+      <section>
+        <h1>GraphQL in practice</h1>
+        <h3>Example: Spring PetClinic </h3>
+        <p><a href="https://github.com/spring-petclinic/spring-petclinic-graphql" target="_blank">https://github.com/spring-petclinic/spring-petclinic-graphql</a></p>
+      </section>
+
+      <section>
+
+        <section>
+          <h3>GraphiQL: API Explorer</h3>
+          <img src="github-graphql.png">
+          <p><small><a href="https://developer.github.com/early-access/graphql/explorer/" target="_blank">https://developer.github.com/early-access/graphql/explorer/</a></small></p>
+        </section>
+
+        <section>
+          <h3>Autocomplete</h3>
+          <img src="autocomplete.png" height="500px">
+        </section>
+
+        <section>
+          <h3>Dokumentation</h3>
+          <img src="github-docs.png" height="500px">
+        </section>
+
+        <section>
+          <h3>Felder mit Argumenten</h3>
+          <img src="parameters.png">
+          <p><small><a href="http://graphql.org/learn/queries/#arguments" target="_blank">http://graphql.org/learn/queries/#arguments</a></small></p>
+        </section>
+
+        <section>
+          <h3>Queries - Daten lesen</h3>
+          <p>Beispiel: Issues heraussuchen</p>
+          <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+query {
+  repositoryOwner(login: "DJCordhose") {
+    repository(name: "architecture") {
+      id
+      issues(first: 10) {
+        edges {
+          node {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+}
+               </code></pre>
+          <p><small>Die ersten 10 Issues des Repositories <em>architecture</em></small></p>
+        </section>
+        <section>
+          <h3>Queries - Daten lesen</h3>
+          <p>Ergebnis</p>
+          <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+{ "data": {
+    "repositoryOwner": {
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnk2MDE1NTgyMA==",
+        "issues": {
+          "edges": [
+            {
+              "node": {
+                "id": "MDU6SXNzdWUxNzk0ODczMTg=",
+                "title": "TestIssue"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+               </code></pre>
+          <p><small>Die ersten 10 Issues des Repositories <em>architecture</em></small></p>
+        </section>
+
+
+        <section>
+          <h3>Mutations - Daten verändern</h3>
+          <p>Beispiel: Einem Issue einen Kommentar hinzufügen</p>
+          <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+mutation {
+  addComment(input:{
+    subjectId: "MDU6SXNzdWUxNzk0ODczMTg=",
+    clientMutationId: "Sandbox",
+    body: "Comment from JAX 2017"
+  }) {
+    clientMutationId
+  }
+}
+               </code></pre>
+        </section>
+
+        <section>
+          <h3>Mutations - Daten verändern</h3>
+          <p>Ergebnis der Ausführung auf GitHub</p>
+          <img src="testissue.png">
+          <p><a href="https://github.com/DJCordhose/architecture/issues/1" target="_blank">https://github.com/DJCordhose/architecture/issues/1</a></p>
+        </section>
+      </section>
+      <section>
+        <h2>GraphQL</h2>
+        <h3>A query language for your API</h3>
+        <em>GraphQL is a <b>query language</b> for APIs and a <b>runtime</b> for fulfilling those queries with your existing data.</em>
+        <ul>
+          <li class="fragment"><em><b>Query Sprache</b></em> zur strukturierten Abfrage von Daten
+            <!--<ul>-->
+            <!--<li>Abgefragt werden Felder-->
+            <!--<li>Syntax ähnlich wie JSON-->
+            <!--</ul>-->
+          </li>
+          <li class="fragment"><em><b>Typsystem</b></em> zur Beschreibung der API
+            <!--<ul>-->
+            <!--<li>API Dokumentation-->
+            <!--<li>Fehlerüberprüfung durch GraphQL-->
+            <!--<li>Tool-Support (z.B. Code Completion in IDE)</li>-->
+            <!--</ul>-->
+          <li class="fragment"><em><b>Laufzeitumgebung</b></em> zur Auführung der Queries auf einem Server</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Query language</h3>
+        <pre><code data-trim contenteditable class="line-numbers" data-leftpad>query {
+  owner(id: 1) {
+    firstName
+    lastName
+  }
+}
+            </code></pre>
+        <ul>
+          <li>Structured language for accessing data from API</li>
+          <li>Looks similiar to JSON (but isn't)</li>
+          <li>Request <b>fields</b> from (nested) objects</b></li>
+          <li>Fields can have <b>parameters</b> (like params in functions)</li>
+        </ul>
+
+      </section>
+      <section>
+        <h3>The Query Language</h3>
+        <p>Operations</p>
+        <ul>
+          <li>A Request consists of an <em>Operation</em>:
+            <ul>
+              <li><em>Query</em>: A read request</li>
+              <li><em>Mutation</em>: Request for modifying data</ul>
+          </li>
+          <li>An Operation can contain parameters (<code>ownerId: 1</code>) and can return a value</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Typesystem</h2>
+        <p>Defines the API (its Objects and Operations)</p>
+        <ul>
+          <li>Used by the GraphQL runtime to validate requests and responses</li>
+          <li>Scalar Types, Objects, Interfaces, Lists, Enums, ... </li>
+          <li>Invalid Request are rejected by the runtime (no need to care about in own code)</li>
+          <li>Basis for various tooling (Syntax Checking, Code Completion, API Browser, Documentation, ...)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Runtime</h2>
+        <p>Server that executes GraphQL requests</p>
+        <ul>
+          <li>Libs for several languages exists</li>
+          <li>Reference implementation: JavaScript</li>
+          <li>Parses and validates the Request</li>
+          <li>Checks and serializes the Reponse</li>
+          <li>Actual retrieving of the requested data has to be implemented by the application itself</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Why GraphQL?</h1>
+      </section>
+
+      <section>
+        <h2>Perfect Fetching</h2>
+        <ul>
+          <li class="fragment">Returns exactly what's needed
+          <li class="fragment">
+            No under- or over fetching anymore
+            <ul>
+              <li>All needed data with one Request</li>
+              <li>Not <b>more</b> data as needed</li>
+            </ul>
+          </li>
+          <li class="fragment">The shape of the result is specified in the query
+        </ul>
+      </section>
+
+      <section>
+        <h2>Typed API Description</h2>
+        <ul>
+          <li class="fragment">Mehr Anleitung durch getypte Beschreibung
+          <li class="fragment">Validation by GraphQL Runtime
+          <li class="fragment">Errors will be raised at development- and runtime
+            <img src="images/idea-unknown-field-in-query.png"/>
+
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Flexibility and decoupling</h2>
+        <ul>
+          <li class="fragment">Client can raise individual Requests as needed
+          <li class="fragment">No need to enhance API on serverside for new use cases (just query for other data)
+          <li class="fragment">Enhancing/Changing the API without versioning possible (deprecations exists)
+        </ul>
+      </section>
+
+      <section>
+        <h2>Simplification</h2>
+        <ul>
+          <li class="fragment">There is only <b>one</b> endpoint
+          <li class="fragment">APIs all look the same (query language is standardized)
+          <li class="fragment">Communication via JSON
+          <li class="fragment">What fields are actually used can easily be tracked (and controlled) (eg for data protection!)
+        </ul>
+      </section>
+
+      <section>
+        <h2>Subscriptions</h2>
+        <h3>(New in Spec since May 2017)</h3>
+        <ul>
+          <li class="fragment">Client can subscribe to changes
+          <li class="fragment">On changes the Client will be notified (Push)
+        </ul>
+      </section>
+
+
+      <section>
+        <h1>GraphQL Server</h1>
+      </section>
+
+      <section>
+        <h2>Implementierung in Java: <em>graphql-java</em></h2>
+        <p><a href="https://github.com/graphql-java/graphql-java">https://github.com/graphql-java/graphql-java</a></p>
+      </section>
+
+      <section>
+        <h3>Hello World: <em>curl</em></h3>
+        <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"query": "{ hello }"}' \
+http://localhost:8080
+               </code></pre>
+        <div class="fragment">
+          <p>Antwort:</p>
+          <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+{"data":{"hello":"Hello world!"}}
+</code></pre>
+        </div>
+      </section>
+
+      <section>
+        <h3>IDEA Unterstützung</h3>
+        <img style="margin-bottom: 2px"src="idea-getCustomer.png">
+        <img style="margin-bottom: 2px" src="idea-graphql-missing-field.png">
+        <p style="font-size:75%;margin-top: 0">Plugin: <a href="https://plugins.jetbrains.com/plugin/8097?pr=idea" target="_blank">https://plugins.jetbrains.com/plugin/8097?pr=idea</a></p>
+
+
+      </section>
+      <section>
+        <h3>Typ-Deklaration mit Annotations</h3>
+        <pre><code data-trim contenteditable class="line-numbers java" data-leftpad>
+public class Customer {
+    @GraphQLField
+    @GraphQLNonNull
+    private String id;
+
+    @GraphQLField
+    private String lastName;
+
+    @GraphQLField
+    private Address address;
+
+    @GraphQLField
+    private List&lt;Phone&gt; phones;
+}
+            </code></pre>
+        <p><a href="https://github.com/graphql-java/graphql-java-annotations" target="_blank">GraphQL Annotations for Java</a> </p>
+      </section>
+      <section>
+        <h3>Felder mit Parametern</h3>
+        <pre><code data-trim contenteditable class="line-numbers java" data-leftpad>
+enum PhoneType { BUSINESS, PRIVATE }
+
+public class Customer {
+  private List&lt;Phone&gt; phones;
+
+  @GraphQLField
+  public List&lt;Phone&gt; phonesWithType(
+          @GraphQLName("type") PhoneType type) {
+    return phones.stream()
+      .filter(phone -> phone.getPhoneType() == type)
+      .collect(Collectors.toList());
+    }
+}
+            </code></pre>
+      </section>
+      <section>
+        <h3>Servlet</h3>
+        <pre><code data-trim contenteditable class="line-numbers java" data-leftpad>
+import graphql.servlet.SimpleGraphQLServlet;
+
+public class CustomerGraphQLServlet extends SimpleGraphQLServlet {
+    public CustomerGraphQLServlet() {
+        super(CustomerSchema.createCustomerQuerySchema(), null);
+    }
+}
+            </code></pre>
+        <p><a href="https://github.com/graphql-java/graphql-java-servlet" target="_blank">https://github.com/graphql-java/graphql-java-servlet</a></p>
+      </section>
+
+      <section>
+        Das Schema
+        <pre><code style="max-height: none" data-trim contenteditable class="line-numbers java" data-leftpad>
+import graphql.annotations.GraphQLAnnotations;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLSchema;
+
+public class CustomerSchema {
+    public static GraphQLSchema createCustomerQuerySchema() {
+      // Define the Customer-Type based on Annotations
+      final GraphQLObjectType customerType =
+                GraphQLAnnotations.object(Customer.class);
+
+      GraphQLSchema schema = GraphQLSchema.newSchema()
+        // Add the "Query" type to Schema (required)
+        .query(buildCustomerQueryType(customerType))
+
+        // Add the "Mutation" type to Schema (optional)
+        .mutation(buildCustomerMutationType(customerType))
+        .build();
+      return schema;
+    }
+}
+            </code></pre>
+
+      </section>
+
+      <section>
+        <h3>Was passiert in der Query?</h3>
+        <pre style="width:100%"><code  style="max-height: none" data-trim contenteditable class="line-numbers java" data-leftpad>
+    GraphQLObjectType buildQueryType(GraphQLObjectType customerType) {
+      return newObject()
+        .field(newFieldDefinition()
+          // set the name
+          .name("customer")
+          // declare return type of the query
+          .type(customerType)
+          // define args for the query
+          .argument(new GraphQLArgument("id",
+                new GraphQLNonNull(GraphQLID)))
+          // implement fetch logic
+          .dataFetcher(environment -> {
+            final String id = environment.getArgument("id");
+            return customerService.findCustomerById(id);
+          }).build())
+        .build();
+    }
+
+            </code></pre>
+      </section>
+      <section>
+        <h3>Was passiert in der Mutation?</h3>
+        <span style="font-size:85%">
+            <p>Analog zum Query</p>
+            <p>Im DataFetcher wird Logik zum Speichern implementiert</p>
+</span>
+        <pre style="width:100%"><code  style="max-height: none" data-trim contenteditable class="line-numbers java" data-leftpad>
+GraphQLObjectType buildMutationType(GraphQLObjectType customerType) {
+  return newObject()
+    .field(newFieldDefinition()
+      .name("addCustomer")
+      .type(customerType)
+      .argument(. . .)
+      .dataFetcher(environment -> {
+        final String lastName = environment.getArgument("lastName");
+        final String email = environment.getArgument("email");
+        final Customer newCustomer = customerService
+                .newCustomer(lastName, email);
+        return newCustomer;
+    }).build())
+    .build();
+}
+
+            </code></pre>
+      </section>
+
+      <section>
+        <h2>Die JavaScript-Referenz-Implementierung</h2>
+        <p><a href="http://graphql.org/graphql-js/" target="_blank">http://graphql.org/graphql-js/</a></p>
+      </section>
+
+      <section>
+        <h3>Hello World: GraphiQL</h3>
+        <img src="reference.png">
+        <p><a href="http://localhost:4000/graphql?query=%7B%0A%20%20hello%0A%7D" target="_blank">http://localhost:4000/graphql?query=%7B%0A%20%20hello%0A%7D</a></p>
+      </section>
+
+      <section>
+        <h2>Typ-Deklarationen</h2>
+        <pre class="fragment"><code  style="max-height: none" data-trim contenteditable class="line-numbers" data-leftpad>
+type Customer {
+  # Mandatory field (note the !)
+  id: ID!
+
+  firstName: String
+  address: Address
+
+  # List of Phones
+  phones: [Phone]
+
+  # Field with (mandatory) argument
+  phonesWithType(type: PhoneType!): [Phone]
+}
+# Enum Value
+enum PhoneType { PRIVATE, BUSINESS }
+type Phone { type: PhoneType!, number: String! }
+               </code></pre>
+      </section>
+
+      <section>
+        <h2>Typ-Deklarationen</h2>
+        <p>Queries und Mutations</p>
+        <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+type Query {
+  hello: String
+}
+               </code></pre>
+        <pre class="fragment"><code data-trim contenteditable class="line-numbers" data-leftpad>
+type Query {
+  customer(id: ID): Customer
+}
+               </code></pre>
+        <pre class="fragment"><code data-trim contenteditable class="line-numbers" data-leftpad>
+type Mutation {
+  addCustomer(lastName: String, email: String!): Customer!
+}
+               </code></pre>
+      </section>
+
+      <section>
+        <h3>Passende Query</h3>
+        <img src="query.png">
+        <p><small><a href="http://localhost:4000/graphql?query=query%20%7B%0A%20%20customer(id%3A%20%22c1%22)%20%7B%0A%20%20%20%20lastName%0A%20%20%20%20address%20%7B%0A%20%20%20%20%20%20email%0A%20%20%20%20%7D%0A%20%20%20%20businessPhone%3A%20phonesWithType(type%3A%20BUSINESS)%20%7B%0A%20%20%20%20%20%20phoneNumber%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A&operationName=undefined" target="_blank">
+          http://localhost:4000/graphql?query=...
+        </a></small></p>
+      </section>
+
+      <section>
+        <h2>Code für Schema</h2>
+        <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+const { buildSchema } = require('graphql');
+const customerSchema = buildSchema(`
+type Customer { . . . }
+
+type Query {
+  hello: String!
+  customer(id: ID!): Customer
+}
+
+type Mutation {
+  addCustomer(lastName: String, email: String!): Customer!
+}
+`);
+            </code></pre>
+
+      </section>
+
+      <section>
+        <h2>Code für Resolver</h2>
+        <pre class="fragment"><code data-trim contenteditable class="line-numbers" data-leftpad>
+const root = {
+    // Query Implementations
+    hello: () => "Hello, World",
+    customer: ({id}) => CUSTOMERS.find(p => p.id === id),
+
+    // Mutation
+    addCustomer: ({lastName, email}) => CUSTOMERS.push(...)
+};
+               </code></pre>
+
+        <pre class="fragment"><code data-trim contenteditable class="line-numbers" data-leftpad>
+const graphqlHTTP = require('express-graphql');
+
+app.use('/graphql', graphqlHTTP({
+    schema: customerSchema,
+    rootValue: root,
+
+    // enable GraphiQL Browser
+    graphiql: true
+}));
+               </code></pre>
+      </section>
+      <section>
+        <h2>Customer-Klasse</h2>
+        <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Customer {
+    constructor(id, firstName, lastName, address, phones) {
+        this.firstName = firstName;
+        // more assignments. . .
+    }
+
+    phonesWithType({ type }) {
+        return this.phones.filter
+            (phone => phone.phoneType === type);
+    }
+}
+               </code></pre>
+      </section>
+
+
+      <!--<section>-->
+      <!--<h3>Tools</h3>-->
+      <!--<ul>-->
+      <!--<li><a href="https://github.com/APIs-guru/graphql-faker" target="_blank">https://github.com/APIs-guru/graphql-faker</a>: Mocked GraphQL Backend für Development-->
+      <!--<li><a href="https://github.com/APIs-guru/graphql-voyager" target="_blank">https://github.com/APIs-guru/graphql-voyager</a>: GraphQL API Browsing als interaktiver Graph-->
+      <!--<li><a href="https://www.graph.cool" target="_blank">https://www.graph.cool</a>: "serverless" GraphQL auf AWS Lambda-->
+      <!--&lt;!&ndash;-->
+      <!--Optional demo: GraphQL with React/Apollo Client-->
+      <!-- - https://www.graph.cool/docs/quickstart/-->
+      <!-- - /c/Users/olive/Development/js/react-apollo-todo-example-->
+      <!-- - https://github.com/gsans/handsup-react#graphcool-&#45;&#45;handsup-schema-->
+      <!--&ndash;&gt;-->
+      <!--</ul>-->
+      <!--</section>-->
+
+      <section>
+        <h3>Server-Bibliotheken</h3>
+        <ul>
+          <li><a href="http://sangria-graphql.org/" target="_blank">Scala</a></li>
+          <li><a href="https://github.com/rmosolgo/graphql-ruby" target="_blank">Ruby</a></li>
+          <li><a href="http://graphene-python.org/" target="_blank">Python</a></li>
+          <li><a href="https://github.com/graphql-dotnet/graphql-dotnet" target="_blank">.NET</a></li>
+          <li><a href="http://graphql.org/code/" target="_blank">...und weitere</a></li>
+        </ul>
+      </section>
+      <section>
+        <h3>Client-Bibliotheken</h3>
+        <ul>
+          <li><a href="http://dev.apollodata.com/react/" target="_blank">JavaScript (Apollo)</a></li>
+          <li><a href="https://facebook.github.io/relay/" target="_blank">React (Relay)</a></li>
+          <li><a href="https://github.com/apollographql/apollo-android" target="_blank">Java / Android (Apollo)</a></li>
+          <li><a href="https://github.com/bkniffler/graphql-net-client" target="_blank">.NET</a></li>
+        </ul>
+
+      </section>
+
+
+      <section>
+        <h3>Fazit</h3>
+        <h1>Müssen wir jetzt alle GraphQL machen?</h1>
+      </section>
+
+      <section>
+        <h2>Es kommt drauf an...</h2>
+        <ul>
+          <li class="fragment">REST ist immer noch de-facto-Standard
+          <li class="fragment">Serverseitige Standard-Bibliotheken für GraphQL fehlen zum Teil noch
+          <li class="fragment">GraphQL-Queries werden mit POST gemacht, kann Probleme beim Caching bedeuten
+          <li class="fragment">Für serverseitige Kommunikation (Microservices) scheinen binäre, getypte Protokolle wie <a href="http://www.grpc.io/" target="_blank">http://www.grpc.io/</a> noch geeigneter
+        </ul>
+      </section>
+
+      <section>
+        <h2>HTTP2</h2>
+        <ul>
+          <li class="fragment">Erlaubt das Senden vieler Requests über dieselbe Verbindung
+          <li class="fragment">Macht das Over- und Underfetching-Argument schwächer
+        </ul>
+      </section>
+
+      <section>
+        <h2>Vielen Dank!</h2>
+        <h3><em>Fragen ?</em></h3>
+      </section>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+<script src="reveal.js/js/reveal.js"></script>
+<script src="lib/jquery-2.2.4.js"></script>
+<script>
+    if (window.location.hostname.indexOf('localhost') !== -1) {
+    } else {
+        // only applies to public version
+        $('.preparation').remove();
+    }
+    Reveal.addEventListener( 'ready', function( event ) {
+        if (window.location.hostname.indexOf('localhost') !== -1) {
+            // only applies to presentation version
+            Reveal.configure({ controls: false });
+        } else {
+            // only applies to public version
+            $('.fragment').removeClass('fragment');
+        }
+        // applies to all versions
+        $('code').addClass('line-numbers');
+    } );
+</script>
+
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'reveal.js/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'reveal.js/plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'reveal.js/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'reveal.js/plugin/zoom-js/zoom.js', async: true},
+            {src: 'reveal.js/plugin/notes/notes.js', async: true},
+            {src: 'lib/js/line-numbers.js'}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
