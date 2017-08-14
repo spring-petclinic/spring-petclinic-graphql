@@ -1,0 +1,15 @@
+fragment vet on Vet {
+  id
+  firstName
+  lastName
+  specialties {
+    id
+    name
+  }
+}
+
+query vets {
+  vets {
+    ...vet
+  }
+}

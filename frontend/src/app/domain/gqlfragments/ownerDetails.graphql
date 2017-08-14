@@ -1,0 +1,9 @@
+#import "./owner.graphql"
+#import "./petDetails.graphql"
+
+fragment ownerDetails on Owner {
+  ...owner
+  pets {
+    ...petDetails
+  }
+}

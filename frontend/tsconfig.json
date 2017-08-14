@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+		"target": "es5",
+		"lib": [
+			"es2015", "es2016", "dom"
+		],
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "experimentalDecorators": true,
+    "allowJs": true,
+		"strictNullChecks": true,
+		"strict": true,
+    "noLib": false,
+    "jsx": "react"
+  },
+  "include": [
+	"./declarations.d.ts",
+    "./src/**/*"
+  ]
+}

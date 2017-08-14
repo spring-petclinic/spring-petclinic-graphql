@@ -1,0 +1,8 @@
+mutation updateSpecialty($input: UpdateSpecialtyInput!) {
+  updateSpecialty(input: $input) {
+    specialty {
+      id
+      name
+    }
+  }
+}

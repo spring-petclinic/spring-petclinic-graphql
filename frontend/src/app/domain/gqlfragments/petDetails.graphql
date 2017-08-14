@@ -1,0 +1,12 @@
+#import "./pet.graphql"
+
+fragment petDetails on Pet {
+  ...pet
+  visits {
+    visits {
+      id
+      date
+      description
+    }
+  }
+}

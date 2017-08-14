@@ -1,0 +1,12 @@
+mutation addOwner($input: AddOwnerInput!) {
+  addOwner(input: $input) {
+    owner {
+      id
+      firstName
+      lastName
+      address
+      city
+      telephone
+    }
+  }
+}

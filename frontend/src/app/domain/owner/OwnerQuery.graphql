@@ -1,0 +1,7 @@
+#import "../gqlfragments/ownerDetails.graphql"
+
+query owner($ownerId: Int!) {
+  owner(id: $ownerId) {
+    ...ownerDetails
+  }
+}

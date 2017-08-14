@@ -1,0 +1,8 @@
+fragment owner on Owner {
+  id
+  firstName
+  lastName
+  address
+  city
+  telephone
+}

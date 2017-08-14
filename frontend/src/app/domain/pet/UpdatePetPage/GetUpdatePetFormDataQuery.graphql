@@ -1,0 +1,19 @@
+query getUpdatePetFormData($petId: Int!) {
+  pet(id: $petId) {
+    id
+    name
+    birthDate
+    type {
+      id
+    }
+    owner {
+      id
+      lastName
+      firstName
+    }
+  }
+  pettypes {
+    id
+    name
+  }
+}

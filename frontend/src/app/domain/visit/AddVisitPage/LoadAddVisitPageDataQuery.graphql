@@ -1,0 +1,11 @@
+#import "../../gqlfragments/pet.graphql"
+
+query loadAddVisitPageData($petId: Int!) {
+  pet(id: $petId) {
+    ...pet
+    owner {
+      lastName
+      firstName
+    }
+  }
+}

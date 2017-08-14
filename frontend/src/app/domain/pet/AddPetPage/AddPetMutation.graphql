@@ -1,0 +1,7 @@
+mutation addPet($input: AddPetInput!) {
+  addPet(input: $input) {
+    pet {
+      id
+    }
+  }
+}

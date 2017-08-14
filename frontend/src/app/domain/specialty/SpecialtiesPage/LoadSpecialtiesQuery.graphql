@@ -1,0 +1,6 @@
+query loadSpecialties {
+  specialties {
+    id
+    name
+  }
+}

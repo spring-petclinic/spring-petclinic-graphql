@@ -1,0 +1,17 @@
+#import "../../gqlfragments/owner.graphql"
+
+fragment ownerSummary on Owner {
+  ...owner
+  pets {
+    name
+    visits {
+      totalCount
+    }
+  }
+}
+
+query ownerList {
+  owners {
+    ...ownerSummary
+  }
+}
