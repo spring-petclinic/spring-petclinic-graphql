@@ -5,7 +5,7 @@ const githubUrl = "https://github.com/spring-petclinic/spring-petclinic-graphql"
 type LinkList = [[string, string]];
 
 const serverLinks: LinkList = [
-  ["GraphQL Java", "https://github.com/graphql-java/graphql-java"],
+  ["GraphQL Java Tools", "https://github.com/graphql-java/graphql-java-tools"],
   ["GraphQL Spring Boot", "https://github.com/graphql-java/graphql-spring-boot"],
   ["Spring Boot", "https://projects.spring.io/spring-boot/"]
 ];
