@@ -61,7 +61,7 @@ After running you can access:
 * The frontend: [http://localhost:8080/](http://localhost:8080/) (In case something else runs on Port 8080 another 
 port like 8081 is automatically chosen)
 
-![GraphQL Plug-in in IntelliJ IDEA](graphql-idea.png)
+![SpringBoot PetClinic, GraphQL Edition](screenshot.png)
 
 
 # Contributing
