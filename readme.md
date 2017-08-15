@@ -3,7 +3,10 @@
 This is a [GraphQL API](http://graphql.org/) version of the Spring PetClinic Application. It consists of two parts:
 
 * The Spring Boot-based backend, that uses the graphql-java implementation for the server-side GraphQL Api implementation
-* The React-based frontend, that uses Apollo GraphQL for running GraphQL queries.
+* The React-based frontend, that uses React Apollo for running GraphQL queries.
+
+**Note** This project is in very early stage and has much room for improvement! If you like to help, I'd be more than happy! 
+You can for example open [an issue](https://github.com/spring-petclinic/spring-petclinic-graphql/issues) for discussing things or a [Pull Request](https://github.com/spring-petclinic/spring-petclinic-graphql/pulls) to contribute. 
 
 ## The Backend
  
@@ -47,8 +50,7 @@ cd spring-petclinic-graphql/backend
 Finally build and start the frontend:
 
 ```bash
-cd spring-petclinic-graphql/backend
-  
+cd spring-petclinic-graphql/frontend
 # install dependencies
 yarn install
 	
@@ -61,7 +63,7 @@ After running you can access:
 * The frontend: [http://localhost:8080/](http://localhost:8080/) (In case something else runs on Port 8080 another 
 port like 8081 is automatically chosen)
 
-![GraphQL Plug-in in IntelliJ IDEA](graphql-idea.png)
+![SpringBoot PetClinic, GraphQL Edition](screenshot.png)
 
 
 # Contributing
