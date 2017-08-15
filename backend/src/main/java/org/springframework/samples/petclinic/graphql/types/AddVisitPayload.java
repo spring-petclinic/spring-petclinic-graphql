@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.graphql.resolvers;
+package org.springframework.samples.petclinic.graphql.types;
 
 import org.springframework.samples.petclinic.model.Visit;
 
