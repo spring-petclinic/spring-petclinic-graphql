@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.repository;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,12 +25,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Thomas Risberg
  * @author Michael Isvy
- * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details. </p>
+ * @see AbstractClinicRepositoryTests AbstractClinicRepositoryTests for more details. </p>
  */
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("jdbc, hsqldb")
-public class ClinicServiceJdbcTests extends AbstractClinicServiceTests {
+public class ClinicRepositoryJdbcTests extends AbstractClinicRepositoryTests {
 
 
 }
