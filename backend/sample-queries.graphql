@@ -3,7 +3,7 @@
                                                                     query {
                                                                         owners {
                                                                             firstName
-                                                                            name
+                                                                            lastName
                                                                         }
 
                                                                     }
