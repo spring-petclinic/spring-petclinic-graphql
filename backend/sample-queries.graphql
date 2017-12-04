@@ -1,12 +1,9 @@
-
-
-                                                                    query {
-                                                                        owners {
-                                                                            firstName
-                                                                            lastName
-                                                                        }
-
-                                                                    }
+query {
+    owners {
+        firstName
+        lastName
+    }
+}
 
 
 
