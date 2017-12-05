@@ -65,6 +65,9 @@ port like 8081 is automatically chosen)
 
 ![SpringBoot PetClinic, GraphQL Edition](screenshot.png)
 
+# Background: GraphQL
+
+You can find some slides with some GraphQL background informations here: https://spring-petclinic.github.io/spring-petclinic-graphql/talk/graphql-introduction.html 
 
 # Contributing
 
