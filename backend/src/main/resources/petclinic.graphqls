@@ -11,6 +11,9 @@ type Query {
   # Return all known Pet Owners
   owners: [Owner!]!
 
+  # Return all known Pet Owners with the same last name
+  ownersByLastName(lastName: String!): [Owner!]!
+
   # Return the Owner with the specified id
   owner(id: Int!): Owner!
 

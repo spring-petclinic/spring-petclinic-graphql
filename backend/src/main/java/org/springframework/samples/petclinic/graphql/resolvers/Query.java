@@ -59,6 +59,10 @@ public class Query implements GraphQLQueryResolver {
         return Lists.newArrayList(ownerRepository.findAll());
     }
 
+    public List<Owner> ownersByLastName(String lastName) {
+        return Lists.newArrayList(ownerRepository.findByLastName(lastName));
+    }
+
     public Owner owner(int id) {
         return ownerRepository.findById(id);
     }
