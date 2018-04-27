@@ -32,6 +32,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -192,6 +193,18 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         }
         this.namedParameterJdbcTemplate.update("DELETE FROM owners WHERE id=:id", owner_params);
 	}
+
+
+    @Override
+    public Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException {
+        List<Owner> owners = this.namedParameterJdbcTemplate.query(
+            filter.buildJdbcQuery(),
+            filter.buildJdbcQueryParameters(),
+            BeanPropertyRowMapper.newInstance(Owner.class)
+        );
+        loadOwnersPetsAndVisits(owners);
+        return owners;
+    }
 
 
 }

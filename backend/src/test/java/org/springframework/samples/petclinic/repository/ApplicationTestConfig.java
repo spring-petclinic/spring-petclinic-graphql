@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.repository;
 
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.TestConfiguration;

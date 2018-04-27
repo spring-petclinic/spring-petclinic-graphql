@@ -11,12 +11,12 @@ type Query {
   # Return all known Pet Owners
   owners: [Owner!]!
 
-  # Return all known Pet Owners with the same last name
-  ownersByLastName(lastName: String!): [Owner!]!
-
   # Return the Owner with the specified id
   owner(id: Int!): Owner!
 
+  # Return the Owner with the specified field
+  ownersByFilter(filter: OwnerFilter): [Owner!]!
+  
   # Return the Pet with the specified id
   pet(id: Int!): Pet!
 
@@ -36,6 +36,15 @@ type PetType {
 type Specialty  {
   id: Int!
   name: String!
+}
+
+# The input for owners query by a filter
+input OwnerFilter {
+  firstName: String
+  lastName: String
+  address: String
+  city: String
+  telephone: String
 }
 
 # Interface that describes a Person, i.e. a Vet or an Owner
