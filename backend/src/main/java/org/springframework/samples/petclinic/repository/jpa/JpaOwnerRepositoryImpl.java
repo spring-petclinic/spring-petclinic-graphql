@@ -23,6 +23,7 @@ import javax.persistence.Query;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -90,5 +91,16 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 	public void delete(Owner owner) throws DataAccessException {
 		this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException {
+        // using 'join fetch' because a single query should load both owners and pets
+        // using 'left join fetch' because it might happen that an owner does not have pets yet
+        Query query = em.createQuery(filter.buildJpaQuery());
+        filter.buildJpaQueryParameters(query);
+
+        return query.getResultList();
+    }
 
 }
