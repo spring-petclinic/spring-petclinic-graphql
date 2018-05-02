@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.graphql.types;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * @author exihaxi
+ * @author Xiangbin HAN (hanxb2001@163.com)
  *
  */
 public class OwnerOrder {
@@ -32,13 +32,5 @@ public class OwnerOrder {
     @Override
     public String toString() {
         return this.field.toString() + " " + this.order.toString();
-    }
-
-    public static void main(String[] args) {
-        OwnerOrder ins = new OwnerOrder();
-        ins.setField(OrderField.firstName);
-        ins.setOrder(OrderType.DESC);
-        System.out.println(OrderType.DESC);
-        System.out.println(ins.toString());
     }
 }
