@@ -19,6 +19,7 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.google.common.collect.Lists;
 
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
+import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.graphql.types.VisitConnection;
 import org.springframework.samples.petclinic.model.*;
 import org.springframework.samples.petclinic.repository.*;
@@ -57,16 +58,12 @@ public class Query implements GraphQLQueryResolver {
         return Lists.newArrayList(vetRepository.findAll());
     }
 
-    public List<Owner> owners() {
-        return Lists.newArrayList(ownerRepository.findAll());
+    public List<Owner> owners(OwnerFilter filter, List<OwnerOrder> orders) {
+        return Lists.newArrayList(ownerRepository.findAllByFilterOrder(filter, orders));
     }
 
     public Owner owner(int id) {
         return ownerRepository.findById(id);
-    }
-
-    public List<Owner> ownersByFilter(OwnerFilter filter) {
-        return Lists.newArrayList(ownerRepository.findByFilter(filter));
     }
 
     public Pet pet(int id) {

@@ -8,15 +8,12 @@ type Query {
   # Return all known veterinaries
   vets: [Vet!]!
 
-  # Return all known Pet Owners
-  owners: [Owner!]!
+  # Return all known Pet Owners with optional filter or orders
+  owners(filter: OwnerFilter, orders: [OwnerOrder!]): [Owner!]!
 
   # Return the Owner with the specified id
   owner(id: Int!): Owner!
 
-  # Return the Owner with the specified field
-  ownersByFilter(filter: OwnerFilter): [Owner!]!
-  
   # Return the Pet with the specified id
   pet(id: Int!): Pet!
 
@@ -45,6 +42,28 @@ input OwnerFilter {
   address: String
   city: String
   telephone: String
+}
+
+# The input for types of query orders
+enum OrderType {
+  ASC
+  DESC
+}
+
+# The input for types of query orders
+enum OrderField {
+  id
+  firstName
+  lastName
+  address
+  city
+  telephone
+}
+
+# The input for owners query by order
+input OwnerOrder {
+  field: OrderField
+  order: OrderType
 }
 
 # Interface that describes a Person, i.e. a Vet or an Owner

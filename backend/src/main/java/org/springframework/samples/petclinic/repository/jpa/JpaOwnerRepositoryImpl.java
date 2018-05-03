@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.repository.jpa;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,6 +26,7 @@ import javax.persistence.Query;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
+import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -80,27 +83,32 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Collection<Owner> findAll() throws DataAccessException {
-		Query query = this.em.createQuery("SELECT owner FROM Owner owner");
-        return query.getResultList();
-	}
-
-	@Override
-	public void delete(Owner owner) throws DataAccessException {
-		this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
-	}
-
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Query query = em.createQuery(filter.buildJpaQuery());
-        filter.buildJpaQueryParameters(query);
+    public Collection<Owner> findAll() throws DataAccessException {
+        Query query = this.em.createQuery("SELECT owner FROM Owner owner");
+        return query.getResultList();
+    }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException {
+        StringBuilder sb = new StringBuilder("SELECT owner FROM Owner owner");
+
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
+
+        sb.append(OwnerOrder.buildOrderJpaQuery(orders));
+
+        Query query = this.em.createQuery(sb.toString());
+        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
 
         return query.getResultList();
+	}
+
+    @Override
+    public void delete(Owner owner) throws DataAccessException {
+        this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
     }
 
 }

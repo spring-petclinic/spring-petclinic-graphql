@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,6 +10,7 @@ import javax.persistence.Query;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
+import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.model.Owner;
 
 /**
@@ -20,13 +23,17 @@ public class SpringDataOwnerRepositoryImpl implements OwnerRepositoryOverride {
     @PersistenceContext
     private EntityManager em;
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Collection<Owner> findByFilter(OwnerFilter filter) {
-
-        Query query = em.createQuery(filter.buildJpaQuery());
+    public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) {
+        StringBuilder sb = new StringBuilder("SELECT owner FROM Owner owner");
         
-        filter.buildJpaQueryParameters(query);
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
+        
+        sb.append(OwnerOrder.buildOrderJpaQuery(orders));
+
+        Query query = this.em.createQuery(sb.toString());
+        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
 
         return query.getResultList();
     }

@@ -16,9 +16,11 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
+import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
 
@@ -33,16 +35,6 @@ import org.springframework.samples.petclinic.model.Owner;
  * @author Vitaliy Fedoriv
  */
 public interface OwnerRepository {
-
-    /**
-     * Retrieve <code>Owner</code>s from the data store by a filter, returning all owners matching <i>all</i> the
-     * properties in the given filter.
-     *
-     * @param filter Value to search for
-     * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
-     * found)
-     */
-    Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException;
 
     /**
      * Retrieve <code>Owner</code>s from the data store by last name, returning all owners whose last name <i>starts</i>
@@ -80,6 +72,14 @@ public interface OwnerRepository {
      */
 	Collection<Owner> findAll() throws DataAccessException;
 	
+    /**
+     * Retrieve <code>Owner</code>s from the data store with optional filter or order, returning retrieved owners 
+     *
+     * @return a <code>Collection</code> of <code>Owner</code>s (or an empty <code>Collection</code> if none
+     * found)
+     */
+    Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException;
+    
     /**
      * Delete an <code>Owner</code> to the data store by <code>Owner</code>.
      *
