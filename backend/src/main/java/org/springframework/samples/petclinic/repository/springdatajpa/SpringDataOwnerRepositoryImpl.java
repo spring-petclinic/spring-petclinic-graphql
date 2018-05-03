@@ -23,33 +23,17 @@ public class SpringDataOwnerRepositoryImpl implements OwnerRepositoryOverride {
     @PersistenceContext
     private EntityManager em;
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Collection<Owner> findByFilter(OwnerFilter filter) {
-
-        Query query = em.createQuery(filter.buildJpaQuery());
-        
-        filter.buildJpaQueryParameters(query);
-
-        return query.getResultList();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Collection<Owner> findAllByOrders(List<OwnerOrder> orders) {
-
-        Optional<List<OwnerOrder>> nonNullOrders = Optional.ofNullable(orders);
+    public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) {
         StringBuilder sb = new StringBuilder("SELECT owner FROM Owner owner");
-        nonNullOrders.ifPresent(list -> 
-            {sb.append(" order by");
-            list.forEach(order -> sb.append(" owner." + order.getField() + " " + order.getOrder() + ","));}
-        );
+        
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
+        
+        sb.append(OwnerOrder.buildOrderJpaQuery(orders));
 
-        Query query;
-        if(sb.indexOf("order by") > 0)
-            query = em.createQuery(sb.substring(0, sb.lastIndexOf(",")));
-        else
-            query = em.createQuery(sb.toString());
+        Query query = this.em.createQuery(sb.toString());
+        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
 
         return query.getResultList();
     }

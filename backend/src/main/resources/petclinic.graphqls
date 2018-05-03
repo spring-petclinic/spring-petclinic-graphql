@@ -8,18 +8,12 @@ type Query {
   # Return all known veterinaries
   vets: [Vet!]!
 
-  # Return all known Pet Owners
-  owners: [Owner!]!
+  # Return all known Pet Owners with optional filter or orders
+  owners(filter: OwnerFilter, orders: [OwnerOrder!]): [Owner!]!
 
   # Return the Owner with the specified id
   owner(id: Int!): Owner!
 
-  # Return the Owner with the specified field
-  ownersByFilter(filter: OwnerFilter): [Owner!]!
-  
-  # Return the Owner with the specified order
-  ownersByOrder(orders: [OwnerOrder!]!): [Owner!]!
-  
   # Return the Pet with the specified id
   pet(id: Int!): Pet!
 

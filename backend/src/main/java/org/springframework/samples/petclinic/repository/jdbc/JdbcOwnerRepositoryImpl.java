@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.persistence.Query;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
@@ -34,7 +33,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.graphql.types.OrderField;
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
 import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.model.Owner;
@@ -164,17 +162,36 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         }
     }
     
-	@Override
+    @Override
 	public Collection<Owner> findAll() throws DataAccessException {
 		List<Owner> owners = this.namedParameterJdbcTemplate.query(
-	            "SELECT id, first_name, last_name, address, city, telephone FROM owners",
-	            new HashMap<String, Object>(),
+		        "SELECT id, first_name, last_name, address, city, telephone FROM owners",
+		        new HashMap<String, Object>(),
 	            BeanPropertyRowMapper.newInstance(Owner.class));
 		for (Owner owner : owners) {
             loadPetsAndVisits(owner);
         }
 	    return owners;
 	}
+
+    @Override
+    public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException {
+        StringBuilder sb = new StringBuilder("SELECT id, first_name, last_name, address, city, telephone FROM owners");
+        Map<String, Object> params = new HashMap<>();
+
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> {sb.append(f.buildJdbcQuery()); f.buildJdbcQueryParameters(params);});
+
+        sb.append(OwnerOrder.buildOrderJdbcQuery(orders));
+
+        List<Owner> owners = this.namedParameterJdbcTemplate.query(
+                sb.toString(),
+                params,
+                BeanPropertyRowMapper.newInstance(Owner.class));
+
+        loadOwnersPetsAndVisits(owners);
+        return owners;
+    }
 
 	@Override
 	@Transactional
@@ -197,47 +214,5 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         }
         this.namedParameterJdbcTemplate.update("DELETE FROM owners WHERE id=:id", owner_params);
 	}
-
-    @Override
-    public Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException {
-        List<Owner> owners = this.namedParameterJdbcTemplate.query(
-            filter.buildJdbcQuery(),
-            filter.buildJdbcQueryParameters(),
-            BeanPropertyRowMapper.newInstance(Owner.class)
-        );
-        loadOwnersPetsAndVisits(owners);
-        return owners;
-    }
-
-    @Override
-    public Collection<Owner> findAllByOrders(List<OwnerOrder> orders) throws DataAccessException {
-        StringBuilder sb = new StringBuilder("SELECT id, first_name, last_name, address, city, telephone FROM owners");
-        Optional<List<OwnerOrder>> nonNullOrders = Optional.ofNullable(orders);
-        nonNullOrders.ifPresent(list -> {
-            sb.append(" order by");
-            list.forEach(order -> {
-                if (order.getField().equals(OrderField.firstName))
-                    sb.append(" first_name " + order.getOrder() + ",");
-                else if(order.getField().equals(OrderField.lastName))
-                    sb.append(" last_name " + order.getOrder() + ",");
-                else
-                    sb.append(" " + order.getField() + " " + order.getOrder() + ",");
-            });
-        });
-
-        String querySQL;
-        if(sb.indexOf("order by") > 0)
-            querySQL = sb.substring(0, sb.lastIndexOf(","));
-        else
-            querySQL = sb.toString();
-
-        List<Owner> owners = this.namedParameterJdbcTemplate.query(
-            querySQL,
-            new HashMap<String, Object>(),
-            BeanPropertyRowMapper.newInstance(Owner.class)
-        );
-        loadOwnersPetsAndVisits(owners);
-        return owners;
-    }
 
 }

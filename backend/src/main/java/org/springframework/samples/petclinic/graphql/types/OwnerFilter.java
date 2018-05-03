@@ -75,7 +75,7 @@ public class OwnerFilter {
      */
     public String buildJpaQuery() {
         Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
-        StringBuilder sb = new StringBuilder("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE");
+        StringBuilder sb = new StringBuilder(" WHERE");
         sb.append(
             nonNullFilter.map(f -> f.getFirstName())
                 .map(item -> " owner.firstName LIKE :firstName and")
@@ -105,7 +105,22 @@ public class OwnerFilter {
         if(sb.indexOf(" and") > 0)
             return sb.substring(0, sb.lastIndexOf(" and"));
         else
-            return sb.toString();
+            return "";
+        
+    }
+
+    /**
+     * @param query
+     */
+    public void buildJpaQueryParameters(Query query) {
+        
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
+        
+        nonNullFilter.map(f -> f.getFirstName()).ifPresent(item -> query.setParameter("firstName", item + "%"));
+        nonNullFilter.map(f -> f.getLastName()).ifPresent(item -> query.setParameter("lastName", item + "%"));
+        nonNullFilter.map(f -> f.getAddress()).ifPresent(item -> query.setParameter("address", "%" + item + "%"));
+        nonNullFilter.map(f -> f.getCity()).ifPresent(item -> query.setParameter("city", item));
+        nonNullFilter.map(f -> f.getTelephone()).ifPresent(item -> query.setParameter("telephone", item));
         
     }
 
@@ -114,7 +129,7 @@ public class OwnerFilter {
      */
     public String buildJdbcQuery() {
         Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
-        StringBuilder sb = new StringBuilder("SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE");
+        StringBuilder sb = new StringBuilder(" WHERE");
         sb.append(
             nonNullFilter.map(f -> f.getFirstName())
                 .map(item -> " first_name LIKE :firstName and")
@@ -144,39 +159,21 @@ public class OwnerFilter {
         if(sb.indexOf(" and") > 0)
             return sb.substring(0, sb.lastIndexOf(" and"));
         else
-            return sb.toString();
+            return "";
         
     }
 
     /**
-     * @param query
+     * @param params
      */
-    public void buildJpaQueryParameters(Query query) {
+    public void buildJdbcQueryParameters(Map<String, Object> params) {
         
         Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
         
-        nonNullFilter.map(f -> f.getFirstName()).ifPresent(item -> query.setParameter("firstName", item + "%"));
-        nonNullFilter.map(f -> f.getLastName()).ifPresent(item -> query.setParameter("lastName", item + "%"));
-        nonNullFilter.map(f -> f.getAddress()).ifPresent(item -> query.setParameter("address", "%" + item + "%"));
-        nonNullFilter.map(f -> f.getCity()).ifPresent(item -> query.setParameter("city", item));
-        nonNullFilter.map(f -> f.getTelephone()).ifPresent(item -> query.setParameter("telephone", item));
-        
-    }
-
-    /**
-     * @return Map
-     */
-    public Map<String, Object> buildJdbcQueryParameters() {
-        
-        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
-        
-        Map<String, Object> params = new HashMap<>();
         nonNullFilter.map(f -> f.getFirstName()).ifPresent(item -> params.put("firstName", item + "%"));
         nonNullFilter.map(f -> f.getLastName()).ifPresent(item -> params.put("lastName", item + "%"));
         nonNullFilter.map(f -> f.getAddress()).ifPresent(item -> params.put("address", "%" + item + "%"));
         nonNullFilter.map(f -> f.getCity()).ifPresent(item -> params.put("city", item));
         nonNullFilter.map(f -> f.getTelephone()).ifPresent(item -> params.put("telephone", item));
-        
-        return params;
     }
 }

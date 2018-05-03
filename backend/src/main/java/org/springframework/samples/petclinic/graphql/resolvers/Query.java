@@ -58,20 +58,12 @@ public class Query implements GraphQLQueryResolver {
         return Lists.newArrayList(vetRepository.findAll());
     }
 
-    public List<Owner> owners() {
-        return Lists.newArrayList(ownerRepository.findAll());
+    public List<Owner> owners(OwnerFilter filter, List<OwnerOrder> orders) {
+        return Lists.newArrayList(ownerRepository.findAllByFilterOrder(filter, orders));
     }
 
     public Owner owner(int id) {
         return ownerRepository.findById(id);
-    }
-
-    public List<Owner> ownersByFilter(OwnerFilter filter) {
-        return Lists.newArrayList(ownerRepository.findByFilter(filter));
-    }
-
-    public List<Owner> ownersByOrder(List<OwnerOrder> orders) {
-        return Lists.newArrayList(ownerRepository.findAllByOrders(orders));
     }
 
     public Pet pet(int id) {

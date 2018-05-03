@@ -83,47 +83,32 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<Owner> findAll() throws DataAccessException {
+        Query query = this.em.createQuery("SELECT owner FROM Owner owner");
+        return query.getResultList();
+    }
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Owner> findAll() throws DataAccessException {
-		Query query = this.em.createQuery("SELECT owner FROM Owner owner");
-        return query.getResultList();
-	}
-
-	@Override
-	public void delete(Owner owner) throws DataAccessException {
-		this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
-	}
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Query query = em.createQuery(filter.buildJpaQuery());
-        filter.buildJpaQueryParameters(query);
-
-        return query.getResultList();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Collection<Owner> findAllByOrders(List<OwnerOrder> orders) throws DataAccessException {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Optional<List<OwnerOrder>> nonNullOrders = Optional.ofNullable(orders);
+	public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException {
         StringBuilder sb = new StringBuilder("SELECT owner FROM Owner owner");
-        nonNullOrders.ifPresent(list -> 
-            {sb.append(" order by");
-            list.forEach(order -> sb.append(" owner." + order.getField() + " " + order.getOrder() + ","));}
-        );
 
-        Query query;
-        if(sb.indexOf("order by") > 0)
-            query = em.createQuery(sb.substring(0, sb.lastIndexOf(",")));
-        else
-            query = em.createQuery(sb.toString());
+        Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(filter);
+        nonNullFilter.ifPresent(f -> sb.append(f.buildJpaQuery()));
+
+        sb.append(OwnerOrder.buildOrderJpaQuery(orders));
+
+        Query query = this.em.createQuery(sb.toString());
+        nonNullFilter.ifPresent(f -> f.buildJpaQueryParameters(query));
 
         return query.getResultList();
+	}
+
+    @Override
+    public void delete(Owner owner) throws DataAccessException {
+        this.em.remove(this.em.contains(owner) ? owner : this.em.merge(owner));
     }
+
 }

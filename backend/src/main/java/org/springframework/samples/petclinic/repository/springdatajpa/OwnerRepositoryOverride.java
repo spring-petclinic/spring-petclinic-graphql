@@ -15,7 +15,5 @@ import org.springframework.samples.petclinic.model.Owner;
 @Profile("spring-data-jpa")
 public interface OwnerRepositoryOverride {
 
-    public Collection<Owner> findByFilter(OwnerFilter filter);
-
-    public Collection<Owner> findAllByOrders(List<OwnerOrder> orders);
+    public Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders);
 }

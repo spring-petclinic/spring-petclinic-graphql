@@ -37,26 +37,6 @@ import org.springframework.samples.petclinic.model.Owner;
 public interface OwnerRepository {
 
     /**
-     * Retrieve <code>Owner</code>s from the data store by a filter, returning all owners matching <i>all</i> the
-     * properties in the given filter.
-     *
-     * @param filter Value to search for
-     * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
-     * found)
-     */
-    Collection<Owner> findAllByOrders(List<OwnerOrder> orders) throws DataAccessException;
-
-    /**
-     * Retrieve <code>Owner</code>s from the data store by a filter, returning all owners matching <i>all</i> the
-     * properties in the given filter.
-     *
-     * @param filter Value to search for
-     * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
-     * found)
-     */
-    Collection<Owner> findByFilter(OwnerFilter filter) throws DataAccessException;
-
-    /**
      * Retrieve <code>Owner</code>s from the data store by last name, returning all owners whose last name <i>starts</i>
      * with the given name.
      *
@@ -92,6 +72,14 @@ public interface OwnerRepository {
      */
 	Collection<Owner> findAll() throws DataAccessException;
 	
+    /**
+     * Retrieve <code>Owner</code>s from the data store with optional filter or order, returning retrieved owners 
+     *
+     * @return a <code>Collection</code> of <code>Owner</code>s (or an empty <code>Collection</code> if none
+     * found)
+     */
+    Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException;
+    
     /**
      * Delete an <code>Owner</code> to the data store by <code>Owner</code>.
      *
