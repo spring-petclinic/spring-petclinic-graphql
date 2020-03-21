@@ -18,7 +18,7 @@
     "@types/react-datepicker": "^0.46.2",
     "@types/react-dom": "^15.5.0",
     "@types/react-router-dom": "4.0.4",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "history": "^4.6.3",
     "isomorphic-fetch": "^2.2.1",
     "react": "^15.5.4",
