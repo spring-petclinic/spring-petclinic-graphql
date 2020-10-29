@@ -6,6 +6,8 @@ target/*
 *.iml
 /target
 
+**.DS_Store
+
 generated/
 
 # Easier branch switching
