@@ -16,3 +16,6 @@ jobs:
             echo Building frontend
             cd frontend
             yarn install
+      - run:
+          name: build docker image
+          command: docker build -f frontend/Dockerfile -t petclinic-frontend
