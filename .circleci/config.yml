@@ -7,7 +7,7 @@ executors:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 jobs:
-  frontend-build:
+  build:
     executor: frontend-executor
     steps:
       - checkout # check out the code in the project directory
