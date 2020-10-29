@@ -18,4 +18,4 @@ jobs:
             yarn install
       - setup_remote_docker:
           version: 19.03.13
-      - run: docker build -t petclinic-frontend -f frontend/
+      - run: docker build -t petclinic-frontend frontend/
