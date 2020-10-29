@@ -1,0 +1,29 @@
+format_version: 10
+pipelines:
+  spring_petclinic_graphql:
+    group: defaultGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-04ff57c:
+        git: git@github.com:rvkhakhkhar/spring-petclinic-graphql.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - echo:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: true
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          echo_hello:
+            tasks:
+            - exec:
+                arguments:
+                - hello
+                command: echo
+                run_if: passed
