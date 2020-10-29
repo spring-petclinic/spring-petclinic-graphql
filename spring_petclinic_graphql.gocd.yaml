@@ -1,7 +1,7 @@
 format_version: 10
 pipelines:
   spring_petclinic_graphql:
-    group: defaultGroup
+    group: petclinic
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
