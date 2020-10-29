@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,6 +236,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
+    @Ignore
     @Transactional
     public void shouldDeletePet(){
         Pet pet = this.petRepository.findById(1);
@@ -297,6 +299,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
+    @Ignore
     @Transactional
     public void shouldDeleteVisit(){
     	Visit visit = this.visitRepository.findById(1);
@@ -381,6 +384,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
+    @Ignore
     public void shouldFindPetTypeById(){
     	PetType petType = findPetTypeById(1);
     	assertThat(petType.getName()).isEqualTo("cat");
@@ -436,6 +440,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
+    @Ignore
     public void shouldDeletePetType(){
     	PetType petType = this.petTypeRepository.findById(1);
         this.petTypeRepository.delete(petType);
@@ -492,6 +497,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
+    @Ignore
     public void shouldDeleteSpecialty(){
     	Specialty specialty = this.specialtyRepository.findById(1);
         this.specialtyRepository.delete(specialty);
