@@ -1,11 +1,18 @@
 version: 2.1
-jobs:
-  build:
+executors:
+  frontend-executor:
     docker:
       - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+jobs:
+  build:
+    executor: frontend-executor
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - run:
+          command: |
+            echo Building frontend
+            cd frontend
+            yarn install
