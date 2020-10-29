@@ -16,4 +16,7 @@ jobs:
             echo Building frontend
             cd frontend
             yarn install
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
       - run: docker build -t petclinic-frontend -f frontend/Dockerfile
