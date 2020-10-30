@@ -40,7 +40,15 @@ jobs:
           name: Building backend
           command: |
             cd backend
-            ./mvnw test
+            ./mvnw clean package
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: docker build -t petclinic-backend backend/
+      - run:
+          name: "Docker image validation for backend"
+          command: |
+            docker run -d --name petclinic-backend petclinic-backend
+            docker run --network container:petclinic-backend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
 
 workflows:
   version: 2
