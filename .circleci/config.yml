@@ -16,3 +16,11 @@ jobs:
             echo Building frontend
             cd frontend
             yarn install
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: docker build -t petclinic-frontend frontend/
+      - run:
+          name: "Docker image validation for frontend"
+          command: |
+            docker run -d --name petclinic-frontend petclinic-frontend
+            docker run --network container:petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
