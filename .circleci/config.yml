@@ -13,7 +13,7 @@ executors:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 jobs:
-  build:
+  build-frontend:
     executor: frontend-executor
     steps:
       - checkout # check out the code in the project directory
@@ -31,6 +31,7 @@ jobs:
           command: |
             docker run -d --name petclinic-frontend petclinic-frontend
             docker run --network container:petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+
   build-backend:
     executor: backend-executor
     steps:
@@ -40,3 +41,11 @@ jobs:
           command: |
             cd backend
             ./mvnw test
+
+workflows:
+  version: 2
+
+  build-frontend-backend:
+    jobs:
+      - build-frontend
+      - build-backend
