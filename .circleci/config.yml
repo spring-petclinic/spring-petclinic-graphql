@@ -6,12 +6,19 @@ executors:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+  backend-executor:
+    docker:
+      - image: circleci/openjdk:stretch
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 jobs:
   build:
     executor: frontend-executor
     steps:
       - checkout # check out the code in the project directory
       - run:
+          name: Building frontend
           command: |
             echo Building frontend
             cd frontend
@@ -24,3 +31,12 @@ jobs:
           command: |
             docker run -d --name petclinic-frontend petclinic-frontend
             docker run --network container:petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+  build-backend:
+    executor: backend-executor
+    steps:
+      - checkout # check out the code in the project directory
+      - run:
+          name: Building backend
+          command: |
+            cd backend
+            ./mvnw test
