@@ -7,12 +7,12 @@ pipelines:
     display_order: -1
     materials:
       git-04ff57c:
-        git: git@github.com:rvkhakhkhar/spring-petclinic-graphql.git
+        git: https://github.com/rvkhakhkhar/spring-petclinic-graphql.git
         shallow_clone: false
         auto_update: true
         branch: master
     stages:
-    - echo:
+    - Test_And_Build:
         fetch_materials: true
         keep_artifacts: false
         clean_workspace: true
@@ -20,10 +20,14 @@ pipelines:
           type: success
           allow_only_on_success: false
         jobs:
-          echo_hello:
+          backend:
+            resources:
+              - java-8
             tasks:
             - exec:
                 arguments:
-                - hello world
-                command: echo
+                  - -c
+                  - ./mvnw clean package
+                command: /bin/sh
+                working_directory: backend
                 run_if: passed
