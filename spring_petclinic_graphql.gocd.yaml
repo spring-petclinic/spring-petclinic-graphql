@@ -31,3 +31,15 @@ pipelines:
                 command: /bin/sh
                 working_directory: backend
                 run_if: passed
+          fronend:
+            resources:
+              - node
+            tasks:
+              - exec:
+                  arguments:
+                    - -c
+                    - yarn install
+                    - yarn run dist
+                  command: /bin/sh
+                  working_directory: frontend
+                  run_if: passed
