@@ -81,6 +81,10 @@ jobs:
           command: |
             docker run -d --name circleci-petclinic-backend circleci-petclinic-backend
             docker run --network container:circleci-petclinic-backend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+      - tag-and-push-image:
+          image-name: circleci-petclinic-backend
+          image-tag: latest
+          repository-name: circleci-petclinic-backend
 
 workflows:
   version: 2
