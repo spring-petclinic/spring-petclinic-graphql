@@ -35,6 +35,9 @@ jobs:
             docker run --network container:circleci-petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
       - aws-cli/setup:
           profile-name: hackathon-pmurkute
+      - run:
+          name: "AWS ECR Login"
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038062473746.dkr.ecr.us-east-1.amazonaws.com
 
   build-backend:
     executor: backend-executor
