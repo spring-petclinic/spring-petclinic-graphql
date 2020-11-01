@@ -14,6 +14,29 @@ executors:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+commands: # a reusable command with parameters
+  tag-and-push-image:
+    parameters:
+      image-name:
+        type: string
+      image-tag:
+        type: string
+      repository-name:
+        type: string
+    steps:
+      - aws-cli/setup:
+          profile-name: hackathon-pmurkute
+      - run:
+          name: "AWS ECR Login"
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038062473746.dkr.ecr.us-east-1.amazonaws.com
+      - run:
+          name: "Create repository if doesn't exists"
+          command: aws ecr describe-repositories --repository-names <<parameters.repository-name>> || aws ecr create-repository --repository-name <<parameters.repository-name>>
+      - run:
+          name: "Tag and push docker image"
+          command: |
+            docker tag <<parameters.image-name>>:<<parameters.image-tag>> 038062473746.dkr.ecr.us-east-1.amazonaws.com/<<parameters.repository-name>>:<<parameters.image-tag>>
+            docker push 038062473746.dkr.ecr.us-east-1.amazonaws.com/<<parameters.repository-name>>:<<parameters.image-tag>>
 jobs:
   build-frontend:
     executor: frontend-executor
@@ -27,25 +50,18 @@ jobs:
             yarn install
       - setup_remote_docker:
           version: 19.03.13
-      - run: docker build -t circleci-petclinic-frontend frontend/
+      - run:
+          name: "Build Docker image"
+          commnad: docker build -t circleci-petclinic-frontend frontend/
       - run:
           name: "Docker image validation for frontend"
           command: |
             docker run -d --name circleci-petclinic-frontend circleci-petclinic-frontend
             docker run --network container:circleci-petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
-      - aws-cli/setup:
-          profile-name: hackathon-pmurkute
-      - run:
-          name: "AWS ECR Login"
-          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038062473746.dkr.ecr.us-east-1.amazonaws.com
-      - run:
-          name: "Create repository if doesn't exists"
-          command: aws ecr describe-repositories --repository-names circleci-petclinic-frontend || aws ecr create-repository --repository-name circleci-petclinic-frontend
-      - run:
-          name: "Tag and push docker image"
-          command: |
-            docker tag circleci-petclinic-frontend:latest 038062473746.dkr.ecr.us-east-1.amazonaws.com/circleci-petclinic-frontend:latest
-            docker push 038062473746.dkr.ecr.us-east-1.amazonaws.com/circleci-petclinic-frontend:latest
+      - tag-and-push-image:
+          image-name: "circleci-petclinic-frontend"
+          image-tag: "latest"
+          repository-name: "circleci-petclinic-frontend"
 
   build-backend:
     executor: backend-executor
