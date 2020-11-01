@@ -41,6 +41,11 @@ jobs:
       - run:
           name: "Create repository if doesn't exists"
           command: aws ecr describe-repositories --repository-names circleci-petclinic-frontend || aws ecr create-repository --repository-name circleci-petclinic-frontend
+      - run:
+          name: "Tag and push docker image"
+          command: |
+            docker tag circleci-petclinic-frontend:latest 038062473746.dkr.ecr.us-east-1.amazonaws.com/circleci-petclinic-frontend:latest
+            docker push 038062473746.dkr.ecr.us-east-1.amazonaws.com/circleci-petclinic-frontend:latest
 
   build-backend:
     executor: backend-executor
