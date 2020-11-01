@@ -38,6 +38,9 @@ jobs:
       - run:
           name: "AWS ECR Login"
           command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 038062473746.dkr.ecr.us-east-1.amazonaws.com
+      - run:
+          name: "Create repository if doesn't exists"
+          command: aws ecr describe-repositories --repository-names circleci-petclinic-frontend || aws ecr create-repository --repository-name circleci-petclinic-frontend
 
   build-backend:
     executor: backend-executor
