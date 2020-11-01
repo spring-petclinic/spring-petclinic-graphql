@@ -6,21 +6,54 @@ executors:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+  backend-executor:
+    docker:
+      - image: circleci/openjdk:8u265-jdk-buster
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 jobs:
-  build:
+  build-frontend:
     executor: frontend-executor
     steps:
       - checkout # check out the code in the project directory
       - run:
+          name: Building frontend
           command: |
             echo Building frontend
             cd frontend
             yarn install
       - setup_remote_docker:
           version: 19.03.13
-      - run: docker build -t petclinic-frontend frontend/
+      - run: docker build -t circleci-petclinic-frontend frontend/
       - run:
           name: "Docker image validation for frontend"
           command: |
-            docker run -d --name petclinic-frontend petclinic-frontend
-            docker run --network container:petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+            docker run -d --name circleci-petclinic-frontend circleci-petclinic-frontend
+            docker run --network container:circleci-petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+
+  build-backend:
+    executor: backend-executor
+    steps:
+      - checkout # check out the code in the project directory
+      - run:
+          name: Building backend
+          command: |
+            cd backend
+            ./mvnw clean package
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: docker build -t circleci-petclinic-backend backend/
+      - run:
+          name: "Docker image validation for backend"
+          command: |
+            docker run -d --name circleci-petclinic-backend circleci-petclinic-backend
+            docker run --network container:circleci-petclinic-backend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
+
+workflows:
+  version: 2
+
+  build-frontend-backend:
+    jobs:
+      - build-frontend
+      - build-backend
