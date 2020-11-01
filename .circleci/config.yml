@@ -53,7 +53,7 @@ jobs:
           version: 19.03.13
       - run:
           name: "Build Docker image"
-          commnad: docker build -t circleci-petclinic-frontend frontend/
+          command: docker build -t circleci-petclinic-frontend frontend/
       - run:
           name: "Docker image validation for frontend"
           command: |
