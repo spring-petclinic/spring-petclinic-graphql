@@ -14,6 +14,7 @@ executors:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+
 commands: # a reusable command with parameters
   tag-and-push-image:
     parameters:
@@ -59,9 +60,9 @@ jobs:
             docker run -d --name circleci-petclinic-frontend circleci-petclinic-frontend
             docker run --network container:circleci-petclinic-frontend appropriate/curl --retry 10 --retry-connrefused http://localhost:8080
       - tag-and-push-image:
-          image-name: "circleci-petclinic-frontend"
-          image-tag: "latest"
-          repository-name: "circleci-petclinic-frontend"
+          image-name: circleci-petclinic-frontend
+          image-tag: latest
+          repository-name: circleci-petclinic-frontend
 
   build-backend:
     executor: backend-executor
