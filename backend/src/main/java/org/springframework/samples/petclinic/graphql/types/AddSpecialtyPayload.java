@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.graphql.types;
 
-import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.vet.Specialty;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)

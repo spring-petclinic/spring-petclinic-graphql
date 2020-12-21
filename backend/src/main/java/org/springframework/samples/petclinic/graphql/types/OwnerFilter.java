@@ -1,12 +1,10 @@
 package org.springframework.samples.petclinic.graphql.types;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Query;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Xiangbin HAN (hanxb2001@163.com)
@@ -106,22 +104,22 @@ public class OwnerFilter {
             return sb.substring(0, sb.lastIndexOf(" and"));
         else
             return "";
-        
+
     }
 
     /**
      * @param query
      */
     public void buildJpaQueryParameters(Query query) {
-        
+
         Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
-        
+
         nonNullFilter.map(f -> f.getFirstName()).ifPresent(item -> query.setParameter("firstName", item + "%"));
         nonNullFilter.map(f -> f.getLastName()).ifPresent(item -> query.setParameter("lastName", item + "%"));
         nonNullFilter.map(f -> f.getAddress()).ifPresent(item -> query.setParameter("address", "%" + item + "%"));
         nonNullFilter.map(f -> f.getCity()).ifPresent(item -> query.setParameter("city", item));
         nonNullFilter.map(f -> f.getTelephone()).ifPresent(item -> query.setParameter("telephone", item));
-        
+
     }
 
     /**
@@ -160,16 +158,16 @@ public class OwnerFilter {
             return sb.substring(0, sb.lastIndexOf(" and"));
         else
             return "";
-        
+
     }
 
     /**
      * @param params
      */
     public void buildJdbcQueryParameters(Map<String, Object> params) {
-        
+
         Optional<OwnerFilter> nonNullFilter = Optional.ofNullable(this);
-        
+
         nonNullFilter.map(f -> f.getFirstName()).ifPresent(item -> params.put("firstName", item + "%"));
         nonNullFilter.map(f -> f.getLastName()).ifPresent(item -> params.put("lastName", item + "%"));
         nonNullFilter.map(f -> f.getAddress()).ifPresent(item -> params.put("address", "%" + item + "%"));

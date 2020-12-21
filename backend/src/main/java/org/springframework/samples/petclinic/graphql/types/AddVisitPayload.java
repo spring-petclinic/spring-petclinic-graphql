@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.graphql.types;
 
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.visit.Visit;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)

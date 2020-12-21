@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.graphql.types;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  */
 public class AddVisitInput {
     private int petId;
-    private Date date;
+    private LocalDate date;
     private String description;
 
     public int getPetId() {
@@ -18,11 +19,11 @@ public class AddVisitInput {
         this.petId = petId;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

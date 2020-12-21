@@ -1,37 +1,37 @@
 package org.springframework.samples.petclinic.graphql.types;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Xiangbin HAN (hanxb2001@163.com)
  *
  */
 public class OwnerOrder {
-    
+
     private OrderField field;
     private OrderType order;
-    
+
     @JsonProperty("field")
     public OrderField getField() {
         return field;
     }
-    
+
     public void setField(OrderField field) {
         this.field = field;
     }
-    
+
     @JsonProperty("order")
     public OrderType getOrder() {
         return order;
     }
-    
+
     public void setOrder(OrderType order) {
         this.order = order;
     }
-    
+
     @Override
     public String toString() {
         return this.field.toString() + " " + this.order.toString();
@@ -71,7 +71,7 @@ public class OwnerOrder {
         StringBuilder sb = new StringBuilder();
 
         Optional<List<OwnerOrder>> nonNullOrders = Optional.ofNullable(orders);
-        nonNullOrders.ifPresent(list -> 
+        nonNullOrders.ifPresent(list ->
             {sb.append(" order by");
             list.forEach(order -> sb.append(" owner." + order.getField() + " " + order.getOrder() + ","));}
         );

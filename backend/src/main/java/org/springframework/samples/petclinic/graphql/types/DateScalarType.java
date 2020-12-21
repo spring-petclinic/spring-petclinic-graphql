@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static java.lang.String.format;
@@ -35,8 +37,8 @@ public class DateScalarType extends GraphQLScalarType {
 
     private final static Logger logger = LoggerFactory.getLogger(DateScalarType.class);
 
-    private static SimpleDateFormat createIsoDateFormat() {
-        return new SimpleDateFormat("yyyy/MM/dd");
+    private static DateTimeFormatter createIsoDateFormat() {
+        return DateTimeFormatter.ofPattern("yyyy/MM/dd");
     }
 
     @Override
@@ -45,25 +47,25 @@ public class DateScalarType extends GraphQLScalarType {
     }
 
     public DateScalarType() {
-        super("Date", "A Date type", new Coercing<Date, String>() {
+        super("Date", "A Date type", new Coercing<LocalDate, String>() {
 
             @Override
             public String serialize(Object input) {
-                if (input instanceof Date) {
-                    return createIsoDateFormat().format((Date) input);
+                if (input instanceof LocalDate) {
+                    return createIsoDateFormat().format((LocalDate) input);
                 }
                 return null;
             }
 
             @Override
-            public Date parseValue(Object input) {
-                if (input instanceof Date) {
-                    return (Date) input;
+            public LocalDate parseValue(Object input) {
+                if (input instanceof LocalDate) {
+                    return (LocalDate) input;
                 } else if (input instanceof String) {
                     try {
-                        Date date = createIsoDateFormat().parse((String) input);
+                        LocalDate date = LocalDate.parse((String)input, createIsoDateFormat());
                         return date;
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                         logger.error(format("Could not parse date from String '%s': %s", input, e.getLocalizedMessage()), e);
                     }
                 }
@@ -71,7 +73,7 @@ public class DateScalarType extends GraphQLScalarType {
             }
 
             @Override
-            public Date parseLiteral(Object input) {
+            public LocalDate parseLiteral(Object input) {
                 throw new UnsupportedOperationException("ParseLiteral in DateScalarType not implemented yet");
             }
         });

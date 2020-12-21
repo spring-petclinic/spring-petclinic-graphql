@@ -1,8 +1,8 @@
 package org.springframework.samples.petclinic.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
+import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.samples.petclinic.graphql.types.VisitConnection;
-import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.stereotype.Component;
 
 /**

@@ -15,14 +15,15 @@
  */
 package org.springframework.samples.petclinic.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.google.common.collect.Lists;
-
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
 import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 import org.springframework.samples.petclinic.graphql.types.VisitConnection;
-import org.springframework.samples.petclinic.model.*;
-import org.springframework.samples.petclinic.repository.*;
+import org.springframework.samples.petclinic.owner.*;
+import org.springframework.samples.petclinic.vet.Specialty;
+import org.springframework.samples.petclinic.vet.SpecialtyRepository;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -51,15 +52,15 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<PetType> pettypes() {
-        return Lists.newArrayList(petTypeRepository.findAll());
+        return List.copyOf(petTypeRepository.findAll());
     }
 
     public List<Vet> vets() {
-        return Lists.newArrayList(vetRepository.findAll());
+        return List.copyOf(vetRepository.findAll());
     }
 
     public List<Owner> owners(OwnerFilter filter, List<OwnerOrder> orders) {
-        return Lists.newArrayList(ownerRepository.findAllByFilterOrder(filter, orders));
+        return List.copyOf(ownerRepository.findAllByFilterOrder(filter, orders));
     }
 
     public Owner owner(int id) {
@@ -71,11 +72,11 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<Pet> pets() {
-        return Lists.newArrayList(petRepository.findAll());
+        return List.copyOf(petRepository.findAll());
     }
 
     public List<Specialty> specialties() {
-        return Lists.newArrayList(specialtyRepository.findAll());
+        return List.copyOf(specialtyRepository.findAll());
     }
 
     public VisitConnection getVisitConnection() {

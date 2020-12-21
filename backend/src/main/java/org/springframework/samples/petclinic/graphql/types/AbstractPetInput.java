@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.graphql.types;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ public class AbstractPetInput {
 
     private Integer typeId;
     private String name;
-    private Date birthDate;
+    private LocalDate birthDate;
 
     public Integer getTypeId() {
         return typeId;
@@ -19,11 +20,11 @@ public class AbstractPetInput {
         this.typeId = typeId;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

@@ -15,16 +15,20 @@
  */
 package org.springframework.samples.petclinic.graphql.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.google.common.collect.Lists;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.samples.petclinic.graphql.types.*;
-import org.springframework.samples.petclinic.model.*;
-import org.springframework.samples.petclinic.repository.*;
+import org.springframework.samples.petclinic.owner.*;
+import org.springframework.samples.petclinic.vet.Specialty;
+import org.springframework.samples.petclinic.vet.SpecialtyRepository;
+import org.springframework.samples.petclinic.visit.Visit;
+import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)
@@ -129,7 +133,7 @@ public class Mutation implements GraphQLMutationResolver {
 
         Visit visit = new Visit();
         visit.setDescription(addVisitInput.getDescription());
-        visit.setPet(pet);
+        visit.setPetId(pet.getId());
         visit.setDate(addVisitInput.getDate());
 
         visitRepository.save(visit);
@@ -156,6 +160,6 @@ public class Mutation implements GraphQLMutationResolver {
         Specialty specialty = specialtyRepository.findById(removeSpecialtyInput.getSpecialtyId());
         specialtyRepository.delete(specialty);
 
-        return new RemoveSpecialtyPayload(Lists.newArrayList(specialtyRepository.findAll()));
+        return new RemoveSpecialtyPayload(List.copyOf(specialtyRepository.findAll()));
     }
 }

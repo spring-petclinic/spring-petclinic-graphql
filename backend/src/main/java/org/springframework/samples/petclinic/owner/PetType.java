@@ -13,35 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.owner;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import org.springframework.samples.petclinic.model.NamedEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Simple JavaBean domain object adds a name property to <code>BaseEntity</code>. Used as
- * a base class for objects needing these properties.
- *
- * @author Ken Krebs
- * @author Juergen Hoeller
+ * @author Juergen Hoeller Can be Cat, Dog, Hamster...
  */
-@MappedSuperclass
-public class NamedEntity extends BaseEntity {
-
-	@Column(name = "name")
-	private String name;
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return this.getName();
-	}
+@Entity
+@Table(name = "types")
+public class PetType extends NamedEntity {
 
 }
