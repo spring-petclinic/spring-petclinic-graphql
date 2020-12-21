@@ -1,8 +1,5 @@
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
-import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -12,8 +9,9 @@ import java.util.Optional;
 
 /**
  * @author Xiangbin HAN (hanxb2001@163.com)
+ * @author Nils Hartmann
  */
-public class OwnerRepositoryCustomizationImpl implements OwnerRepositoryCustomization {
+class OwnerRepositoryCustomizationImpl implements OwnerRepositoryCustomization {
 
     @PersistenceContext
     private EntityManager em;

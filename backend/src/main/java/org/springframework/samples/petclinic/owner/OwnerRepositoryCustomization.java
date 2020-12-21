@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.graphql.types.OwnerFilter;
-import org.springframework.samples.petclinic.graphql.types.OwnerOrder;
 
 import java.util.Collection;
 import java.util.List;
