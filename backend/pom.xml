@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+        <kickstart.graphql.version>8.1.1</kickstart.graphql.version>
 	</properties>
 
 	<dependencies>
@@ -61,12 +62,12 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>8.0.0</version>
+            <version>${kickstart.graphql.version}</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>8.0.0</version>
+            <version>${kickstart.graphql.version}</version>
         </dependency>
 
 		<dependency>
