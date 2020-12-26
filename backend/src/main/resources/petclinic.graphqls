@@ -2,6 +2,9 @@ scalar Date
 
 # The Query type provides all entry points to the PetClinic GraphQL schema
 type Query {
+  # Returns 'pong', can be used to verify GraphQL API is working
+  ping: String!
+
   # Return all known PetTypes
   pettypes: [PetType!]!
 

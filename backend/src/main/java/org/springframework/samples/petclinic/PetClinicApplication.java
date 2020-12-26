@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
@@ -17,8 +18,8 @@ public class PetClinicApplication {
      * lazy-loading with Hibernate.
      */
     @Bean
+    @ConditionalOnProperty(value="petclinic.open-session-in-view", havingValue="true", matchIfMissing = true)
     public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
         return new OpenEntityManagerInViewFilter();
     }
-
 }
