@@ -1,22 +1,26 @@
 {
   "compilerOptions": {
-		"target": "es5",
-		"lib": [
-			"es2015", "es2016", "dom"
-		],
-    "module": "commonjs",
-    "declaration": false,
-    "noImplicitAny": true,
-    "removeComments": false,
-    "experimentalDecorators": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
-		"strictNullChecks": true,
-		"strict": true,
-    "noLib": false,
-    "jsx": "react"
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
-	"./declarations.d.ts",
-    "./src/**/*"
+    "src"
   ]
 }
