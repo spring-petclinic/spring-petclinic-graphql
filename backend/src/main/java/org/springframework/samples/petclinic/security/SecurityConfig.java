@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.samples.petclinic.model.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +24,8 @@ import static java.lang.String.format;
  * @author Nils Hartmann
  */
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
@@ -69,8 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // Allow access to login
             .antMatchers("/login").permitAll()
             // allow access to graphiql
+            .antMatchers("/").permitAll()
+            .antMatchers("/index.html").permitAll()
             .antMatchers("/graphiql/**").permitAll()
-            .antMatchers("/vendor/**").permitAll()
 
             // ...while all other endpoints (including /graphql) should be authenticated
             //    fine granualar, Role-based, access checks are done in the resolver
