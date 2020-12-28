@@ -24,6 +24,13 @@ type Query {
   pets: [Pet!]!
 
   specialties: [Specialty!]!
+
+  me: User!
+}
+
+type User {
+  username: String!
+  fullname: String!
 }
 
 # The type (species) of a Pet

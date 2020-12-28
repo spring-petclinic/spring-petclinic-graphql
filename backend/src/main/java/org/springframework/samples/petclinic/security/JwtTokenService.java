@@ -2,12 +2,11 @@ package org.springframework.samples.petclinic.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.samples.petclinic.model.User;
+import org.springframework.samples.petclinic.auth.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

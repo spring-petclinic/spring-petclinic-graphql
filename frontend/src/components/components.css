@@ -1,0 +1,22 @@
+@layer components {
+  .Button {
+    @apply 
+    bg-spr-white 
+    text-spr-black
+      uppercase
+      py-1.5 
+      px-3.5
+      font-medium
+    hover:bg-spr-green
+    hover:text-spr-white
+    hover:border-spr-green
+    border-spr-black
+      border 
+      rounded;
+  }
+
+  .Button:disabled {
+    @apply text-gray-400 cursor-default hover:bg-spr-white hover:text-gray-400 hover:border-spr-black;
+  }
+
+}

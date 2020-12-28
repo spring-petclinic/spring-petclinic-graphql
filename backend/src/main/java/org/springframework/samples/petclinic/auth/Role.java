@@ -1,6 +1,6 @@
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;

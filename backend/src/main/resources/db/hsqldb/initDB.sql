@@ -70,6 +70,7 @@ CREATE  TABLE users (
                         username    VARCHAR(20) NOT NULL ,
                         password    VARCHAR(20) NOT NULL ,
                         enabled     BOOLEAN DEFAULT TRUE NOT NULL ,
+                        fullname    VARCHAR(256) NOT NULL ,
                         PRIMARY KEY (username)
 );
 
@@ -82,8 +83,14 @@ ALTER TABLE roles ADD CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES u
 CREATE INDEX fk_username_idx ON roles (username);
 
 
-INSERT INTO users(username,password,enabled) VALUES ('admin','{noop}admin', true);
-
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_OWNER_ADMIN');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_VET_ADMIN');
+INSERT INTO users(username,password,enabled,fullname) VALUES ('admin','{noop}admin', true, 'Administrator');
 INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
+INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_RECEPTION_STAFF');
+INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_MANAGER');
+
+
+INSERT INTO users(username,password,enabled,fullname) VALUES ('klaus','{noop}klaus', true, 'Klaus Meier');
+INSERT INTO roles (username, role) VALUES ('klaus', 'ROLE_RECEPTION_STAFF');
+
+INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
+INSERT INTO roles (username, role) VALUES ('susi', 'ROLE_MANAGER');

@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +28,9 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @Column(name = "fullname")
+    private String fullname;
 
     public String getUsername() {
         return username;
@@ -69,6 +72,14 @@ public class User implements UserDetails {
         Role role = new Role();
         role.setName(roleName);
         this.roles.add(role);
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     @Override

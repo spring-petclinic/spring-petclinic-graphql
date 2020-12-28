@@ -14,6 +14,7 @@ module.exports = {
       "spr-blue": "#086dc3",
       "spr-green": "#6bb536",
       "spr-green-light": "#ebf2f2",
+      "spr-red": "#FF3C38",
     },
     fontFamily: {
       "open-sans": ["Open Sans", "sans-serif"],
@@ -23,7 +24,9 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      cursor: ["disabled"],
+    },
   },
   plugins: [require("@tailwindcss/forms")],
 };

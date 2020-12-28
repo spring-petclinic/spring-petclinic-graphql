@@ -2,8 +2,8 @@ package org.springframework.samples.petclinic.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.samples.petclinic.model.User;
-import org.springframework.samples.petclinic.model.UserRepository;
+import org.springframework.samples.petclinic.auth.User;
+import org.springframework.samples.petclinic.auth.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;

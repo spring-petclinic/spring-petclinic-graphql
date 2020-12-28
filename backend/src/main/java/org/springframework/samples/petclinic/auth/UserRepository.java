@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.auth;
 
 import org.springframework.data.repository.Repository;
 
