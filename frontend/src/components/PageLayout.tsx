@@ -1,7 +1,6 @@
 import * as React from "react";
 import PageHeader from "./PageHeader";
-import Nav from "./Nav";
-import { useCurrentUserFullname } from "use-current-user-fullname";
+import { DefaultNavBar, NavBar } from "./Nav";
 
 type PageLayoutProps = {
   children?: React.ReactNode;
@@ -14,12 +13,11 @@ export default function PageLayout({
   title,
   narrow,
 }: PageLayoutProps) {
-  const userFullname = useCurrentUserFullname();
   const maxWith = narrow ? "max-w-2xl" : "max-w-7xl";
   const className = `${maxWith} mx-auto py-6 sm:px-6 lg:px-8`;
   return (
     <div>
-      <Nav userFullname={userFullname} />
+      <DefaultNavBar />
       <PageHeader>{title}</PageHeader>
       <main className={className}>{children}</main>
     </div>
@@ -35,7 +33,7 @@ export function AnonymousPageLayout({
   const className = `${maxWith} mx-auto py-6 sm:px-6 lg:px-8`;
   return (
     <div>
-      <Nav hideNav />
+      <NavBar />
       <PageHeader>{title}</PageHeader>
       <main className={className}>{children}</main>
     </div>

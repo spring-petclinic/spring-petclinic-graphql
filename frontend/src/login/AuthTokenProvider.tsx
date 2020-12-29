@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type IAuthContext = {
-  token?: string | null;
+  token: string | null;
   updateToken(token: string | null): void;
 };
 
@@ -15,7 +15,9 @@ type AuthContextProviderProps = {
 };
 
 export function AuthTokenProvider({ children }: AuthContextProviderProps) {
-  const [token, setToken] = React.useState<string | null>(null);
+  const [token, setToken] = React.useState<string | null | undefined>(
+    undefined
+  );
 
   React.useEffect(() => {
     setToken(localStorage.getItem("petclinic.token") || null);
@@ -31,7 +33,7 @@ export function AuthTokenProvider({ children }: AuthContextProviderProps) {
     setToken(newToken);
   }
 
-  return (
+  return token === undefined ? null : (
     <AuthContext.Provider value={{ token, updateToken }}>
       {children}
     </AuthContext.Provider>

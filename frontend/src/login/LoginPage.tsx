@@ -20,8 +20,6 @@ export default function LoginPage() {
     setLoginRequestState,
   ] = React.useState<LoginRequestState>({ running: false });
 
-  console.log("errors", errors);
-
   async function handleLogin({ username, password }: LoginFormData) {
     setLoginRequestState({
       running: true,

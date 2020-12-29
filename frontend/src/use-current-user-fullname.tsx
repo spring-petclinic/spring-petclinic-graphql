@@ -1,11 +1,14 @@
 import { useMeQuery } from "generated/graphql-types";
 
-export function useCurrentUserFullname() {
+export function useCurrentUser() {
   const { loading, error, data } = useMeQuery();
 
   if (loading || error || !data) {
-    return null;
+    return { username: null, fullname: null };
   }
 
-  return data.me.fullname;
+  return {
+    fullname: data.me.fullname || null,
+    username: data.me.username || null,
+  };
 }

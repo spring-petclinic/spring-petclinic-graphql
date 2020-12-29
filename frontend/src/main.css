@@ -1029,6 +1029,44 @@ p {
   color: rgba(163, 163, 163, var(--tw-text-opacity));
 }
 
+.NavLink:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+}
+
+.NavLink {
+  --tw-border-opacity: 1;
+  border-color: rgba(235, 242, 242, var(--tw-border-opacity));
+}
+
+.NavLink:hover {
+  --tw-border-opacity: 1;
+  border-color: rgba(107, 181, 54, var(--tw-border-opacity));
+}
+
+.NavLink {
+  border-top-width: 4px;
+  font-weight: 700;
+  height: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  --tw-text-opacity: 1;
+  color: rgba(25, 30, 30, var(--tw-text-opacity));
+  text-transform: uppercase;
+}
+
+.NavLink--active {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+  --tw-border-opacity: 1;
+  border-color: rgba(107, 181, 54, var(--tw-border-opacity));
+  border-top-width: 4px;
+}
+
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));

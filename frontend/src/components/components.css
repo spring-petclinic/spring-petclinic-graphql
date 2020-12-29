@@ -1,7 +1,6 @@
 @layer components {
   .Button {
-    @apply 
-    bg-spr-white 
+    @apply bg-spr-white 
     text-spr-black
       uppercase
       py-1.5 
@@ -19,4 +18,11 @@
     @apply text-gray-400 cursor-default hover:bg-spr-white hover:text-gray-400 hover:border-spr-black;
   }
 
+  .NavLink {
+    @apply text-spr-black hover:bg-spr-white px-4 py-2 h-12 text-sm font-bold uppercase border-t-4 border-spr-green-light  hover:border-spr-green;
+  }
+
+  .NavLink--active {
+    @apply bg-spr-white  border-t-4 border-spr-green;
+  }
 }
