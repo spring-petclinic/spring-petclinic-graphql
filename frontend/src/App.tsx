@@ -1,33 +1,32 @@
+import { useMeLazyQuery } from "generated/graphql-types";
+import { useAuthToken } from "login/AuthTokenProvider";
 import LoginPage from "login/LoginPage";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Heading from "./components/Heading";
-import Input from "./components/Input";
-import Section from "./components/Section";
-
-// function Form() {
-//   return (
-//     <Section>
-//       <Heading>Add Owner</Heading>
-//       <Input />
-//     </Section>
-//   );
-// }
-
-// function ExamplePage() {
-//   return (
-//     <PageLayout>
-//       <Table />
-//       <Form />
-//     </PageLayout>
-//   );
-// }
+import WelcomePage from "WelcomePage";
 
 function App() {
+  const [token] = useAuthToken();
+  const [queryMe, { called, loading, error }] = useMeLazyQuery();
+
+  React.useEffect(() => {
+    if (token) {
+      queryMe();
+    }
+  }, [queryMe, token]);
+
+  if (!token || error) {
+    return <LoginPage />;
+  }
+
+  if (loading || !called) {
+    return <h1>Verify token...</h1>;
+  }
+
   return (
     <Switch>
       <Route path="/" exact>
-        <LoginPage />
+        <WelcomePage />
       </Route>
     </Switch>
   );

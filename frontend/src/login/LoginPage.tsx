@@ -1,29 +1,20 @@
-import { gql, useApolloClient } from "@apollo/client";
 import Button from "components/Button";
 import ButtonBar from "components/ButtonBar";
 import Heading from "components/Heading";
 import Input from "components/Input";
 import Label from "components/Label";
-import PageLayout from "components/PageLayout";
+import { AnonymousPageLayout } from "components/PageLayout";
 import Section from "components/Section";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useAuthToken } from "./AuthTokenProvider";
 
 type LoginFormData = { username: string; password: string };
 type LoginRequestState = { running?: boolean; error?: string };
 
-const MeQuery = gql`
-  query {
-    me {
-      username
-      fullname
-    }
-  }
-`;
-
 export default function LoginPage() {
-  const apolloClient = useApolloClient();
-  const { register, handleSubmit, watch, errors } = useForm<LoginFormData>({});
+  const [, updateToken] = useAuthToken();
+  const { register, handleSubmit, errors } = useForm<LoginFormData>({});
   const [
     loginRequestState,
     setLoginRequestState,
@@ -56,10 +47,7 @@ export default function LoginPage() {
       }
 
       console.log("TOKEN RECEIVED", result.token);
-      localStorage.setItem("petclinic.token", result.token);
-
-      const r = await apolloClient.query({ query: MeQuery });
-      console.log("GQL R", r);
+      updateToken(result.token);
     } catch (err) {
       console.error("LOGIN FAILED ================ >>>>>>>>>>>>>>>>> ", err);
       setLoginRequestState({ error: err.message });
@@ -67,7 +55,7 @@ export default function LoginPage() {
   }
 
   return (
-    <PageLayout title="Welcome to PetClinic!" narrow>
+    <AnonymousPageLayout title="Welcome to PetClinic!" narrow>
       <Section>
         <Heading>Login</Heading>
         <Input
@@ -95,6 +83,6 @@ export default function LoginPage() {
         </ButtonBar>
         {loginRequestState.error && <Label>{loginRequestState.error}</Label>}
       </Section>
-    </PageLayout>
+    </AnonymousPageLayout>
   );
 }
