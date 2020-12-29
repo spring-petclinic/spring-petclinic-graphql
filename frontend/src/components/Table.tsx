@@ -1,38 +1,37 @@
 import * as React from "react";
-import Button from "./Button";
 import Heading from "./Heading";
-import Link from "./Link";
 import Section from "./Section";
 
-export default function Table() {
+type TableProps = {
+  title: string;
+  labels: string[];
+  values: React.ReactNode[][];
+};
+
+export default function Table({ title, labels, values }: TableProps) {
   return (
     <Section>
-      <Heading>10 Owners found</Heading>
+      <Heading>{title}</Heading>
       <table className="w-full">
         <thead>
           <tr>
-            <td className="border-b pr-1 py-3.5 font-bold">Name</td>
-            <td className="border-b pr-1 py-3.5 font-bold">Address</td>
-            <td className="border-b pr-1 py-3.5 font-bold">City</td>
+            {labels.map((label, ix) => (
+              <td key={ix} className="border-b pr-1 py-3.5 font-bold">
+                {label}
+              </td>
+            ))}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="border-b pr-1 py-3.5">
-              <Link href="fasdfd">Lorem</Link>
-            </td>
-            <td className="border-b pr-1 py-3.5">Ipsum</td>
-            <td className="border-b pr-1 py-3.5">tra-la-la-la</td>
-          </tr>
-          <tr>
-            <td className="border-b pr-1 py-3.5">Lorem</td>
-            <td className="border-b pr-1 py-3.5">
-              <Button type="secondary">Delete</Button>
-            </td>
-            <td className="border-b pr-1 py-3.5">
-              <Button>Edit</Button>
-            </td>
-          </tr>
+          {values.map((row, ix) => (
+            <tr key={ix}>
+              {row.map((col, ix) => (
+                <td key={ix} className="border-b pr-1 py-3.5">
+                  {col}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </Section>

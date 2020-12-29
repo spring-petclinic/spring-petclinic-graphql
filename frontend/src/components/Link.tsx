@@ -1,14 +1,15 @@
 import * as React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 type LinkProps = {
-  href: string;
+  to: string;
   children: React.ReactNode;
 };
 
-export default function Link({ href, children }: LinkProps) {
+export default function Link({ to, children }: LinkProps) {
   return (
-    <a className="text-spr-blue hover:text-spr-gray-dark" href={href}>
+    <RouterLink className="text-spr-blue hover:text-spr-gray-dark" to={to}>
       {children}
-    </a>
+    </RouterLink>
   );
 }

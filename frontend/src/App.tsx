@@ -3,7 +3,7 @@ import { useMeLazyQuery } from "generated/graphql-types";
 import { useAuthToken } from "login/AuthTokenProvider";
 import LoginPage from "login/LoginPage";
 import NotFoundPage from "NotFoundPage";
-import OwnersPage from "OwnersPage";
+import OwnersPage from "owners/OwnersPage";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import VeterinariansPage from "VeterinariansPage";
