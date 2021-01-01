@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.samples.petclinic.auth.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,8 +28,8 @@ import static java.lang.String.format;
  * @author Nils Hartmann
  */
 @EnableWebSecurity
+@ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
