@@ -1,15 +1,38 @@
 @layer components {
-  .Button {
-    @apply bg-spr-white 
+  .Button--primary {
+    @apply hover:bg-spr-green-dark
+      uppercase
+      py-1.5 
+      px-3.5
+      font-medium
+    bg-spr-green
+    text-spr-white
+    border-spr-green
+      border 
+      rounded;
+  }
+
+  .Button--link {
+    @apply uppercase
+      font-bold
+      py-1.5 
+      px-3.5
+    text-spr-blue
+      hover:underline
+      hover:bg-spr-white;
+  }
+
+  .Button--secondary {
+    @apply bg-gray-50 
     text-spr-black
       uppercase
       py-1.5 
       px-3.5
       font-medium
-    hover:bg-spr-green
+   hover:bg-spr-green-dark
     hover:text-spr-white
     hover:border-spr-green
-    border-spr-black
+    border-gray-500
       border 
       rounded;
   }

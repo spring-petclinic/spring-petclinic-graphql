@@ -13,6 +13,7 @@ module.exports = {
       "spr-gray-dark": "#333",
       "spr-blue": "#086dc3",
       "spr-green": "#6bb536",
+      "spr-green-dark": "#458b17",
       "spr-green-light": "#ebf2f2",
       "spr-red": "#FF3C38",
     },

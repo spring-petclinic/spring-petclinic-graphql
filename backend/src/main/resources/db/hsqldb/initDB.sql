@@ -92,5 +92,5 @@ INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_MANAGER');
 INSERT INTO users(username,password,enabled,fullname) VALUES ('klaus','{noop}klaus', true, 'Klaus Meier');
 INSERT INTO roles (username, role) VALUES ('klaus', 'ROLE_RECEPTION_STAFF');
 
-INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi SmithOwner');
+INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
 INSERT INTO roles (username, role) VALUES ('susi', 'ROLE_MANAGER');

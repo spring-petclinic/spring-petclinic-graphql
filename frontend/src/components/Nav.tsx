@@ -40,14 +40,15 @@ export function NavBar({ nav, mobileMenu }: NavBarProps) {
 type NavLinkProps = {
   to: string;
   children: React.ReactNode;
+  exact?: boolean;
 };
-function NavLink({ children, to }: NavLinkProps) {
+function NavLink({ children, exact, to }: NavLinkProps) {
   return (
     <RouterNavLink
       to={to}
+      exact={exact}
       className="NavLink"
       activeClassName="NavLink--active"
-      exact
     >
       {children}
     </RouterNavLink>
@@ -72,7 +73,9 @@ export function DefaultNavBar() {
               Home
             </a> */}
 
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/" exact>
+              Home
+            </NavLink>
             <NavLink to="/owners">Owners</NavLink>
             <NavLink to="/veterinarians">Veterinarians</NavLink>
             {/* 

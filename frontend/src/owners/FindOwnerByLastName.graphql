@@ -1,10 +1,9 @@
-query FindOwnerByLastName($lastName: String!) {
+query FindOwnerByLastName($lastName: String) {
   owners(filter: { lastName: $lastName }) {
-    id
-    firstName
-    address
-    city
-    telephone
-    lastName
+    ...OwnerFields
+    pets {
+      id
+      name
+    }
   }
 }
