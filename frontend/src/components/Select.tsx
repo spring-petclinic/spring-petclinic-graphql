@@ -12,11 +12,12 @@ type SelectProps = {
   id?: string;
   label: string;
   name?: string;
+  multiple?: boolean;
   options: SelectOption[];
 };
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(function Input(
-  { defaultValue, disabled, error, id, label, name, options },
+  { defaultValue, disabled, error, id, label, multiple, name, options },
   ref
 ) {
   return (
@@ -32,6 +33,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(function Input(
               ref={ref}
               name={name}
               disabled={disabled}
+              multiple={multiple}
             >
               {options.map((option) => (
                 <option key={option.value} value={option.value}>

@@ -41,7 +41,7 @@ public class JwtTokenService {
     void createNeverExpiringToken() throws Exception {
         SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         String neverExpiringToken = Jwts.builder()
-            .setSubject("admin")
+            .setSubject("susi")
             .setIssuedAt(f.parse("25.12.2020 10:44"))
             .setExpiration(f.parse("25.12.2044 10:44"))
             .signWith(secretKey)

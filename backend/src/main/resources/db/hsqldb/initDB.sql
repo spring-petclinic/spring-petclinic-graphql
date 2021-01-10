@@ -84,17 +84,8 @@ ALTER TABLE visits ADD CONSTRAINT fk_visits_vets FOREIGN KEY (vet_id) REFERENCES
 CREATE INDEX visits_pet_id ON visits (pet_id);
 
 
-
-INSERT INTO users(username,password,enabled,fullname) VALUES ('admin','{noop}admin', true, 'Administrator');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
-
-
-INSERT INTO users(username,password,enabled,fullname) VALUES ('james','{noop}james', true, 'Klaus Meier');
-INSERT INTO roles (username, role) VALUES ('james', 'ROLE_USER');
-
-INSERT INTO users(username,password,enabled,fullname) VALUES ('klaus','{noop}klaus', true, 'Klaus Meier');
-INSERT INTO roles (username, role) VALUES ('klaus', 'ROLE_RECEPTION_STAFF');
-
-
 INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
 INSERT INTO roles (username, role) VALUES ('susi', 'ROLE_MANAGER');
+
+INSERT INTO users(username,password,enabled,fullname) VALUES ('joe','{noop}joe', true, 'Joe Miller');
+INSERT INTO roles (username, role) VALUES ('joe', 'ROLE_USER');

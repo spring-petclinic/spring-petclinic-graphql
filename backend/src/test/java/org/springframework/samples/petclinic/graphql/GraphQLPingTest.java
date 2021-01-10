@@ -17,7 +17,7 @@ public class GraphQLPingTest {
     @Test
     void testPing() throws Exception {
         GraphQLResponse response = graphQLTestTemplate.
-            withBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwODg4OTQ0MCwiZXhwIjoyMzY2MjcxODQwfQ.sKZuQmhZOghkb9l4p4oTIBnlP_ef5D7J0CLZz7Ac5o4")
+            withBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXNpIiwiaWF0IjoxNjA4ODg5NDQwLCJleHAiOjIzNjYyNzE4NDB9.XG0SEtHiidGuy2A1zy_BfixVMFOv3gGbfwGqEc3F-KU")
             .postForResource("graphql/ping-test.graphql");
         assertThat(response.isOk()).isTrue();
         assertThat(response.get("$.data.ping")).isEqualTo("pong");

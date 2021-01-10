@@ -1,10 +1,12 @@
 import Button from "components/Button";
 import ButtonBar from "components/ButtonBar";
+import Card from "components/Card";
 import Heading from "components/Heading";
 import Input from "components/Input";
 import Label from "components/Label";
 import { AnonymousPageLayout } from "components/PageLayout";
 import Section from "components/Section";
+import Table from "components/Table";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useAuthToken } from "./AuthTokenProvider";
@@ -53,8 +55,8 @@ export default function LoginPage() {
   }
 
   return (
-    <AnonymousPageLayout title="Welcome to PetClinic!" narrow>
-      <Section>
+    <AnonymousPageLayout title="Welcome to PetClinic!">
+      <Section narrow>
         <Heading>Login</Heading>
         <Input
           label="Username"
@@ -81,6 +83,21 @@ export default function LoginPage() {
         </ButtonBar>
         {loginRequestState.error && <Label>{loginRequestState.error}</Label>}
       </Section>
+      <Card fullWidth>
+        <div className="flex flex-col w-full">
+          <Heading level="2">Users</Heading>
+          <p>
+            Choose one of the following users for login(username == password):
+          </p>
+          <Table
+            labels={["Username", "Role"]}
+            values={[
+              ["susi", "ROLE_MANAGEr"],
+              ["joe", "ROLE_USER"],
+            ]}
+          />
+        </div>
+      </Card>
     </AnonymousPageLayout>
   );
 }

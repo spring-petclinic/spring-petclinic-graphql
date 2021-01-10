@@ -173,6 +173,9 @@ type Mutation {
     # Add a Visit
     addVisit(input: AddVisitInput!): AddVisitPayload!
 
+    # Add a new Veterinary (only allowed for users having Role ROLE_MANAGER)
+    addVet(input: AddVetInput!): AddVetPayload!
+
     # Add a Specialty
     addSpecialty(input: AddSpecialtyInput!): AddSpecialtyPayload!
 
@@ -228,6 +231,22 @@ input UpdateOwnerInput {
 type UpdateOwnerPayload {
     owner: Owner!
 }
+
+input AddVetInput {
+    firstName: String!
+    lastName: String!
+    specialtyIds: [Int!]!
+}
+
+type AddVetSuccessPayload {
+    vet: Vet
+}
+
+type AddVetErrorPayload {
+    error: String!
+}
+
+union AddVetPayload = AddVetSuccessPayload | AddVetErrorPayload
 
 input AddVisitInput {
     petId: Int!

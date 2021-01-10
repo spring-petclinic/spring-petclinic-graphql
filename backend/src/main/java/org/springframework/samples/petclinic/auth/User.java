@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
+    private static final Logger log = LoggerFactory.getLogger( User.class );
 
     @Id
     @Column(name = "username")
@@ -84,7 +88,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        final Set<Role> roles = getRoles();
+        log.info("ROLES FOR USER '{}': '{}'", getUsername(), roles);
+
+        return roles;
     }
 
     @Override

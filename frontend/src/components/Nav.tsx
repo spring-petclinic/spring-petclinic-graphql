@@ -4,16 +4,19 @@ import * as React from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { useCurrentUser } from "use-current-user-fullname";
 import { useLogout } from "use-logout";
+import Link from "./Link";
 
 function NavLogo() {
   return (
     <div className="flex items-center">
       <div className="flex-shrink-0">
-        <img
-          className="h-12"
-          src="https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg"
-          alt="Workflow"
-        />
+        <Link to="/">
+          <img
+            className="h-12"
+            src="https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg"
+            alt="Workflow"
+          />
+        </Link>
       </div>
     </div>
   );

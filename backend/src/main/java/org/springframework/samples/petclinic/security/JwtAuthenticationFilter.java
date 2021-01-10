@@ -30,7 +30,6 @@ import java.util.List;
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final List<SimpleGrantedAuthority> ROLE_USER = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final JwtTokenService jwtTokenService;
@@ -68,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             User user = userRepository.findByUsername(username).orElseThrow(() -> new BadCredentialsException("Invalid User in Token"));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
-                ROLE_USER);
+                user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
     }

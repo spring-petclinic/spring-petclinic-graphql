@@ -46,4 +46,6 @@ public interface VetRepository extends Repository<Vet, Integer> {
 
 	Optional<Vet> findById(Integer id);
 
+    void save(Vet vet) throws DataAccessException;
+
 }

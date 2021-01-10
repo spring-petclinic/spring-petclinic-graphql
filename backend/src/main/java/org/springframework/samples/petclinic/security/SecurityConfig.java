@@ -29,7 +29,7 @@ import static java.lang.String.format;
  */
 @EnableWebSecurity
 @ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
-@EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // Enable @PreAuthorize method-level security
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);

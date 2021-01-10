@@ -1,0 +1,18 @@
+mutation AddVet($input: AddVetInput!) {
+  result: addVet(input: $input) {
+    ... on AddVetSuccessPayload {
+      vet {
+        id
+        firstName
+        lastName
+        specialties {
+          id
+          name
+        }
+      }
+    }
+    ... on AddVetErrorPayload {
+      error
+    }
+  }
+}

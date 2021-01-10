@@ -70,7 +70,7 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
       }
     },
   });
-  const { register, errors, handleSubmit } = useForm();
+  const { register, errors, handleSubmit } = useForm<VisitFormData>();
 
   const vetOptions = vetsData
     ? [
@@ -129,7 +129,6 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
         <Select
           ref={register}
           label="Vet (optional)"
-          error={errors.vet}
           name="vet"
           options={vetOptions}
           defaultValue={emptyVetOption.value}
