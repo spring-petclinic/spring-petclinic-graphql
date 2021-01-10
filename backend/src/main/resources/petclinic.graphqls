@@ -11,6 +11,9 @@ type Query {
     # Return all known veterinaries
     vets: [Vet!]!
 
+    # Return the specified Vet or null if undefined
+    vet(id: Int!): Vet
+
     # Return all known Pet Owners with optional filter or orders
     owners(filter: OwnerFilter, orders: [OwnerOrder!]): [Owner!]!
 
@@ -95,6 +98,9 @@ type Vet implements Person {
 
     # What is this Vet specialized in?
     specialties: [Specialty!]!
+
+    # All of this Vet's visits
+    visits: VisitConnection!
 }
 
 type VisitConnection {
@@ -125,6 +131,9 @@ type Visit {
     description: String!
 
     pet: Pet!
+
+    # Optional: which veterinary has done this treatment?
+    treatingVet: Vet
 
     # When did this Visit happen?
     date: Date!
@@ -224,6 +233,9 @@ input AddVisitInput {
     petId: Int!
     description: String!
     date: Date!
+
+    # Optional: specifiy the vet that should lead this visit
+    vetId: Int
 }
 type AddVisitPayload {
     visit: Visit!

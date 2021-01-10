@@ -8,6 +8,22 @@ DROP TABLE owners IF EXISTS;
 DROP TABLE roles IF EXISTS;
 DROP TABLE users IF EXISTS;
 
+CREATE  TABLE users (
+                        username    VARCHAR(20) NOT NULL ,
+                        password    VARCHAR(20) NOT NULL ,
+                        enabled     BOOLEAN DEFAULT TRUE NOT NULL ,
+                        fullname    VARCHAR(256) NOT NULL ,
+                        PRIMARY KEY (username)
+);
+
+CREATE TABLE roles (
+                       id              INTEGER IDENTITY PRIMARY KEY,
+                       username        VARCHAR(20) NOT NULL,
+                       role            VARCHAR(20) NOT NULL
+);
+ALTER TABLE roles ADD CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username);
+CREATE INDEX fk_username_idx ON roles (username);
+
 
 CREATE TABLE vets (
   id         INTEGER IDENTITY PRIMARY KEY,
@@ -59,38 +75,26 @@ CREATE INDEX pets_name ON pets (name);
 CREATE TABLE visits (
   id          INTEGER IDENTITY PRIMARY KEY,
   pet_id      INTEGER NOT NULL,
+  vet_id      INTEGER,
   visit_date  DATE,
   description VARCHAR(255)
 );
 ALTER TABLE visits ADD CONSTRAINT fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
+ALTER TABLE visits ADD CONSTRAINT fk_visits_vets FOREIGN KEY (vet_id) REFERENCES vets (id);
 CREATE INDEX visits_pet_id ON visits (pet_id);
 
-
-CREATE  TABLE users (
-                        username    VARCHAR(20) NOT NULL ,
-                        password    VARCHAR(20) NOT NULL ,
-                        enabled     BOOLEAN DEFAULT TRUE NOT NULL ,
-                        fullname    VARCHAR(256) NOT NULL ,
-                        PRIMARY KEY (username)
-);
-
-CREATE TABLE roles (
-                       id              INTEGER IDENTITY PRIMARY KEY,
-                       username        VARCHAR(20) NOT NULL,
-                       role            VARCHAR(20) NOT NULL
-);
-ALTER TABLE roles ADD CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username);
-CREATE INDEX fk_username_idx ON roles (username);
 
 
 INSERT INTO users(username,password,enabled,fullname) VALUES ('admin','{noop}admin', true, 'Administrator');
 INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_ADMIN');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_RECEPTION_STAFF');
-INSERT INTO roles (username, role) VALUES ('admin', 'ROLE_MANAGER');
 
+
+INSERT INTO users(username,password,enabled,fullname) VALUES ('james','{noop}james', true, 'Klaus Meier');
+INSERT INTO roles (username, role) VALUES ('james', 'ROLE_USER');
 
 INSERT INTO users(username,password,enabled,fullname) VALUES ('klaus','{noop}klaus', true, 'Klaus Meier');
 INSERT INTO roles (username, role) VALUES ('klaus', 'ROLE_RECEPTION_STAFF');
+
 
 INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
 INSERT INTO roles (username, role) VALUES ('susi', 'ROLE_MANAGER');

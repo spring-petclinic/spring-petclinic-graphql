@@ -41,6 +41,7 @@ public class VisitMutationResolver implements GraphQLMutationResolver {
         visit.setDescription(addVisitInput.getDescription());
         visit.setPetId(pet.getId());
         visit.setDate(addVisitInput.getDate());
+        addVisitInput.getVetId().ifPresent(visit::setVetId);
 
         visitRepository.save(visit);
 

@@ -77,7 +77,7 @@ export function DefaultNavBar() {
               Home
             </NavLink>
             <NavLink to="/owners">Owners</NavLink>
-            <NavLink to="/veterinarians">Veterinarians</NavLink>
+            <NavLink to="/vets">Veterinarians</NavLink>
             {/* 
             <a
               href="#"

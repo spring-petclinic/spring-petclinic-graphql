@@ -7,7 +7,7 @@ import OwnerPage from "owners/OwnerPage";
 import OwnersPage from "owners/OwnerSearchPage";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import VeterinariansPage from "VeterinariansPage";
+import VetsPage from "vets/VetsPage";
 import WelcomePage from "WelcomePage";
 
 function App() {
@@ -40,8 +40,8 @@ function App() {
       <Route path="/owners" exact>
         <OwnersPage />
       </Route>
-      <Route path="/veterinarians" exact>
-        <VeterinariansPage />
+      <Route path="/vets/:vetId?">
+        <VetsPage />
       </Route>
       <Route>
         <NotFoundPage />

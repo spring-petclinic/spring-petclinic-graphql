@@ -5,10 +5,12 @@ import Heading from "components/Heading";
 import Input from "components/Input";
 import Label from "components/Label";
 import Section from "components/Section";
+import Select from "components/Select";
 import dayjs from "dayjs";
 import {
   useAddVisitMutation,
   PetVisitsFragment,
+  useAllVetNamesQuery,
 } from "generated/graphql-types";
 import produce from "immer";
 import * as React from "react";
@@ -29,6 +31,12 @@ const PetVisits = gql`
 type VisitFormData = {
   description: string;
   date: Date;
+  vet?: string;
+};
+
+const emptyVetOption = {
+  value: -1,
+  label: "",
 };
 
 type NewVisitFormProps = {
@@ -37,6 +45,11 @@ type NewVisitFormProps = {
 };
 
 export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
+  const {
+    loading: vetsLoading,
+    data: vetsData,
+    error: vetsError,
+  } = useAllVetNamesQuery();
   const [addVisit, { called, loading, error }] = useAddVisitMutation({
     update(cache, { data }) {
       if (!data) {
@@ -59,14 +72,26 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
   });
   const { register, errors, handleSubmit } = useForm();
 
-  async function handleAddClick({ description, date }: VisitFormData) {
+  const vetOptions = vetsData
+    ? [
+        emptyVetOption,
+        ...vetsData.vets.map((vet) => ({
+          value: vet.id,
+          label: `${vet.firstName} ${vet.lastName}`,
+        })),
+      ]
+    : null;
+
+  async function handleAddClick({ description, date, vet }: VisitFormData) {
     const petclinicDate = dayjs(date).format("YYYY/MM/DD");
+    const vetId = vet ? parseInt(vet) : emptyVetOption.value;
     const result = await addVisit({
       variables: {
         input: {
           petId,
           description,
           date: petclinicDate,
+          vetId: vetId === emptyVetOption.value ? null : vetId,
         },
       },
     });
@@ -93,6 +118,23 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
         label="Description"
         error={errors.description && "Please fill in a description"}
       />
+      {vetsError && (
+        <Label>
+          Could not load Vets. You can create a new Visit but cannot assign it
+          to a Vet yet.
+        </Label>
+      )}
+      {vetsLoading && <Label type="info">Loading Vets...</Label>}
+      {vetOptions && (
+        <Select
+          ref={register}
+          label="Vet (optional)"
+          error={errors.vet}
+          name="vet"
+          options={vetOptions}
+          defaultValue={emptyVetOption.value}
+        />
+      )}
       <ButtonBar align="left">
         {called && loading ? (
           <Button disabled>Saving...</Button>
