@@ -41,8 +41,8 @@ export default function OwnersPage() {
           <Table
             title={`${data.owners.length} owners found`}
             labels={[
-              "First name",
               "Last name",
+              "First name",
               "Address",
               "City",
               "Telephone",

@@ -1,5 +1,8 @@
 query FindOwnerByLastName($lastName: String) {
-  owners(filter: { lastName: $lastName }) {
+  owners(
+    filter: { lastName: $lastName }
+    orders: { field: lastName, order: ASC }
+  ) {
     ...OwnerFields
     pets {
       id
