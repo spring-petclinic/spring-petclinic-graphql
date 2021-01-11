@@ -74,6 +74,7 @@ public class User implements UserDetails {
             this.roles = new HashSet<>();
         }
         Role role = new Role();
+        role.setUser(this);
         role.setName(roleName);
         this.roles.add(role);
     }
@@ -88,10 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final Set<Role> roles = getRoles();
-        log.info("ROLES FOR USER '{}': '{}'", getUsername(), roles);
-
-        return roles;
+        return getRoles();
     }
 
     @Override

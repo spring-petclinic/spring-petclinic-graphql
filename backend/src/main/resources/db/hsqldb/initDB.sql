@@ -1,12 +1,13 @@
-DROP TABLE vet_specialties IF EXISTS;
-DROP TABLE vets IF EXISTS;
-DROP TABLE specialties IF EXISTS;
-DROP TABLE visits IF EXISTS;
-DROP TABLE pets IF EXISTS;
-DROP TABLE types IF EXISTS;
-DROP TABLE owners IF EXISTS;
-DROP TABLE roles IF EXISTS;
-DROP TABLE users IF EXISTS;
+DROP TABLE visits IF EXISTS CASCADE;
+DROP TABLE specialties IF EXISTS CASCADE;
+DROP TABLE vet_specialties IF EXISTS CASCADE;
+DROP TABLE vets IF EXISTS CASCADE;
+DROP TABLE pets IF EXISTS CASCADE;
+DROP TABLE types IF EXISTS CASCADE;
+DROP TABLE owners IF EXISTS CASCADE;
+DROP TABLE roles IF EXISTS CASCADE;
+DROP TABLE users IF EXISTS CASCADE;
+
 
 CREATE  TABLE users (
                         username    VARCHAR(20) NOT NULL ,
@@ -56,8 +57,8 @@ CREATE TABLE owners (
   first_name VARCHAR(30),
   last_name  VARCHAR_IGNORECASE(30),
   address    VARCHAR(255),
-  city       VARCHAR(80),
-  telephone  VARCHAR(20)
+  city       VARCHAR(255),
+  telephone  VARCHAR(128)
 );
 CREATE INDEX owners_last_name ON owners (last_name);
 
@@ -84,8 +85,9 @@ ALTER TABLE visits ADD CONSTRAINT fk_visits_vets FOREIGN KEY (vet_id) REFERENCES
 CREATE INDEX visits_pet_id ON visits (pet_id);
 
 
-INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
+/*INSERT INTO users(username,password,enabled,fullname) VALUES ('susi','{noop}susi', true, 'Susi Smith');
 INSERT INTO roles (username, role) VALUES ('susi', 'ROLE_MANAGER');
 
 INSERT INTO users(username,password,enabled,fullname) VALUES ('joe','{noop}joe', true, 'Joe Miller');
 INSERT INTO roles (username, role) VALUES ('joe', 'ROLE_USER');
+*/
