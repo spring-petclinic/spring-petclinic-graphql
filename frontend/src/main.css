@@ -1056,20 +1056,12 @@ p {
   text-transform: uppercase;
 }
 
-.Button:disabled:hover {
+.Button--primary:disabled, .Button--primary:disabled {
   --tw-bg-opacity: 1;
-  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+  background-color: rgba(235, 242, 242, var(--tw-bg-opacity));
   --tw-border-opacity: 1;
-  border-color: rgba(25, 30, 30, var(--tw-border-opacity));
-}
-
-.Button:disabled {
+  border-color: rgba(235, 242, 242, var(--tw-border-opacity));
   cursor: default;
-  --tw-text-opacity: 1;
-  color: rgba(163, 163, 163, var(--tw-text-opacity));
-}
-
-.Button:disabled:hover {
   --tw-text-opacity: 1;
   color: rgba(163, 163, 163, var(--tw-text-opacity));
 }

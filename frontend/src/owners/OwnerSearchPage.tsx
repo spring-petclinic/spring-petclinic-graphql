@@ -7,28 +7,37 @@ import Table from "components/Table";
 import { useFindOwnerByLastNameLazyQuery } from "generated/graphql-types";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import Paginator from "./Paginator";
 
 type FindOwnerFormData = { lastName: string };
 
 export default function OwnersPage() {
   const [
     findOwnersByLastName,
-    { loading, data, error, called },
+    { loading, data, error, called, refetch },
   ] = useFindOwnerByLastNameLazyQuery();
   const { register, handleSubmit, errors } = useForm<FindOwnerFormData>({});
 
   function handleFindClick({ lastName }: FindOwnerFormData) {
     findOwnersByLastName({
-      variables: lastName ? { lastName } : { lastName: null },
+      variables: lastName ? { lastName, page: 0 } : { lastName: null, page: 0 },
     });
+  }
+
+  function handlePageClick(newPageNumber: number) {
+    if (refetch) {
+      refetch({
+        page: newPageNumber,
+      });
+    }
   }
 
   let resultTable = null;
   if (called && !loading && !error && data) {
-    if (data.owners.length === 0) {
+    if (data.owners.owners.length === 0) {
       resultTable = <div className="max-w-2xl mx-auto">No owners found</div>;
     } else {
-      const values = data.owners.map((owner) => [
+      const values = data.owners.owners.map((owner) => [
         <Link to={`/owners/${owner.id}`}>{owner.lastName}</Link>,
         owner.firstName,
         owner.address,
@@ -39,7 +48,7 @@ export default function OwnersPage() {
       resultTable = (
         <div className="mt-8 border-4 border-gray-100 p-4">
           <Table
-            title={`${data.owners.length} owners found`}
+            title={`${data.owners.pageInfo.ownersCount} owners found`}
             labels={[
               "Last name",
               "First name",
@@ -50,14 +59,15 @@ export default function OwnersPage() {
             ]}
             values={values}
           />
+          <Paginator
+            pageInfo={data.owners.pageInfo}
+            onPageClick={handlePageClick}
+          />
         </div>
       );
     }
   }
 
-  console.log("DATA", data);
-
-  console.log("errors", errors);
   const searchButton = (
     <Button onClick={handleSubmit(handleFindClick)}>Find</Button>
   );

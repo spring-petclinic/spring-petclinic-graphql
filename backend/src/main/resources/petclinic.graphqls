@@ -15,7 +15,9 @@ type Query {
     vet(id: Int!): Vet
 
     # Return all known Pet Owners with optional filter or orders
-    owners(filter: OwnerFilter, orders: [OwnerOrder!]): [Owner!]!
+    # If size is unset, it defaults to 20
+    # If page is unset, it defaults to 0
+    owners(page: Int, size: Int, filter: OwnerFilter, orders: [OwnerOrder!]): OwnerSearchResult!
 
     # Return the Owner with the specified id
     owner(id: Int!): Owner!
@@ -29,6 +31,21 @@ type Query {
     specialties: [Specialty!]!
 
     me: User!
+}
+
+type PageInfo {
+    pageNumber: Int!
+    totalCount: Int!
+    totalPages: Int!
+    hasNext: Boolean!
+    hasPrev: Boolean!
+    nextPage: Int
+    prevPage: Int
+}
+
+type OwnerSearchResult {
+    pageInfo: PageInfo!
+    owners: [Owner!]!
 }
 
 type User {
@@ -75,7 +92,7 @@ enum OrderField {
 
 # The input for owners query by order
 input OwnerOrder {
-    field: OrderField
+    field: OrderField!
     order: OrderType
 }
 

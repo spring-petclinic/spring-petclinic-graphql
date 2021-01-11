@@ -37,8 +37,9 @@
       rounded;
   }
 
-  .Button:disabled {
-    @apply text-gray-400 cursor-default hover:bg-spr-white hover:text-gray-400 hover:border-spr-black;
+  .Button--primary:disabled,
+  .Button--primary:disabled {
+    @apply text-gray-400 cursor-default border-spr-green-light bg-spr-green-light;
   }
 
   .NavLink {
