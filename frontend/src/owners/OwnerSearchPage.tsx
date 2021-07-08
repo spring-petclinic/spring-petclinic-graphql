@@ -1,5 +1,4 @@
 import Button from "components/Button";
-import Card from "components/Card";
 import Input from "components/Input";
 import Link from "components/Link";
 import PageLayout from "components/PageLayout";
@@ -16,7 +15,7 @@ export default function OwnersPage() {
     findOwnersByLastName,
     { loading, data, error, called, refetch },
   ] = useFindOwnerByLastNameLazyQuery();
-  const { register, handleSubmit, errors } = useForm<FindOwnerFormData>({});
+  const { register, handleSubmit } = useForm<FindOwnerFormData>({});
 
   function handleFindClick({ lastName }: FindOwnerFormData) {
     findOwnersByLastName({
@@ -84,11 +83,6 @@ export default function OwnersPage() {
         </div>
       </div>
       <div className="mb-8">{resultTable}</div>
-
-      <Card>
-        <p>You can add a new owner if you don't find an existing one</p>
-        <Button>Create Owner</Button>
-      </Card>
     </PageLayout>
   );
 }
