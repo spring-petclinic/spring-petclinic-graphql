@@ -28,7 +28,6 @@ import static java.lang.String.format;
  * @author Nils Hartmann
  */
 @EnableWebSecurity
-@ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // Enable @PreAuthorize method-level security
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

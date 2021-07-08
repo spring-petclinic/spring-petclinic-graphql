@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Nils Hartmann
  */
 @Component
-public class DatabaseLoader implements CommandLineRunner {
+public class DatabaseInitializer implements CommandLineRunner {
 
     private UserRepository userRepository;
     private VetRepository vetRepository;
@@ -38,7 +38,7 @@ public class DatabaseLoader implements CommandLineRunner {
     private PetTypeRepository petTypeRepository;
     private PetRepository petRepository;
 
-    public DatabaseLoader(UserRepository userRepository, VetRepository vetRepository, SpecialtyRepository specialtyRepository, OwnerRepository ownerRepository, VisitRepository visitRepository, PetTypeRepository petTypeRepository, PetRepository petRepository) {
+    public DatabaseInitializer(UserRepository userRepository, VetRepository vetRepository, SpecialtyRepository specialtyRepository, OwnerRepository ownerRepository, VisitRepository visitRepository, PetTypeRepository petTypeRepository, PetRepository petRepository) {
         this.userRepository = userRepository;
         this.vetRepository = vetRepository;
         this.specialtyRepository = specialtyRepository;
