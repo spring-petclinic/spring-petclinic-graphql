@@ -1,9 +1,0 @@
-query getAddPetFormData($ownerId: Int!) {
-  owner(id:$ownerId) {
-    id, lastName, firstName
-  }
-  pettypes {
-    id,
-    name
-  }
-}

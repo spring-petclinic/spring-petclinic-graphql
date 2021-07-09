@@ -1,7 +1,0 @@
-mutation addVisit($input: AddVisitInput!) {
-  addVisit(input: $input) {
-    visit {
-      id
-    }
-  }
-}
