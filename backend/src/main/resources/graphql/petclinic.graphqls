@@ -225,11 +225,11 @@ type UpdatePetPayload {
 }
 
 input AddOwnerInput {
-    firstName: String
-    lastName: String
-    address: String
-    city: String
-    telephone: String
+    firstName: String!
+    lastName: String!
+    address: String!
+    city: String!
+    telephone: String!
 }
 
 type AddOwnerPayload {

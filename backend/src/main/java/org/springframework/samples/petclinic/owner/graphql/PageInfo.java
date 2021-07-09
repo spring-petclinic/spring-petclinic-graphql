@@ -22,11 +22,11 @@ public class PageInfo {
         return result.getTotalElements();
     }
 
-    public boolean hasNext() {
+    public boolean getHasNext() {
         return result.hasNext();
     }
 
-    public boolean hasPrev() {
+    public boolean getHasPrev() {
         return result.hasPrevious();
     }
 

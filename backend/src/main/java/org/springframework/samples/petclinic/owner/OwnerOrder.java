@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.owner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.domain.Sort;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,18 @@ public class OwnerOrder {
 
     private OrderField field;
     private OrderType order;
+
+    public static OwnerOrder fromArgument(HashMap<String, String> argument) {
+        OwnerOrder ownerOrder = new OwnerOrder();
+        ownerOrder.setField(OrderField.valueOf(argument.get("field")));
+
+        if (argument.containsKey("order")) {
+            ownerOrder.setOrder(OrderType.valueOf(argument.get("order")));
+        }
+
+        return ownerOrder;
+    }
+
 
     @JsonProperty("field")
     public OrderField getField() {
@@ -35,7 +48,7 @@ public class OwnerOrder {
 
     @Override
     public String toString() {
-        return this.field.toString() + " " + this.order.toString();
+        return this.field + " " + this.order;
     }
 
     public Sort.Order toOrder() {

@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/index.html").permitAll()
             .antMatchers("/graphiql/**").permitAll()
 
-            // ...while all other endpoints (including /graphql) should be authenticated
+            // ...while all other endpoints (INCLUDING /graphql !) should be authenticated
             //    fine granular, Role-based, access checks are done in the resolver
             .anyRequest().authenticated();
 

@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.vet.graphql;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nils Hartmann
@@ -10,6 +11,17 @@ public class AddVetInput {
     private String firstName;
     private String lastName;
     private List<Integer> specialtyIds;
+
+    public static AddVetInput fromArgument(Map<String, Object> argument) {
+
+        AddVetInput addVetInput = new AddVetInput();
+        addVetInput.setFirstName((String) argument.get("firstName"));
+        addVetInput.setLastName((String) argument.get("lastName"));
+        addVetInput.setSpecialtyIds((List<Integer>) argument.get("specialtyIds"));
+
+        return addVetInput;
+
+    }
 
     public String getFirstName() {
         return firstName;

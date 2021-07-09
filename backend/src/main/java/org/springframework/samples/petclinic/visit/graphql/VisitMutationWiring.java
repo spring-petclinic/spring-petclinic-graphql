@@ -1,40 +1,40 @@
 package org.springframework.samples.petclinic.visit.graphql;
 
-import graphql.kickstart.tools.GraphQLMutationResolver;
+import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
+import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetRepository;
-import org.springframework.samples.petclinic.owner.PetTypeRepository;
-import org.springframework.samples.petclinic.vet.SpecialtyRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)
- *
  */
 @Component
-public class VisitMutationResolver implements GraphQLMutationResolver {
-    private final static Logger logger = LoggerFactory.getLogger(VisitMutationResolver.class);
+public class VisitMutationWiring implements RuntimeWiringBuilderCustomizer {
+    private final static Logger logger = LoggerFactory.getLogger(VisitMutationWiring.class);
 
-    private final OwnerRepository ownerRepository;
     private final VisitRepository visitRepository;
     private final PetRepository petRepository;
-    private final PetTypeRepository petTypeRepository;
-    private final SpecialtyRepository specialtyRepository;
 
-    public VisitMutationResolver(OwnerRepository ownerRepository, VisitRepository visitRepository, PetRepository petRepository, PetTypeRepository petTypeRepository, SpecialtyRepository specialtyRepository) {
-        this.ownerRepository = ownerRepository;
+    public VisitMutationWiring(VisitRepository visitRepository, PetRepository petRepository) {
         this.visitRepository = visitRepository;
         this.petRepository = petRepository;
-        this.petTypeRepository = petTypeRepository;
-        this.specialtyRepository = specialtyRepository;
     }
 
-    public AddVisitPayload addVisit(AddVisitInput addVisitInput) {
+    @Override
+    public void customize(RuntimeWiring.Builder builder) {
+        builder.type("Mutation", wiring -> wiring
+            .dataFetcher("addVisit", this::addVisit)
+        );
+    }
+
+    private AddVisitPayload addVisit(DataFetchingEnvironment env) {
+        AddVisitInput addVisitInput = AddVisitInput.fromArgument(env.getArgument("input"));
         Pet pet = petRepository.findById(addVisitInput.getPetId());
 
         Visit visit = new Visit();

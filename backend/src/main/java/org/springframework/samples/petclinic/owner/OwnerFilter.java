@@ -8,10 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Xiangbin HAN (hanxb2001@163.com)
@@ -24,6 +21,21 @@ public class OwnerFilter implements Specification<Owner> {
     private String address;
     private String city;
     private String telephone;
+
+    public static Optional<OwnerFilter> fromArgument(HashMap<String, String> argument) {
+        if (argument == null) {
+            return Optional.empty();
+        }
+
+        OwnerFilter ownerFilter = new OwnerFilter();
+        ownerFilter.setFirstName(argument.get("firstName"));
+        ownerFilter.setLastName(argument.get("lastName"));
+        ownerFilter.setAddress(argument.get("address"));
+        ownerFilter.setCity(argument.get("city"));
+        ownerFilter.setTelephone(argument.get("telephone"));
+
+        return Optional.of(ownerFilter);
+    }
 
     public String getFirstName() {
         return firstName;

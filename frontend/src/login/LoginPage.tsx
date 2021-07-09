@@ -87,13 +87,13 @@ export default function LoginPage() {
         <div className="flex flex-col w-full">
           <Heading level="2">Users</Heading>
           <p>
-            Choose one of the following users for login(username == password):
+            Choose one of the following users for login:
           </p>
           <Table
-            labels={["Username", "Role"]}
+            labels={["Username", "Password", "Role"]}
             values={[
-              ["susi", "ROLE_MANAGEr"],
-              ["joe", "ROLE_USER"],
+              ["susi", "susi", "ROLE_MANAGER"],
+              ["joe", "joe", "ROLE_USER"],
             ]}
           />
         </div>

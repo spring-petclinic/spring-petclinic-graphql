@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.visit.graphql;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -12,6 +13,16 @@ public class AddVisitInput {
     private Optional<Integer> vetId;
     private LocalDate date;
     private String description;
+
+    public static AddVisitInput fromArgument(Map<String, Object> argument) {
+        AddVisitInput addVisitInput = new AddVisitInput();
+        addVisitInput.setPetId((int)argument.get("petId"));
+        addVisitInput.setVetId(Optional.ofNullable((Integer)argument.get("vetId")));
+        addVisitInput.setDate((LocalDate) argument.get("date"));
+        addVisitInput.setDescription((String) argument.get("description"));
+
+        return addVisitInput;
+    }
 
     public int getPetId() {
         return petId;
