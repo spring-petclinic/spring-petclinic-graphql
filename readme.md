@@ -1,3 +1,7 @@
+**NOTE** There is a **new** experimental version using the new **spring-graphql** project. You can find that example on the [spring-graphql branch](https://github.com/spring-petclinic/spring-petclinic-graphql/tree/spring-graphql) in this repository.
+
+
+
 # GraphQL version of Spring PetClinic Sample Application
 
 This is a [GraphQL API](http://graphql.org/) version of the Spring PetClinic Application. It consists of two parts:
