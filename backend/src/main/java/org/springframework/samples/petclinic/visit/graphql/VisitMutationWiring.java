@@ -9,7 +9,12 @@ import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.samples.petclinic.visit.VisitService;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)
@@ -18,12 +23,10 @@ import org.springframework.stereotype.Component;
 public class VisitMutationWiring implements RuntimeWiringBuilderCustomizer {
     private final static Logger logger = LoggerFactory.getLogger(VisitMutationWiring.class);
 
-    private final VisitRepository visitRepository;
-    private final PetRepository petRepository;
+    private final VisitService visitService;
 
-    public VisitMutationWiring(VisitRepository visitRepository, PetRepository petRepository) {
-        this.visitRepository = visitRepository;
-        this.petRepository = petRepository;
+    public VisitMutationWiring(VisitService visitService) {
+        this.visitService = visitService;
     }
 
     @Override
@@ -34,18 +37,15 @@ public class VisitMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     private AddVisitPayload addVisit(DataFetchingEnvironment env) {
-        AddVisitInput addVisitInput = AddVisitInput.fromArgument(env.getArgument("input"));
-        Pet pet = petRepository.findById(addVisitInput.getPetId());
+        Map<String, Object> input = env.getArgument("input");
 
-        Visit visit = new Visit();
-        visit.setDescription(addVisitInput.getDescription());
-        visit.setPetId(pet.getId());
-        visit.setDate(addVisitInput.getDate());
-        addVisitInput.getVetId().ifPresent(visit::setVetId);
-
-        visitRepository.save(visit);
+        Visit visit = visitService.addVisit(
+            (int)input.get("petId"),
+            (String) input.get("description"),
+            (LocalDate) input.get("date"),
+            Optional.ofNullable((Integer)input.get("vetId"))
+        );
 
         return new AddVisitPayload(visit);
     }
-
 }

@@ -51,7 +51,6 @@ function initGraphiQL() {
       const result = await response.json();
       currentUsername = username;
       token = result.token;
-      console.log("token", token);
       localStorage.setItem('petclinic.graphiql.username', username);
       localStorage.setItem('petclinic.graphiql.token', token);
       displayCurrentUser();
@@ -73,13 +72,13 @@ function initGraphiQL() {
       return;
     }
 
-    function graphQLFetcher(graphQLParams, opts) {
+    function graphQLFetcher(graphQLParams) {
+      console.log("graphQLParams", graphQLParams);
       console.log("TOKEN", token);
       const headers = {
         Accept:         'application/json',
         'Content-Type': 'application/json',
-        Authorization:  token ? `Bearer ${token}` : undefined,
-        ...opts.headers
+        Authorization:  token ? `Bearer ${token}` : undefined
       }
       return fetch(
         '/graphql',
@@ -96,9 +95,17 @@ function initGraphiQL() {
       });
     }
 
+    function buildFetcher() {
+      const wsClient = graphqlWs.createClient({
+        url: `ws://localhost:9977/graphql?token=${token}`
+      });
+
+      return window.GraphiQLSubscriptionsFetcher.graphQLFetcher(wsClient, graphQLFetcher);
+    }
+
     ReactDOM.render(
       React.createElement(GraphiQL, {
-        fetcher:                    graphQLFetcher,
+        fetcher:                    buildFetcher(),
         defaultQuery:               "",
         defaultVariableEditorOpen:  true,
         defaultSecondaryEditorOpen: true,

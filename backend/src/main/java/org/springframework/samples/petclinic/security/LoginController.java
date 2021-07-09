@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@ConditionalOnProperty(name = "petclinic.security.enable", havingValue = "true")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;

@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.graphql;
 
+import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.idl.RuntimeWiring;
@@ -45,19 +46,27 @@ public class DateScalarWiring implements RuntimeWiringBuilderCustomizer {
             if (input instanceof LocalDate) {
                 return (LocalDate) input;
             } else if (input instanceof String) {
-                try {
-                    LocalDate date = LocalDate.parse((String) input, createIsoDateFormat());
-                    return date;
-                } catch (Exception e) {
-                    logger.error(format("Could not parse date from String '%s': %s", input, e.getLocalizedMessage()), e);
-                }
+                fromString((String)input);
             }
             return null;
         }
 
         @Override
         public LocalDate parseLiteral(Object input) {
-            throw new UnsupportedOperationException("ParseLiteral in DateScalarType not implemented yet");
+            if (input instanceof StringValue) {
+                String value = ((StringValue) input).getValue();
+                return fromString(value);
+            }
+            throw new UnsupportedOperationException("Unsupported input in DateScalarType: " +  input);
+        }
+    }
+
+    private static LocalDate fromString(String input) {
+        try {
+            LocalDate date = LocalDate.parse(input, createIsoDateFormat());
+            return date;
+        } catch (Exception e) {
+            throw new IllegalArgumentException(format("Could not parse date from String '%s': %s", input, e.getLocalizedMessage()), e);
         }
     }
 }

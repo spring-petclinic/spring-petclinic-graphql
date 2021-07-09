@@ -68,7 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling()
             .authenticationEntryPoint(
                 (request, response, ex) -> {
-                    logger.error("Unauthorized request - {}", ex.getMessage());
+                    logger.error("Unauthorized request to '{}'- {}",
+                        request.getRequestURL(),
+                        ex.getMessage());
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
             );
@@ -78,6 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/login").permitAll()
             // allow access to graphiql
             .antMatchers("/").permitAll()
+            .antMatchers("/favicon.ico").permitAll()
+            .antMatchers("/s.html").permitAll()
             .antMatchers("/index.html").permitAll()
             .antMatchers("/graphiql/**").permitAll()
 

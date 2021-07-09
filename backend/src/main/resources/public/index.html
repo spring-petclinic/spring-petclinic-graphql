@@ -76,6 +76,8 @@
      -->
     <!-- https://unpkg.com/graphiql/graphiql.min.css -->
     <link rel="stylesheet" href="/graphiql/graphiql.min.css"/>
+
+
   </head>
 
   <body>
@@ -102,6 +104,14 @@
         src="/graphiql/graphiql.min.js"
         type="application/javascript"
     ></script>
+
+    <script type="text/javascript" src="https://unpkg.com/graphql-ws/umd/graphql-ws.js"></script>
+
+    <!-- https://unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js -->
+    <!-- graphiql-subscriptions-fetcher with "minimal" hack to make it work with graphql-ws -->
+    <script src="/graphiql/graphiql-subscriptions-fetcher-0.0.2-for-graphql-ws.js"></script>
+
+
     <!--    <script src="/renderExample.js" type="application/javascript"></script>-->
     <script src="/graphiql/graphiql-petclinic.js"></script>
   </body>

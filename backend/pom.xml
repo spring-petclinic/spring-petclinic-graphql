@@ -16,7 +16,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-        <kickstart.graphql.version>8.1.1</kickstart.graphql.version>
 	</properties>
 
 	<dependencies>
@@ -34,6 +33,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -65,18 +69,13 @@
             <artifactId>graphql-spring-boot-starter</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-graphql-test</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.graphql-java-kickstart</groupId>-->
-<!--            <artifactId>graphql-spring-boot-starter</artifactId>-->
-<!--            <version>${kickstart.graphql.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.graphql-java-kickstart</groupId>-->
-<!--            <artifactId>graphql-spring-boot-starter-test</artifactId>-->
-<!--            <version>${kickstart.graphql.version}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+
 
         <dependency>
 			<groupId>org.springframework.boot</groupId>

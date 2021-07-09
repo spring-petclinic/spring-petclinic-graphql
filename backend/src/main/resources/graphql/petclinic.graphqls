@@ -312,5 +312,9 @@ type RemoveSpecialtyPayload {
     specialties: [Specialty!]!
 }
 
+type Subscription {
+    onNewVisit: Visit!
+}
+
 
 
