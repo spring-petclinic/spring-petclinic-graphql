@@ -4,13 +4,23 @@ function initGraphiQL() {
   let token = localStorage.getItem('petclinic.graphiql.token');
   let currentUsername = localStorage.getItem('petclinic.graphiql.username');
 
+  const graphiQLContainer = document.getElementById("graphiql");
   const usernameField = document.getElementById("petclinicUsername");
   const passwordField = document.getElementById("petclinicPassword");
   const loginButton = document.getElementById("petclinicLogin")
   const loginFeedback = document.getElementById("loginFeedback");
+  const loginForm = document.getElementById("loginForm");
+
+  const currentUserPanel = document.getElementById("currentUserPanel");
+  const currentUserNameElement = document.getElementById("currentUserName");
+  const logoutButton = document.getElementById("logoutButton");
+  const petclinicTokenElement = document.getElementById("petclinicToken");
 
   function displayCurrentUser() {
-    loginFeedback.innerHTML = `(Logged in as <b>${currentUsername}</b>)<code id="petclinicToken">${token}<code>`;
+    loginForm.style.display = "none";
+    currentUserNameElement.innerHTML = `Logged in as <b>${currentUsername}</b>`;
+    petclinicTokenElement.innerHTML = token;
+    currentUserPanel.style.display = "block";
   }
 
   function onEnter(event) {
@@ -19,10 +29,10 @@ function initGraphiQL() {
       return false;
     }
   }
-
   usernameField.addEventListener("keypress", onEnter);
   passwordField.addEventListener("keypress", onEnter);
   loginButton.addEventListener("click", login);
+  logoutButton.addEventListener("click", logout)
 
   if (token) {
     startGraphiQL();
@@ -31,6 +41,17 @@ function initGraphiQL() {
 
   if (currentUsername) {
     usernameField.value = currentUsername;
+  }
+
+  function logout() {
+    ReactDOM.unmountComponentAtNode(graphiQLContainer);
+    graphiQLStarted = false;
+
+    token = null;
+    localStorage.removeItem('petclinic.graphiql.token');
+    passwordField.value = "";
+    loginForm.style.display = "block";
+    currentUserPanel.style.display = "none";
   }
 
 
@@ -73,8 +94,6 @@ function initGraphiQL() {
     }
 
     function graphQLFetcher(graphQLParams) {
-      console.log("graphQLParams", graphQLParams);
-      console.log("TOKEN", token);
       const headers = {
         Accept:         'application/json',
         'Content-Type': 'application/json',
@@ -111,7 +130,7 @@ function initGraphiQL() {
         defaultSecondaryEditorOpen: true,
         headerEditorEnabled:        true,
       }),
-      document.getElementById('graphiql'),
+      graphiQLContainer,
     );
 
     graphiQLStarted = true;

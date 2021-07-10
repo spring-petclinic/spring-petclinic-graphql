@@ -45,6 +45,10 @@
         font-size: 1rem;
       }
 
+      #currentUserPanel {
+        display: none;
+      }
+
       #petclinicToken {
         white-space: nowrap;
         font-size: 0.6rem;
@@ -96,6 +100,12 @@
         <button id="petclinicLogin" type="button">Login</button>
         <p id="loginFeedback"></p>
       </div>
+      <div id="currentUserPanel">
+        <span id="currentUserName"></span>
+        <button id="logoutButton">Logout</button>
+        <code id="petclinicToken"></code>
+      </div>
+
       <div id="graphiql">
       </div>
     </div>
