@@ -10,7 +10,23 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "role"}))
-public class Role extends BaseEntity implements GrantedAuthority {
+public class Role implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isNew() {
+        return this.id == null;
+    }
 
     @ManyToOne
     @JoinColumn(name = "username")
