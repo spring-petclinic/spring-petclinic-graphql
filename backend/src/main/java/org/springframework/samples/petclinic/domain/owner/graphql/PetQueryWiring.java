@@ -13,10 +13,10 @@ import java.util.List;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class PetQueryResolver implements RuntimeWiringBuilderCustomizer {
+public class PetQueryWiring implements RuntimeWiringBuilderCustomizer {
     private final PetRepository petRepository;
 
-    public PetQueryResolver(PetRepository petRepository) {
+    public PetQueryWiring(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
 
