@@ -3,13 +3,13 @@ package org.springframework.samples.petclinic.domain.vet.graphql;
 
 import graphql.schema.idl.RuntimeWiring;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.vet.Vet;
 
 @Configuration
-public class AddVetWiring implements RuntimeWiringBuilderCustomizer {
+public class AddVetWiring implements RuntimeWiringConfigurer {
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder
             .type("AddVetPayload", typeBuilder -> typeBuilder.typeResolver(env -> {
                 Object javaObject = env.getObject();

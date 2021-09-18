@@ -1,13 +1,13 @@
 package org.springframework.samples.petclinic.graphql;
 
 import graphql.schema.idl.RuntimeWiring;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PingQueryWiring implements RuntimeWiringBuilderCustomizer {
+public class PingQueryWiring implements RuntimeWiringConfigurer {
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Query", typeWiring ->
             typeWiring.dataFetcher("ping", env -> "pong")
         );

@@ -4,7 +4,7 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.visit.Visit;
 import org.springframework.samples.petclinic.domain.visit.VisitService;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.Optional;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class VisitMutationWiring implements RuntimeWiringBuilderCustomizer {
+public class VisitMutationWiring implements RuntimeWiringConfigurer {
     private final static Logger logger = LoggerFactory.getLogger(VisitMutationWiring.class);
 
     private final VisitService visitService;
@@ -27,7 +27,7 @@ public class VisitMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Mutation", wiring -> wiring
             .dataFetcher("addVisit", this::addVisit)
         );

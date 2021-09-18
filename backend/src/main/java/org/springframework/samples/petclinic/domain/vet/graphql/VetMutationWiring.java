@@ -4,7 +4,7 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.vet.InvalidVetDataException;
 import org.springframework.samples.petclinic.domain.vet.Vet;
 import org.springframework.samples.petclinic.domain.vet.VetService;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @author Nils Hartmann
  */
 @Component
-public class VetMutationWiring implements RuntimeWiringBuilderCustomizer {
+public class VetMutationWiring implements RuntimeWiringConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(VetMutationWiring.class);
 
@@ -26,7 +26,7 @@ public class VetMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Mutation", wiring -> wiring
             .dataFetcher("addVet", this::addVet)
         );

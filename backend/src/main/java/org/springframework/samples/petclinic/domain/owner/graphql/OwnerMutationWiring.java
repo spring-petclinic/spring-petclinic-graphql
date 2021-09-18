@@ -4,7 +4,7 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.owner.Owner;
 import org.springframework.samples.petclinic.domain.owner.OwnerService;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.Map;
  *
  */
 @Component
-public class OwnerMutationWiring implements RuntimeWiringBuilderCustomizer {
+public class OwnerMutationWiring implements RuntimeWiringConfigurer {
     private final static Logger logger = LoggerFactory.getLogger(OwnerMutationWiring.class);
 
     private final OwnerService ownerService;
@@ -26,7 +26,7 @@ public class OwnerMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Mutation", wiring -> wiring
             .dataFetcher("addOwner", this::addOwner)
             .dataFetcher("updateOwner", this::updateOwner)

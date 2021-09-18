@@ -4,8 +4,11 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
-import org.springframework.samples.petclinic.domain.owner.*;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+import org.springframework.samples.petclinic.domain.owner.Owner;
+import org.springframework.samples.petclinic.domain.owner.OwnerFilter;
+import org.springframework.samples.petclinic.domain.owner.OwnerOrder;
+import org.springframework.samples.petclinic.domain.owner.OwnerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class OwnerQueryWiring implements RuntimeWiringBuilderCustomizer {
+public class OwnerQueryWiring implements RuntimeWiringConfigurer {
     private final OwnerRepository ownerRepository;
 
     public OwnerQueryWiring(OwnerRepository ownerRepository) {
@@ -27,7 +30,7 @@ public class OwnerQueryWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Query", wiring ->wiring
             .dataFetcher("owners", this::owners)
             .dataFetcher("owner", this::owner));

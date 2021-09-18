@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.domain.visit.graphql;
 
 import graphql.schema.idl.RuntimeWiring;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.owner.PetRepository;
 import org.springframework.samples.petclinic.domain.vet.VetRepository;
 import org.springframework.samples.petclinic.domain.visit.Visit;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class VisitWiring implements RuntimeWiringBuilderCustomizer {
+public class VisitWiring implements RuntimeWiringConfigurer {
 
     private final PetRepository petRepository;
     private final VetRepository vetRepository;
@@ -21,7 +21,7 @@ public class VisitWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Visit", wiring -> wiring
             .dataFetcher("pet", env -> {
                 Visit visit = env.getSource();

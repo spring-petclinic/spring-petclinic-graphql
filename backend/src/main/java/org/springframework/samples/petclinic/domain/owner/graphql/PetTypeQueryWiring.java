@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.domain.owner.graphql;
 
 import graphql.schema.idl.RuntimeWiring;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.owner.PetTypeRepository;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class PetTypeQueryWiring implements RuntimeWiringBuilderCustomizer {
+public class PetTypeQueryWiring implements RuntimeWiringConfigurer {
     private final PetTypeRepository petTypeRepository;
 
     public PetTypeQueryWiring(PetTypeRepository petTypeRepository) {
@@ -21,7 +21,7 @@ public class PetTypeQueryWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Query", wiring -> wiring
             .dataFetcher("pettypes", env -> List.copyOf(petTypeRepository.findAll()))
         );

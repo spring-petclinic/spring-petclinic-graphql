@@ -19,7 +19,7 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.domain.vet.Specialty;
 import org.springframework.samples.petclinic.domain.vet.SpecialtyRepository;
 import org.springframework.samples.petclinic.domain.vet.SpecialtyService;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class SpecialtyMutationWiring implements RuntimeWiringBuilderCustomizer {
+public class SpecialtyMutationWiring implements RuntimeWiringConfigurer {
     private final static Logger logger = LoggerFactory.getLogger(SpecialtyMutationWiring.class);
 
     private final SpecialtyService specialtyService;
@@ -44,7 +44,7 @@ public class SpecialtyMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Mutation", wiring -> wiring
             .dataFetcher("addSpecialty", this::addSpecialty)
             .dataFetcher("updateSpecialty", this::updateSpecialty)

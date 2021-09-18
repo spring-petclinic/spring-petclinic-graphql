@@ -6,7 +6,7 @@ import graphql.schema.GraphQLScalarType;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import static java.lang.String.format;
 
 @Component
-public class DateScalarWiring implements RuntimeWiringBuilderCustomizer {
+public class DateScalarWiring implements RuntimeWiringConfigurer {
     private final static Logger logger = LoggerFactory.getLogger(DateScalarWiring.class);
 
     private static DateTimeFormatter createIsoDateFormat() {
@@ -23,7 +23,7 @@ public class DateScalarWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.scalar(GraphQLScalarType.newScalar()
             .name("Date")
             .description("A Type representing a date (without time, only a day)")

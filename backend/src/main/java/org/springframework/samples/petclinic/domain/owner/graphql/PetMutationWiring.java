@@ -4,8 +4,9 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.idl.RuntimeWiring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
-import org.springframework.samples.petclinic.domain.owner.*;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+import org.springframework.samples.petclinic.domain.owner.Pet;
+import org.springframework.samples.petclinic.domain.owner.PetService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ import java.util.Optional;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
-public class PetMutationWiring implements RuntimeWiringBuilderCustomizer {
+public class PetMutationWiring implements RuntimeWiringConfigurer {
 
     private final static Logger logger = LoggerFactory.getLogger(PetMutationWiring.class);
 
@@ -27,7 +28,7 @@ public class PetMutationWiring implements RuntimeWiringBuilderCustomizer {
     }
 
     @Override
-    public void customize(RuntimeWiring.Builder builder) {
+    public void configure(RuntimeWiring.Builder builder) {
         builder.type("Mutation", wiring -> wiring
             .dataFetcher("addPet", this::addPet)
             .dataFetcher("updatePet", this::updatePet)
