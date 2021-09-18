@@ -28,7 +28,11 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
     error: specialtiesError,
     loading: specialtiesLoading,
   } = useAllSpecialtiesQuery();
-  const [addVet, { called, loading, data }] = useAddVetMutation();
+  const [addVet, { called, loading, data, error }] = useAddVetMutation({
+	  // Errors in Responses should be retured in 'error' (and not as rejected promise)
+	  // https://www.apollographql.com/docs/react/api/react/hoc/#optionserrorpolicy
+	  errorPolicy: "all"
+  });
   const { register, errors, handleSubmit } = useForm<VetFormData>();
 
   const specialtiesOptions = specialtiesData
@@ -46,23 +50,22 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
     lastName,
     specialtyIds,
   }: VetFormData) {
-    console.log("DATA", firstName, lastName, specialtyIds);
-
-    const result = await addVet({
-      variables: {
-        input: {
-          firstName,
-          lastName,
-          specialtyIds: specialtyIds || [],
-        },
-      },
-    });
-    if (result.data && "vet" in result.data.result) {
-      onFinish();
-    }
+	    const result = await addVet({
+		    variables: {
+			    input: {
+				    firstName,
+				    lastName,
+				    specialtyIds: specialtyIds || [],
+			    },
+		    },
+	    });
+	    if (result.data && "vet" in result.data.result) {
+		    onFinish();
+	    }
   }
 
   let errorMsg =
+	  error ? error.message :
     data && "error" in data.result
       ? `Saving failed: ${data.result.error}`
       : null;

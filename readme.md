@@ -17,6 +17,7 @@ Some features that are built in:
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `AddVetWiring`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`) 
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerQueryWiring`
+* Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
 ## Running the Server
 

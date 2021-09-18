@@ -43,8 +43,6 @@ public class VetMutationWiring implements RuntimeWiringConfigurer {
             return new AddVetSuccessPayload(newVet);
         } catch (InvalidVetDataException ex) {
             return new AddVetErrorPayload(ex.getLocalizedMessage());
-        } catch (AccessDeniedException ex) {
-            return new AddVetErrorPayload("You're not allowed to add new Vets");
         }
     }
 }

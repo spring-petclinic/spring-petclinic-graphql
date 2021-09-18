@@ -40,13 +40,20 @@ public class JwtTokenService {
     @PostConstruct
     void createNeverExpiringToken() throws Exception {
         SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        String neverExpiringToken = Jwts.builder()
+        String neverExpiringManagerToken = Jwts.builder()
             .setSubject("susi")
             .setIssuedAt(f.parse("25.12.2020 10:44"))
             .setExpiration(f.parse("25.12.2044 10:44"))
             .signWith(secretKey)
             .compact();
-        logger.info("\n\nNever Expiring admin JWT Token: '{}'\n\nUse as HTTP Header:\nAuthorization: Bearer {}\n", neverExpiringToken, neverExpiringToken);
+
+        String neverExpiringUserToken = Jwts.builder()
+            .setSubject("joe")
+            .setIssuedAt(f.parse("25.12.2020 10:44"))
+            .setExpiration(f.parse("25.12.2044 10:44"))
+            .signWith(secretKey)
+            .compact();
+        logger.info("\n\nNever Expiring JWT Token\n\n - ROLE_MANAGER: '{}'\n    As HTTP Header: 'Authorization: Bearer {}'\n\n - ROLE_USER: '{}'\n    As HTTP Header: 'Authorization: Bearer {}'\n", neverExpiringManagerToken, neverExpiringManagerToken, neverExpiringUserToken, neverExpiringUserToken);
     }
 
     public String createTokenForUser(User user) {
