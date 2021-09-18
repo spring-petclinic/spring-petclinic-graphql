@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.samples.petclinic.auth.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,8 +18,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
-
-import static java.lang.String.format;
 
 /**
  * Adds JWT-based Authentication and Authorization to the server

@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.domain.visit;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;
+import org.springframework.samples.petclinic.domain.model.BaseEntity;
 
 import java.util.List;
 

@@ -16,10 +16,10 @@
 
 package org.springframework.samples.petclinic.domain.owner;
 
-import java.util.Collection;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;
+
+import java.util.Collection;
 
 /**
  * @author Vitaliy Fedoriv
