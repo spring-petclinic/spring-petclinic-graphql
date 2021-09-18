@@ -11,7 +11,8 @@ As spring-graphql is still experimental, this PetClinic is experimental and in-p
 
 Some features that are built in:
 
-* GraphQL datafetchers for Queries and Mutations
+* [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `SpecialtyController` and `VetController`)
+* GraphQL datafetchers for Queries and Mutations (see `AuthQueryWiring`)
 * Subscriptions via Websockets (see `VisitSubscriptionWiring`)  
 * Own scalar types (See `DateScalarWiring`)
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `AddVetWiring`

@@ -10,6 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+/**
+ * EXAMPLE:
+ * --------------------------
+ *
+ * - Use 'plain' DataFetcher methods with Spring GraphQL (although Annotated Controllers might
+ *   be the preferred way to write data fetchers now)
+ */
 @Component
 public class AuthQueryWiring implements RuntimeWiringConfigurer {
     private static final Logger log = LoggerFactory.getLogger(AuthQueryWiring.class);
