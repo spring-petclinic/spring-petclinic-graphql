@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.graphql;
 
 import org.springframework.http.HttpHeaders;
 
-import java.util.function.Consumer;
-
 public class TestTokens {
 
     public static void withManagerToken(HttpHeaders headers) {

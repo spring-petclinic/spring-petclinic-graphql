@@ -71,25 +71,15 @@
         <dependency>
             <groupId>org.springframework.experimental</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-M3</version>
         </dependency>
-        <!--
-           GraphQL Test
-           https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#boot-graphql-testing
-        -->
         <dependency>
             <groupId>org.springframework.graphql</groupId>
             <artifactId>spring-graphql-test</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-M3</version>
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.graphql</groupId>-->
-<!--            <artifactId>spring-graphql-test</artifactId>-->
-<!--            <version>1.0.0-SNAPSHOT</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>

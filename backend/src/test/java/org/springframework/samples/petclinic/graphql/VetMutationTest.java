@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.boot.test.tester.AutoConfigureGraphQlTester;
+import org.springframework.graphql.boot.test.tester.AutoConfigureWebGraphQlTester;
 import org.springframework.graphql.execution.ErrorType;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureGraphQlTester
+@AutoConfigureWebGraphQlTester
 public class VetMutationTest {
 
     @Autowired
@@ -47,7 +47,7 @@ public class VetMutationTest {
             "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withManagerToken)
+            .httpHeaders(TestTokens::withManagerToken)
             .execute()
             .path("addVet.vet.id").valueIsNotEmpty()
             .path("addVet.vet.specialties[0].id").entity(String.class).isEqualTo("1");
@@ -82,7 +82,7 @@ public class VetMutationTest {
             "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withManagerToken)
+            .httpHeaders(TestTokens::withManagerToken)
             .execute()
             .path("addVet.vet").valueDoesNotExist()
             .path("addVet.error").entity(String.class).isEqualTo("Specialty with Id '666' not found");
@@ -117,7 +117,7 @@ public class VetMutationTest {
             "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withUserToken)
+            .httpHeaders(TestTokens::withUserToken)
             .execute()
                         .errors()
             .satisfy(errors -> {

@@ -4,15 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.boot.test.tester.AutoConfigureGraphQlTester;
-import org.springframework.graphql.execution.ErrorType;
+import org.springframework.graphql.boot.test.tester.AutoConfigureWebGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureGraphQlTester
+@AutoConfigureWebGraphQlTester
 public class VetQueryTest {
 
     @Autowired
@@ -39,7 +36,7 @@ public class VetQueryTest {
            "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withUserToken)
+            .httpHeaders(TestTokens::withUserToken)
             .execute()
             .path("vets").entityList(Object.class).hasSizeGreaterThan(2)
             .path("vets[2].specialties").entityList(Object.class).hasSize(2)
@@ -70,7 +67,7 @@ public class VetQueryTest {
             "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withUserToken)
+            .httpHeaders(TestTokens::withUserToken)
             .execute()
             .path("vet.specialties[0].id").entity(int.class).isEqualTo(0)
             .path("vet.visits.totalCount").entity(int.class).isEqualTo(19)
@@ -100,7 +97,7 @@ public class VetQueryTest {
             "}";
 
         this.graphQlTester.query(query)
-            .headers(TestTokens::withUserToken)
+            .httpHeaders(TestTokens::withUserToken)
             .execute()
             .path("vet").valueIsEmpty();
         ;
