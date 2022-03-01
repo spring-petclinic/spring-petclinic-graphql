@@ -1,10 +1,11 @@
 package org.springframework.samples.petclinic.repository;
 
-import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.repository.AbstractClinicRepositoryTests;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.persistence.EntityManager;
 
 /**
  * <p> Integration test using the 'Spring Data' profile.
@@ -13,9 +14,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see AbstractClinicRepositoryTests AbstractClinicRepositoryTests for more details. </p>
  */
 
-@SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("spring-data-jpa, hsqldb")
+@DataJpaTest
+@ActiveProfiles(profiles = {"spring-data-jpa", "hsqldb"})
 public class ClinicRepositorySpringDataJpaTests extends AbstractClinicRepositoryTests {
 
+    @Autowired
+    EntityManager entityManager;
+
+    @Override
+    protected void flush() {
+        entityManager.flush();
+        entityManager.clear();
+    }
 }
