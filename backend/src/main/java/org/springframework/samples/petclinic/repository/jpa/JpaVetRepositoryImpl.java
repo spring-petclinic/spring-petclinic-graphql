@@ -41,9 +41,9 @@ public class JpaVetRepositoryImpl implements VetRepository {
     @PersistenceContext
     private EntityManager em;
 
-   
+
 	@Override
-	public Vet findById(int id) throws DataAccessException {
+	public Vet findById(Integer id) throws DataAccessException {
 		return this.em.find(Vet.class, id);
 	}
 

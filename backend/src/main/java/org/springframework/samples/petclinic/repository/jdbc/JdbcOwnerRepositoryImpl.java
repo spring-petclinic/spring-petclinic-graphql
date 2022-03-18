@@ -98,7 +98,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
      * for the corresponding owner, if not already loaded.
      */
     @Override
-    public Owner findById(int id) throws DataAccessException {
+    public Owner findById(Integer id) throws DataAccessException {
         Owner owner;
         try {
             Map<String, Object> params = new HashMap<>();
@@ -161,7 +161,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
             loadPetsAndVisits(owner);
         }
     }
-    
+
     @Override
 	public Collection<Owner> findAll() throws DataAccessException {
 		List<Owner> owners = this.namedParameterJdbcTemplate.query(

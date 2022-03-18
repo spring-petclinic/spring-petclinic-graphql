@@ -88,7 +88,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
     }
 
     @Override
-    public Pet findById(int id) throws DataAccessException {
+    public Pet findById(Integer id) throws DataAccessException {
         Integer ownerId;
         try {
             Map<String, Object> params = new HashMap<>();
@@ -126,7 +126,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
             .addValue("type_id", pet.getType().getId())
             .addValue("owner_id", pet.getOwner().getId());
     }
-    
+
 	@Override
 	public Collection<Pet> findAll() throws DataAccessException {
 		Map<String, Object> params = new HashMap<>();

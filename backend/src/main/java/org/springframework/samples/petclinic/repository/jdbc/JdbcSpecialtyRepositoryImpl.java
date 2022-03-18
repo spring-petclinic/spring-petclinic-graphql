@@ -43,9 +43,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Profile("jdbc")
 public class JdbcSpecialtyRepositoryImpl implements SpecialtyRepository {
-	
+
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
+
 	private SimpleJdbcInsert insertSpecialty;
 
 	@Autowired
@@ -57,7 +57,7 @@ public class JdbcSpecialtyRepositoryImpl implements SpecialtyRepository {
 	}
 
 	@Override
-	public Specialty findById(int id) {
+	public Specialty findById(Integer id) {
 		Specialty specialty;
         try {
             Map<String, Object> params = new HashMap<>();

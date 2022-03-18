@@ -51,7 +51,7 @@ public class JpaPetRepositoryImpl implements PetRepository {
     }
 
     @Override
-    public Pet findById(int id) {
+    public Pet findById(Integer id) {
         return this.em.find(Pet.class, id);
     }
 
@@ -63,7 +63,7 @@ public class JpaPetRepositoryImpl implements PetRepository {
             this.em.merge(pet);
         }
     }
-    
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Pet> findAll() throws DataAccessException {

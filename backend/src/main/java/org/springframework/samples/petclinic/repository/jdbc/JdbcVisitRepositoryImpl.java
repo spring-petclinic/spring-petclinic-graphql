@@ -101,9 +101,9 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
 
         return visits;
     }
-    
+
 	@Override
-	public Visit findById(int id) throws DataAccessException {
+	public Visit findById(Integer id) throws DataAccessException {
 		Visit visit;
 		try {
 			Map<String, Object> params = new HashMap<>();

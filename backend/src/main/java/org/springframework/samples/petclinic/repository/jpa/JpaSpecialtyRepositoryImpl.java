@@ -40,7 +40,7 @@ public class JpaSpecialtyRepositoryImpl implements SpecialtyRepository {
     private EntityManager em;
 
 	@Override
-	public Specialty findById(int id) {
+	public Specialty findById(Integer id) {
 		return this.em.find(Specialty.class, id);
 	}
 
