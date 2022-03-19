@@ -1,5 +1,5 @@
 **NOTE** There is a **new** experimental version using the new **spring-graphql** project. You can find that example on the [spring-graphql branch](https://github.com/spring-petclinic/spring-petclinic-graphql/tree/spring-graphql) in this repository.
-
+[![Java CI with Maven](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml)
 
 
 # GraphQL version of Spring PetClinic Sample Application
