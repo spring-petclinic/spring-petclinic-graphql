@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collection;
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,7 +32,6 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.repository.*;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public abstract class AbstractClinicRepositoryTests {
+abstract class AbstractClinicRepositoryTests {
 
     @Autowired
     private PetRepository petRepository;
@@ -76,13 +75,13 @@ public abstract class AbstractClinicRepositoryTests {
     @Autowired
     private PetTypeRepository petTypeRepository;
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeEach
+    void init() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldFindOwnersByLastName() {
+    void shouldFindOwnersByLastName() {
         Collection<Owner> owners = this.ownerRepository.findByLastName("Davis");
         assertThat(owners.size()).isEqualTo(2);
 
@@ -91,7 +90,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindSingleOwnerWithPet() {
+    void shouldFindSingleOwnerWithPet() {
         Owner owner = this.ownerRepository.findById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets().size()).isEqualTo(1);
@@ -101,7 +100,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldInsertOwner() {
+    void shouldInsertOwner() {
         Collection<Owner> owners = this.ownerRepository.findByLastName("Schultz");
         int found = owners.size();
 
@@ -120,7 +119,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldUpdateOwner() {
+    void shouldUpdateOwner() {
         Owner owner = this.ownerRepository.findById(1);
         String oldLastName = owner.getLastName();
         String newLastName = oldLastName + "X";
@@ -134,7 +133,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindPetWithCorrectId() {
+    void shouldFindPetWithCorrectId() {
         Pet pet7 = this.petRepository.findById(7);
         assertThat(pet7.getName()).startsWith("Samantha");
         assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
@@ -153,7 +152,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldInsertPetIntoDatabaseAndGenerateId() {
+    void shouldInsertPetIntoDatabaseAndGenerateId() {
         Owner owner6 = this.ownerRepository.findById(6);
         int found = owner6.getPets().size();
 
@@ -176,7 +175,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldUpdatePetName() throws Exception {
+    void shouldUpdatePetName() {
         Pet pet7 = this.petRepository.findById(7);
         String oldName = pet7.getName();
 
@@ -189,7 +188,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindVets() {
+    void shouldFindVets() {
         Collection<Vet> vets = this.vetRepository.findAll();
 
         Vet vet = EntityUtils.getById(vets, Vet.class, 3);
@@ -201,7 +200,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldAddNewVisitForPet() {
+    void shouldAddNewVisitForPet() {
         Pet pet7 = this.petRepository.findById(7);
         int found = pet7.getVisits().size();
         Visit visit = new Visit();
@@ -216,7 +215,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-       public void shouldFindVisitsByPetId() throws Exception {
+    void shouldFindVisitsByPetId() throws Exception {
         Collection<Visit> visits = this.visitRepository.findByPetId(7);
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
@@ -226,7 +225,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindAllPets(){
+    void shouldFindAllPets(){
         Collection<Pet> pets = this.petRepository.findAll();
         Pet pet1 = EntityUtils.getById(pets, Pet.class, 1);
         assertThat(pet1.getName()).isEqualTo("Leo");
@@ -236,9 +235,10 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldDeletePet(){
+    void shouldDeletePet(){
         Pet pet = this.petRepository.findById(1);
         this.petRepository.delete(pet);
+        flush();
         try {
         pet = this.petRepository.findById(1);
 		} catch (Exception e) {
@@ -248,14 +248,14 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindVisitDyId(){
+    void shouldFindVisitDyId(){
     	Visit visit = this.visitRepository.findById(1);
     	assertThat(visit.getId()).isEqualTo(1);
     	assertThat(visit.getPet().getName()).isEqualTo("Samantha");
     }
 
     @Test
-    public void shouldFindAllVisits(){
+    void shouldFindAllVisits(){
         Collection<Visit> visits = this.visitRepository.findAll();
         Visit visit1 = EntityUtils.getById(visits, Visit.class, 1);
         assertThat(visit1.getPet().getName()).isEqualTo("Samantha");
@@ -265,7 +265,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldInsertVisit() {
+    void shouldInsertVisit() {
         Collection<Visit> visits = this.visitRepository.findAll();
         int found = visits.size();
 
@@ -286,7 +286,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldUpdateVisit(){
+    void shouldUpdateVisit(){
     	Visit visit = this.visitRepository.findById(1);
     	String oldDesc = visit.getDescription();
         String newDesc = oldDesc + "X";
@@ -298,9 +298,10 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldDeleteVisit(){
+    void shouldDeleteVisit(){
     	Visit visit = this.visitRepository.findById(1);
         this.visitRepository.delete(visit);
+        flush();
         try {
         	visit = this.visitRepository.findById(1);
 		} catch (Exception e) {
@@ -310,7 +311,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindVetDyId(){
+    void shouldFindVetDyId(){
     	Vet vet = this.vetRepository.findById(1);
     	assertThat(vet.getFirstName()).isEqualTo("James");
     	assertThat(vet.getLastName()).isEqualTo("Carter");
@@ -318,7 +319,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldInsertVet() {
+    void shouldInsertVet() {
         Collection<Vet> vets = this.vetRepository.findAll();
         int found = vets.size();
 
@@ -335,7 +336,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldUpdateVet(){
+    void shouldUpdateVet(){
     	Vet vet = this.vetRepository.findById(1);
     	String oldLastName = vet.getLastName();
         String newLastName = oldLastName + "X";
@@ -347,7 +348,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldDeleteVet(){
+    void shouldDeleteVet(){
     	Vet vet = this.vetRepository.findById(1);
         this.vetRepository.delete(vet);
         try {
@@ -359,7 +360,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindAllOwners(){
+    void shouldFindAllOwners(){
         Collection<Owner> owners = this.ownerRepository.findAll();
         Owner owner1 = EntityUtils.getById(owners, Owner.class, 1);
         assertThat(owner1.getFirstName()).isEqualTo("George");
@@ -369,7 +370,7 @@ public abstract class AbstractClinicRepositoryTests {
 
     @Test
     @Transactional
-    public void shouldDeleteOwner(){
+    void shouldDeleteOwner(){
     	Owner owner = this.ownerRepository.findById(1);
         this.ownerRepository.delete(owner);
         try {
@@ -381,7 +382,7 @@ public abstract class AbstractClinicRepositoryTests {
     }
 
     @Test
-    public void shouldFindPetTypeById(){
+    void shouldFindPetTypeById(){
     	PetType petType = findPetTypeById(1);
     	assertThat(petType.getName()).isEqualTo("cat");
     }
@@ -439,6 +440,7 @@ public abstract class AbstractClinicRepositoryTests {
     public void shouldDeletePetType(){
     	PetType petType = this.petTypeRepository.findById(1);
         this.petTypeRepository.delete(petType);
+        flush();
         try {
         	petType = this.petTypeRepository.findById(1);
 		} catch (Exception e) {
@@ -495,6 +497,7 @@ public abstract class AbstractClinicRepositoryTests {
     public void shouldDeleteSpecialty(){
     	Specialty specialty = this.specialtyRepository.findById(1);
         this.specialtyRepository.delete(specialty);
+        flush();
         try {
         	specialty = this.specialtyRepository.findById(1);
 		} catch (Exception e) {
@@ -503,6 +506,8 @@ public abstract class AbstractClinicRepositoryTests {
         assertThat(specialty).isNull();
     }
 
-
+    protected void flush() {
+        // Nothing by default
+    }
 
 }

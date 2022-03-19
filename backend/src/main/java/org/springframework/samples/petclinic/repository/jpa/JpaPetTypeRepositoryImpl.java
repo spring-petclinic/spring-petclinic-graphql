@@ -39,12 +39,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Profile("jpa")
 public class JpaPetTypeRepositoryImpl implements PetTypeRepository {
-	
+
     @PersistenceContext
     private EntityManager em;
 
 	@Override
-	public PetType findById(int id) {
+	public PetType findById(Integer id) {
 		return this.em.find(PetType.class, id);
 	}
 
@@ -69,7 +69,7 @@ public class JpaPetTypeRepositoryImpl implements PetTypeRepository {
 	public void delete(PetType petType) throws DataAccessException {
 		this.em.remove(this.em.contains(petType) ? petType : this.em.merge(petType));
 		String petTypeId = petType.getId().toString();
-		
+
 		List<Pet> pets = new ArrayList<Pet>();
 		pets = this.em.createQuery("SELECT pet FROM Pet pet WHERE type_id=" + petTypeId).getResultList();
 		for (Pet pet : pets){

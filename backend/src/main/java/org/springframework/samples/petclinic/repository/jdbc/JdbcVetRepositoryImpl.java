@@ -102,9 +102,9 @@ public class JdbcVetRepositoryImpl implements VetRepository {
         }
         return vets;
     }
-    
+
 	@Override
-	public Vet findById(int id) throws DataAccessException {
+	public Vet findById(Integer id) throws DataAccessException {
 		Vet vet;
 		try {
 			Map<String, Object> vet_params = new HashMap<>();

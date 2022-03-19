@@ -35,12 +35,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Profile("jpa")
 public class JpaSpecialtyRepositoryImpl implements SpecialtyRepository {
-	
+
     @PersistenceContext
     private EntityManager em;
 
 	@Override
-	public Specialty findById(int id) {
+	public Specialty findById(Integer id) {
 		return this.em.find(Specialty.class, id);
 	}
 
@@ -61,9 +61,9 @@ public class JpaSpecialtyRepositoryImpl implements SpecialtyRepository {
 
 	@Override
 	public void delete(Specialty specialty) throws DataAccessException {
-		this.em.remove(this.em.contains(specialty) ? specialty : this.em.merge(specialty));
 		String specId = specialty.getId().toString();
 		this.em.createNativeQuery("DELETE FROM vet_specialties WHERE specialty_id=" + specId).executeUpdate();
+        this.em.flush();
 		this.em.createQuery("DELETE FROM Specialty specialty WHERE id=" + specId).executeUpdate();
 	}
 

@@ -64,9 +64,9 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
         query.setParameter("id", petId);
         return query.getResultList();
     }
-    
+
 	@Override
-	public Visit findById(int id) throws DataAccessException {
+	public Visit findById(Integer id) throws DataAccessException {
 		return this.em.find(Visit.class, id);
 	}
 
