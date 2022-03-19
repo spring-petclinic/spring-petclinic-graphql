@@ -1,5 +1,5 @@
 overwrite: true
-schema: ../backend/src/main/resources/petclinic.graphqls
+schema: ../backend/src/main/resources/graphql/petclinic.graphqls
 documents: "src/**/!(*.d).{ts,tsx,graphql}"
 generates:
   src/generated/graphql-types.ts:

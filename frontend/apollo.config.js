@@ -7,7 +7,7 @@ module.exports = {
     includes: ["src/!(generated)/**/!(*.d).{ts,tsx,graphql}"],
     service: {
       name: "PetClinic GraphQL Backend",
-      localSchemaFile: "../backend/src/main/resources/petclinic.graphqls",
+      localSchemaFile: "../backend/src/main/resources/graphql/petclinic.graphqls",
     },
   },
 };
