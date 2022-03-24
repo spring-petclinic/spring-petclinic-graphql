@@ -1,21 +1,32 @@
 package org.springframework.samples.petclinic.graphql;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.boot.test.tester.AutoConfigureWebGraphQlTester;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureWebGraphQlTester
+@AutoConfigureHttpGraphQlTester
 public class SpecialtyControllerTest {
 
     @Autowired
     private WebGraphQlTester graphQlTester;
+
+    private WebGraphQlTester graphQlTesterWithHeader;
+
+    @BeforeEach
+    void setupGraphQlTesterWithHeader() {
+        graphQlTesterWithHeader = graphQlTester.mutate()
+            .headers(TestTokens::withUserToken)
+            .build();
+    }
 
     @Test
     public void specialtiesQueryReturnsList() {
@@ -26,8 +37,8 @@ public class SpecialtyControllerTest {
            "  }" +
            "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader
+            .document(query)
             .execute()
             .path("specialties").entityList(Object.class).hasSizeGreaterThan(2);
         ;
@@ -44,8 +55,8 @@ public class SpecialtyControllerTest {
             "  }" +
             "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader
+            .document(query)
             .execute()
             .path("updateSpecialty.specialty.name").entity(String.class).isEqualTo("test");
         ;
@@ -62,8 +73,8 @@ public class SpecialtyControllerTest {
             "  }" +
             "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader
+            .document(query)
             .execute()
             .path("addSpecialty.specialty.name").entity(String.class).isEqualTo("xxx");
         ;
@@ -78,8 +89,8 @@ public class SpecialtyControllerTest {
             "  }" +
             "}";
 
-        final int specialtyCount = this.graphQlTester.query(getQuery)
-            .httpHeaders(TestTokens::withUserToken)
+        final int specialtyCount = this.graphQlTesterWithHeader
+            .document(getQuery)
             .execute()
             .path("specialties").entityList(Object.class).get().size();
 
@@ -92,8 +103,8 @@ public class SpecialtyControllerTest {
             "  }" +
             "}";
 
-        final GraphQlTester.ResponseSpec response = this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        GraphQlTester.Response response = this.graphQlTesterWithHeader
+            .document(query)
             .execute();
         response
             .path("addSpecialty.specialty.name").entity(String.class).isEqualTo("yyy");
@@ -109,8 +120,7 @@ public class SpecialtyControllerTest {
             "}"
         ;
 
-        this.graphQlTester.query(removeQuery)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader.document(removeQuery)
             .execute()
             .path("removeSpecialty.specialties").entityList(Object.class).hasSize(specialtyCount);
     }

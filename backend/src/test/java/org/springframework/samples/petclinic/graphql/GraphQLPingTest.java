@@ -1,17 +1,18 @@
 package org.springframework.samples.petclinic.graphql;
 
+import org.hsqldb.Tokens;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.boot.test.tester.AutoConfigureWebGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureWebGraphQlTester
+@AutoConfigureHttpGraphQlTester
 public class GraphQLPingTest {
 
     @Autowired
@@ -27,8 +28,10 @@ public class GraphQLPingTest {
     public void meReturnsCurrentUser() {
         String query = "query { me { username } } ";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withManagerToken)
+        this.graphQlTester.mutate()
+            .headers(TestTokens::withManagerToken)
+            .build()
+            .document(query)
             .execute()
             .path("me.username").entity(String.class).isEqualTo("susi");
     }
@@ -45,7 +48,7 @@ public class GraphQLPingTest {
         String query = "query { ping } ";
 
         assertThatThrownBy(() ->
-            this.graphQlTester.query(query)
+            this.graphQlTester.document(query)
                 .executeAndVerify())
             .hasMessage("Status expected:<200 OK> but was:<401 UNAUTHORIZED>");
     }

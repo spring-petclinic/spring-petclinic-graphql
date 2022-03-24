@@ -1,19 +1,29 @@
 package org.springframework.samples.petclinic.graphql;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.graphql.boot.test.tester.AutoConfigureWebGraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureWebGraphQlTester
+@AutoConfigureHttpGraphQlTester
 public class VetQueryTest {
 
     @Autowired
     private WebGraphQlTester graphQlTester;
+
+    private WebGraphQlTester graphQlTesterWithHeader;
+
+    @BeforeEach
+    void setupGraphQlTesterWithHeader() {
+        graphQlTesterWithHeader = graphQlTester.mutate()
+            .headers(TestTokens::withUserToken)
+            .build();
+    }
 
     @Test
     public void vetsReturnsListOfAllVets() {
@@ -35,8 +45,7 @@ public class VetQueryTest {
            "  }" +
            "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader.document(query)
             .execute()
             .path("vets").entityList(Object.class).hasSizeGreaterThan(2)
             .path("vets[2].specialties").entityList(Object.class).hasSize(2)
@@ -66,8 +75,7 @@ public class VetQueryTest {
             "  }" +
             "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader.document(query)
             .execute()
             .path("vet.specialties[0].id").entity(int.class).isEqualTo(0)
             .path("vet.visits.totalCount").entity(int.class).isEqualTo(19)
@@ -96,10 +104,9 @@ public class VetQueryTest {
             "  }" +
             "}";
 
-        this.graphQlTester.query(query)
-            .httpHeaders(TestTokens::withUserToken)
+        this.graphQlTesterWithHeader.document(query)
             .execute()
-            .path("vet").valueIsEmpty();
+            .path("vet").valueIsNull();
         ;
     }
 
