@@ -38,14 +38,17 @@ public class VetController {
     }
 
     @QueryMapping
-    public Optional<Vet> vet(@Argument Integer id) {
+    public Vet vet(@Argument Integer id) {
         return vetRepository.findById(id);
     }
 
     @SchemaMapping
     public VisitConnection visits(Vet vet) {
-        List<Visit> visitList = visitRepository.findByVetId(vet.getId());
-        return new VisitConnection(visitList);
+        // TODO SPRING-GRAPHQL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        throw new UnsupportedOperationException("THIS NEEDS TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+//        List<Visit> visitList = visitRepository.findByVetId(vet.getId());
+//        return new VisitConnection(visitList);
     }
 
     @MutationMapping

@@ -12,22 +12,20 @@ import java.util.Optional;
 @Component
 public class VisitWiring implements RuntimeWiringConfigurer {
 
-    private final PetRepository petRepository;
     private final VetRepository vetRepository;
 
     public VisitWiring(PetRepository petRepository, VetRepository vetRepository) {
-        this.petRepository = petRepository;
         this.vetRepository = vetRepository;
     }
 
     @Override
     public void configure(RuntimeWiring.Builder builder) {
         builder.type("Visit", wiring -> wiring
-            .dataFetcher("pet", env -> {
-                Visit visit = env.getSource();
-                Integer petId = visit.getPetId();
-                return petRepository.findById(petId);
-            })
+//            .dataFetcher("pet", env -> {
+//                Visit visit = env.getSource();
+//                Integer petId = visit.getPetId();
+//                return petRepository.findById(petId);
+//            })
             .dataFetcher("treatingVet", env -> {
                 Visit visit = env.getSource();
                 if (!visit.hasVetId()) {

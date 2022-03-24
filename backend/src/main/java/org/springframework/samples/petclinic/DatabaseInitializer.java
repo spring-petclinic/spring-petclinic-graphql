@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Nils Hartmann
  */
-@Component
+//@Component
 public class DatabaseInitializer implements CommandLineRunner {
 
     private UserRepository userRepository;
@@ -106,7 +106,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             Visit visit = new Visit();
             visit.setDate(asLocalDate(parts[0]));
             visit.setDescription(String.format("%s %s", parts[1], parts[2]));
-            visit.setPetId(pets.next().getId());
+            visit.setPet(pets.next());
             if (ix.incrementAndGet() % 2 == 0) {
                 visit.setVetId(vets.next().getId());
             }

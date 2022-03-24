@@ -55,7 +55,9 @@ public class OwnerQueryWiring implements RuntimeWiringConfigurer {
 
         final PageRequest pageRequest = PageRequest.of(pageNo, sizeNo, sort);
 
-        return new OwnerSearchResult(ownerRepository.findAll(filter.orElse(null), pageRequest));
+        // TODO SPRING-GRAPHQL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        throw new UnsupportedOperationException("THIS NEEDS TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        return new OwnerSearchResult(ownerRepository.findAll(filter.orElse(null), pageRequest));
     }
 
     private Owner owner(DataFetchingEnvironment env) {

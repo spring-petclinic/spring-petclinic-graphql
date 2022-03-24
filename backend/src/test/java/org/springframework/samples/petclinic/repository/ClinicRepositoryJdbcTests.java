@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.samples.petclinic.repository;
 
-import java.util.Collection;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
- * @author Vitaliy Fedoriv
+ * <p> Integration test using the jdbc profile.
  *
+ * @author Thomas Risberg
+ * @author Michael Isvy
+ * @see AbstractClinicRepositoryTests AbstractClinicRepositoryTests for more details. </p>
  */
+@SpringBootTest
+@ActiveProfiles(profiles = {"jdbc", "hsqldb"})
+class ClinicRepositoryJdbcTests extends AbstractClinicRepositoryTests {
 
-public interface PetTypeRepository {
-
-	PetType findById(Integer id) throws DataAccessException;
-
-	Collection<PetType> findAll() throws DataAccessException;
-
-	void save(PetType petType) throws DataAccessException;
-
-	void delete(PetType petType) throws DataAccessException;
 
 }

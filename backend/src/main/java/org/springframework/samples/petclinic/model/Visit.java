@@ -17,9 +17,7 @@ package org.springframework.samples.petclinic.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
@@ -41,8 +39,12 @@ public class Visit extends BaseEntity {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "pet_id")
-	private Integer petId;
+    /**
+     * Holds value of property pet.
+     */
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     @Column(name = "vet_id")
     private Integer vetId;
@@ -70,17 +72,18 @@ public class Visit extends BaseEntity {
 		this.description = description;
 	}
 
-	public Integer getPetId() {
-		return this.petId;
-	}
+    public Pet getPet() {
+        return pet;
+    }
 
-	public void setPetId(Integer petId) {
-		this.petId = petId;
-	}
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
 
     public Integer getVetId() {
         return vetId;
     }
+
 
     public void setVetId(Integer vetId) {
         this.vetId = vetId;

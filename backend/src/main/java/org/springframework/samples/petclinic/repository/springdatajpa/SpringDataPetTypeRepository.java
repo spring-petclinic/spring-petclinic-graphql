@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import org.springframework.dao.DataAccessException;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.Repository;
-
-import java.util.Collection;
+import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.repository.PetTypeRepository;
 
 /**
  * @author Vitaliy Fedoriv
  *
  */
 
-public interface SpecialtyRepository extends Repository<Specialty, Integer> {
-
-	Specialty findById(int id) throws DataAccessException;
-
-	Collection<Specialty> findAll() throws DataAccessException;
-
-	void save(Specialty specialty) throws DataAccessException;
-
-	void delete(Specialty specialty) throws DataAccessException;
+@Profile("spring-data-jpa")
+public interface SpringDataPetTypeRepository extends PetTypeRepository, Repository<PetType, Integer>, PetTypeRepositoryOverride {
 
 }

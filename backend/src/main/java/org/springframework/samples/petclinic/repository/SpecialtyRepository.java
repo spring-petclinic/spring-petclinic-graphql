@@ -19,21 +19,21 @@ package org.springframework.samples.petclinic.repository;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Specialty;
 
 /**
  * @author Vitaliy Fedoriv
  *
  */
 
-public interface PetTypeRepository {
+public interface SpecialtyRepository {
 
-	PetType findById(Integer id) throws DataAccessException;
+	Specialty findById(Integer id) throws DataAccessException;
 
-	Collection<PetType> findAll() throws DataAccessException;
+	Collection<Specialty> findAll() throws DataAccessException;
 
-	void save(PetType petType) throws DataAccessException;
+	void save(Specialty specialty) throws DataAccessException;
 
-	void delete(PetType petType) throws DataAccessException;
+	void delete(Specialty specialty) throws DataAccessException;
 
 }

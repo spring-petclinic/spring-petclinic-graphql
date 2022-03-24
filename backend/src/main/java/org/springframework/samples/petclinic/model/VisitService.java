@@ -31,7 +31,7 @@ public class VisitService {
 
         Visit visit = new Visit();
         visit.setDescription(description);
-        visit.setPetId(pet.getId());
+        visit.setPet(pet);
         visit.setDate(date);
         vetId.ifPresent(visit::setVetId);
 

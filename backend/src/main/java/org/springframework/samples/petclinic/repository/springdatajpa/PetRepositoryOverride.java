@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic.repository;
+package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import java.util.Collection;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.context.annotation.Profile;
+import org.springframework.samples.petclinic.model.Pet;
 
 /**
  * @author Vitaliy Fedoriv
  *
  */
 
-public interface PetTypeRepository {
-
-	PetType findById(Integer id) throws DataAccessException;
-
-	Collection<PetType> findAll() throws DataAccessException;
-
-	void save(PetType petType) throws DataAccessException;
-
-	void delete(PetType petType) throws DataAccessException;
+@Profile("spring-data-jpa")
+public interface PetRepositoryOverride {
+	
+	public void delete(Pet pet);
 
 }

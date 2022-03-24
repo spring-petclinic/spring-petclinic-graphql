@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,8 +47,8 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
-	@Transient
-	private Set<Visit> visits = new LinkedHashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
+    private Set<Visit> visits;
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -72,7 +73,7 @@ public class Pet extends NamedEntity {
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
-
+    @JsonIgnore
 	protected Set<Visit> getVisitsInternal() {
 		if (this.visits == null) {
 			this.visits = new HashSet<>();
@@ -80,8 +81,8 @@ public class Pet extends NamedEntity {
 		return this.visits;
 	}
 
-	protected void setVisitsInternal(Collection<Visit> visits) {
-		this.visits = new LinkedHashSet<>(visits);
+    protected void setVisitsInternal(Set<Visit> visits) {
+        this.visits = visits;
 	}
 
 	public List<Visit> getVisits() {
@@ -92,7 +93,7 @@ public class Pet extends NamedEntity {
 
 	public void addVisit(Visit visit) {
 		getVisitsInternal().add(visit);
-		visit.setPetId(this.getId());
+		visit.setPet(this);
 	}
 
 }

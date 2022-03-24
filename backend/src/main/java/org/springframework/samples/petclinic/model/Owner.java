@@ -47,7 +47,7 @@ public class Owner extends Person {
 	@NotEmpty
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
 	private Set<Pet> pets;
 
 	public String getAddress() {
@@ -92,9 +92,7 @@ public class Owner extends Person {
 	}
 
 	public void addPet(Pet pet) {
-		if (pet.isNew()) {
-			getPetsInternal().add(pet);
-		}
+		getPetsInternal().add(pet);
 		pet.setOwner(this);
 	}
 
