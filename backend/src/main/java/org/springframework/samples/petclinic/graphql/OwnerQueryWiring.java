@@ -9,6 +9,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.OwnerFilter;
 import org.springframework.samples.petclinic.model.OwnerOrder;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.repository.springdatajpa.SpringDataOwnerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -55,9 +56,7 @@ public class OwnerQueryWiring implements RuntimeWiringConfigurer {
 
         final PageRequest pageRequest = PageRequest.of(pageNo, sizeNo, sort);
 
-        // TODO SPRING-GRAPHQL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        throw new UnsupportedOperationException("THIS NEEDS TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        return new OwnerSearchResult(ownerRepository.findAll(filter.orElse(null), pageRequest));
+        return new OwnerSearchResult(ownerRepository.findAll(filter.orElse(null), pageRequest));
     }
 
     private Owner owner(DataFetchingEnvironment env) {

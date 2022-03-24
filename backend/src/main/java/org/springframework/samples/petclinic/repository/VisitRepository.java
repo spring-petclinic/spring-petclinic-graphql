@@ -50,4 +50,5 @@ public interface VisitRepository {
 
 	void delete(Visit visit) throws DataAccessException;
 
+    List<Visit> findByVetId(Integer id);
 }

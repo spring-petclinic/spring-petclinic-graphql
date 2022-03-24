@@ -18,9 +18,14 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 import java.util.Collection;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 
@@ -32,7 +37,7 @@ import org.springframework.samples.petclinic.repository.OwnerRepository;
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataOwnerRepository extends OwnerRepository, Repository<Owner, Integer> {
+public interface SpringDataOwnerRepository extends OwnerRepository, Repository<Owner, Integer>, JpaSpecificationExecutor<Owner> {
 
     @Override
     @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
@@ -41,4 +46,6 @@ public interface SpringDataOwnerRepository extends OwnerRepository, Repository<O
     @Override
     @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
     public Owner findById(@Param("id") Integer id);
+
+    Page<Owner> findAll(@Nullable Specification<Owner> spec, Pageable pageable);
 }

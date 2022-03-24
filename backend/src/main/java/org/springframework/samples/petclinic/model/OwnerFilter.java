@@ -16,7 +16,7 @@ import java.util.Optional;
  * @author Xiangbin HAN (hanxb2001@163.com)
  * @author Nils Hartmann
  */
-public class OwnerFilter  {
+public class OwnerFilter  implements Specification<Owner> {
 
     private String firstName;
     private String lastName;
@@ -191,4 +191,39 @@ public class OwnerFilter  {
         nonNullFilter.map(f -> f.getCity()).ifPresent(item -> params.put("city", item));
         nonNullFilter.map(f -> f.getTelephone()).ifPresent(item -> params.put("telephone", item));
     }
+
+    @Override
+    public Predicate toPredicate(Root<Owner> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        var predicates = new LinkedList<Predicate>();
+
+        if (isSet(firstName)) {
+            predicates.add(criteriaBuilder.like(root.get("firstName"), "%" + firstName + "%"));
+        }
+
+        if (isSet(lastName)) {
+            predicates.add(criteriaBuilder.like(root.get("lastName"), "%" + lastName + "%"));
+        }
+
+        if (isSet(address)) {
+            predicates.add(criteriaBuilder.like(root.get("address"), "%" + address + "%"));
+        }
+
+        if (isSet(city)) {
+            predicates.add(criteriaBuilder.equal(root.get("city"), city));
+        }
+
+        if (isSet(telephone)) {
+            predicates.add(criteriaBuilder.equal(root.get("telephone"), telephone));
+        }
+
+        if (predicates.isEmpty()) {
+            return null;
+        }
+        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    }
+
+    private boolean isSet(String s) {
+        return s != null && !s.isBlank();
+    }
+
 }

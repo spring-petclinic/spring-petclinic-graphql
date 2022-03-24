@@ -19,6 +19,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.OwnerFilter;
@@ -87,6 +91,12 @@ public interface OwnerRepository {
      *
      */
 	void delete(Owner owner) throws DataAccessException;
+
+    default Page<Owner> findAll(@Nullable Specification<Owner> spec, Pageable pageable) {
+        throw new UnsupportedOperationException("findAll with specification only supported in spring-data-jpa repo currently!");
+    }
+
+
 
 
 }

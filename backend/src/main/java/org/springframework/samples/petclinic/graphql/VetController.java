@@ -44,11 +44,8 @@ public class VetController {
 
     @SchemaMapping
     public VisitConnection visits(Vet vet) {
-        // TODO SPRING-GRAPHQL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        throw new UnsupportedOperationException("THIS NEEDS TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-//        List<Visit> visitList = visitRepository.findByVetId(vet.getId());
-//        return new VisitConnection(visitList);
+        List<Visit> visitList = visitRepository.findByVetId(vet.getId());
+        return new VisitConnection(visitList);
     }
 
     @MutationMapping

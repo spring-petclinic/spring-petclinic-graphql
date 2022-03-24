@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
@@ -65,7 +66,14 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
         return query.getResultList();
     }
 
-	@Override
+    @Override
+    public List<Visit> findByVetId(Integer vetId) {
+        TypedQuery<Visit> query = this.em.createQuery("SELECT v FROM Visit v where v.vetId= :id", Visit.class);
+        query.setParameter("id", vetId);
+        return query.getResultList();
+    }
+
+    @Override
 	public Visit findById(Integer id) throws DataAccessException {
 		return this.em.find(Visit.class, id);
 	}
@@ -79,7 +87,7 @@ public class JpaVisitRepositoryImpl implements VisitRepository {
 	@Override
 	public void delete(Visit visit) throws DataAccessException {
 		String visitId = visit.getId().toString();
-		this.em.createQuery("DELETE FROM Visit visit WHERE id=" + visitId).executeUpdate();
+		this.em.createQuery("DELETE FROM Visit visit WHERE visit.id=" + visitId).executeUpdate();
 		if (em.contains(visit)) {
 			em.remove(visit);
 		}
