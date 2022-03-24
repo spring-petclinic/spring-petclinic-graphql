@@ -13,16 +13,6 @@ public class AddVisitInput {
     private LocalDate date;
     private String description;
 
-    public static AddVisitInput fromArgument(Map<String, Object> argument) {
-        AddVisitInput addVisitInput = new AddVisitInput();
-        addVisitInput.setPetId((int)argument.get("petId"));
-        addVisitInput.setVetId(Optional.ofNullable((Integer)argument.get("vetId")));
-        addVisitInput.setDate((LocalDate) argument.get("date"));
-        addVisitInput.setDescription((String) argument.get("description"));
-
-        return addVisitInput;
-    }
-
     public int getPetId() {
         return petId;
     }

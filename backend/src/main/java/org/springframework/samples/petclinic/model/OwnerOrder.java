@@ -16,16 +16,6 @@ public class OwnerOrder {
     private OrderField field;
     private OrderType order;
 
-    public static OwnerOrder fromArgument(HashMap<String, String> argument) {
-        OwnerOrder ownerOrder = new OwnerOrder();
-        ownerOrder.setField(OrderField.valueOf(argument.get("field")));
-
-        if (argument.containsKey("order")) {
-            ownerOrder.setOrder(OrderType.valueOf(argument.get("order")));
-        }
-
-        return ownerOrder;
-    }
 
 
     @JsonProperty("field")

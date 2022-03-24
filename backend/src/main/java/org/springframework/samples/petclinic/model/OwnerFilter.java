@@ -24,20 +24,20 @@ public class OwnerFilter  implements Specification<Owner> {
     private String city;
     private String telephone;
 
-    public static Optional<OwnerFilter> fromArgument(HashMap<String, String> argument) {
-        if (argument == null) {
-            return Optional.empty();
-        }
-
-        OwnerFilter ownerFilter = new OwnerFilter();
-        ownerFilter.setFirstName(argument.get("firstName"));
-        ownerFilter.setLastName(argument.get("lastName"));
-        ownerFilter.setAddress(argument.get("address"));
-        ownerFilter.setCity(argument.get("city"));
-        ownerFilter.setTelephone(argument.get("telephone"));
-
-        return Optional.of(ownerFilter);
-    }
+//    public static Optional<OwnerFilter> fromArgument(HashMap<String, String> argument) {
+//        if (argument == null) {
+//            return Optional.empty();
+//        }
+//
+//        OwnerFilter ownerFilter = new OwnerFilter();
+//        ownerFilter.setFirstName(argument.get("firstName"));
+//        ownerFilter.setLastName(argument.get("lastName"));
+//        ownerFilter.setAddress(argument.get("address"));
+//        ownerFilter.setCity(argument.get("city"));
+//        ownerFilter.setTelephone(argument.get("telephone"));
+//
+//        return Optional.of(ownerFilter);
+//    }
 
     public String getFirstName() {
         return firstName;
