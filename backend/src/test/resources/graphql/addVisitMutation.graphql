@@ -1,0 +1,17 @@
+mutation {
+    addVisit(input:{
+        petId:1,
+        description:"hurray",
+        date:"2020/12/31",
+    }) {
+        visit {
+            date
+            id
+            description
+
+            pet {
+                id
+            }
+        }
+    }
+}

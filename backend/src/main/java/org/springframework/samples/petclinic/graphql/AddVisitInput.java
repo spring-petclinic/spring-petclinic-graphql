@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public class AddVisitInput {
     private int petId;
-    private Optional<Integer> vetId;
+    private Optional<Integer> vetId = Optional.empty();
     private LocalDate date;
     private String description;
 

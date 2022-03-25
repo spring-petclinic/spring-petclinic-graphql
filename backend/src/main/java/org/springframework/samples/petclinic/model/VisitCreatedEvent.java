@@ -2,20 +2,20 @@ package org.springframework.samples.petclinic.model;
 
 public class VisitCreatedEvent {
 
-    private final Visit visit;
+    private final Integer visitId;
 
-    public VisitCreatedEvent(Visit visit) {
-        this.visit = visit;
+    public VisitCreatedEvent(Integer visitId) {
+        this.visitId = visitId;
     }
 
-    public Visit getVisit() {
-        return visit;
+    public Integer getVisitId() {
+        return visitId;
     }
 
     @Override
     public String toString() {
         return "VisitCreatedEvent{" +
-            "visit=" + visit +
+            "visitId=" + visitId +
             '}';
     }
 }

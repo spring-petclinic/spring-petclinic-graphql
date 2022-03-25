@@ -36,7 +36,7 @@ public class VisitService {
         vetId.ifPresent(visit::setVetId);
 
         visitRepository.save(visit);
-        applicationEventPublisher.publishEvent(new VisitCreatedEvent(visit));
+        applicationEventPublisher.publishEvent(new VisitCreatedEvent(visit.getId()));
 
         return visit;
     }
