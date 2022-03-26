@@ -1,6 +1,9 @@
-# EXPERIMENTAL version of Spring PetClinic Sample Application using spring-graphql
+# Spring PetClinic Sample Application using spring-graphql
 
-This PetClinic version uses the new [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021.
+This PetClinic version uses the new [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
+and is going to be shipped with Spring Boot 2.7.
+
+This version currenty uses **Spring Boot 2.7 M3** with **GraphQL for Spring 1.0.0-M6**.
 
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
@@ -12,10 +15,9 @@ As spring-graphql is still experimental, this PetClinic is experimental and in-p
 Some features that are built in:
 
 * [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `SpecialtyController` and `VetController`)
-* GraphQL datafetchers for Queries and Mutations (see `AuthQueryWiring`)
-* Subscriptions via Websockets (see `VisitSubscriptionWiring`)  
-* Own scalar types (See `DateScalarWiring`)
-* GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `AddVetWiring`
+* Subscriptions via Websockets (see `VisitController`)  
+* Own scalar types (See `PetClinicRuntimeWiringConfiguration`)
+* GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`) 
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerQueryWiring`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
@@ -80,6 +82,3 @@ For valid users to login, see list above.
 
 If you like to help and contribute you're more than welcome! Please open [an issue](https://github.com/spring-petclinic/spring-petclinic-graphql/issues) or a [Pull Request](https://github.com/spring-petclinic/spring-petclinic-graphql/pulls)
  
-# Contact
-
-You can find [me](https://nilshartmann.net) on [Twitter](https://twitter.com/nilshartmann).
