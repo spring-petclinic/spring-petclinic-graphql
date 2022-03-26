@@ -23,7 +23,7 @@ type Query {
     owner(id: Int!): Owner!
 
     # Return the Pet with the specified id
-    pet(id: Int!): Pet!
+    pet(id: Int!): Pet
 
     # Return a List of all pets that have been registered in the PetClinic
     pets: [Pet!]!

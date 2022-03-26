@@ -28,4 +28,7 @@ public class AuthController {
     public User me(@AuthenticationPrincipal User user) {
         return user;
     }
+
+    @QueryMapping
+    public String ping() { return "pong"; }
 }

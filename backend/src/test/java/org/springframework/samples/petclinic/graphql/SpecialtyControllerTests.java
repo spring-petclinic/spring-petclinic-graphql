@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.graphql;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.test.annotation.DirtiesContext;
 
 public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
 
@@ -23,6 +24,7 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
+    @DirtiesContext
     public void updateSpecialtyWorks() {
         String query = "mutation {" +
             "  updateSpecialty(input: {specialtyId: 1, name: \"test\"}) {" +
@@ -41,6 +43,7 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
+    @DirtiesContext
     public void addSpecialtyWorks() {
         String query = "mutation {" +
             "  addSpecialty(input: {name: \"xxx\"}) {" +
@@ -59,6 +62,7 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
+    @DirtiesContext
     public void addAndRemoveSpecialtyWorks() {
         String getQuery = "query {" +
             "  specialties {" +

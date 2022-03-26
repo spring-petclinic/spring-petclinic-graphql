@@ -3,12 +3,26 @@ package org.springframework.samples.petclinic.graphql;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Map;
 
 public class VisitControllerTests extends AbstractClinicGraphqlTests {
 
+        @Test
+        public void visit_shouldIncludeTreatingVet() {
+            userRoleGraphQlTester
+                .document("query { pet(id: 8) { id visits { visits { id treatingVet { id } } } } }")
+                .execute()
+                .path("data.pet.visits.visits[*]").entityList(Object.class).hasSize(2)
+                .path("data.pet.visits.visits[0].id").entity(String.class).isEqualTo("2")
+                .path("data.pet.visits.visits[0].treatingVet").valueIsNull()
+                .path("data.pet.visits.visits[1].id").entity(String.class).isEqualTo("3")
+                .path("data.pet.visits.visits[1].treatingVet.id").entity(String.class).isEqualTo("4");
+    }
+
     @Test
+    @DirtiesContext
     void shouldAddNewVisit() {
         userRoleGraphQlTester
             .documentName("addVisitMutation")
@@ -20,6 +34,7 @@ public class VisitControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
+    @DirtiesContext
     void shouldAddNewVisitFromVariables_And_HandlesDateCoercingInVariables(@Autowired WebGraphQlTester graphQlTester) {
         userRoleGraphQlTester
             .documentName("addVisitMutationWithVariables")
@@ -37,6 +52,7 @@ public class VisitControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
+    @DirtiesContext
     void shouldAddNewVisitFromVariablesWithVetId(@Autowired WebGraphQlTester graphQlTester) {
         userRoleGraphQlTester
             .documentName("addVisitMutationWithVariables")

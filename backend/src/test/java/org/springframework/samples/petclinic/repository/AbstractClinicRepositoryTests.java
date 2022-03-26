@@ -211,7 +211,7 @@ abstract class AbstractClinicRepositoryTests {
 
     @Test
     void shouldFindVisitsByPetId() throws Exception {
-        Collection<Visit> visits = this.visitRepository.findByPetId(7);
+        Collection<Visit> visits = this.visitRepository.findByPetIdOrderById(7);
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
         assertThat(visitArr[0].getPet()).isNotNull();

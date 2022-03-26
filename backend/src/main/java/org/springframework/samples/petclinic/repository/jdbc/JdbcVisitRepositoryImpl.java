@@ -85,7 +85,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
     }
 
     @Override
-    public List<Visit> findByPetId(Integer petId) {
+    public List<Visit> findByPetIdOrderById(Integer petId) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", petId);
         JdbcPet pet = this.namedParameterJdbcTemplate.queryForObject(
@@ -94,7 +94,7 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
                 new JdbcPetRowMapper());
 
         List<Visit> visits = this.namedParameterJdbcTemplate.query(
-            "SELECT id as visit_id, visit_date, description FROM visits WHERE pet_id=:id",
+            "SELECT id as visit_id, visit_date, description FROM visits WHERE pet_id=:id ORDER BY id",
             params, new JdbcVisitRowMapper());
 
         for (Visit visit: visits) {

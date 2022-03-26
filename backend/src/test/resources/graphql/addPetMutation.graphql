@@ -1,0 +1,25 @@
+mutation {
+    addPet(input: {
+        name: "Susi",
+        birthDate: "2019/03/17",
+        ownerId: 2,
+        typeId: 3
+    }) {
+        pet {
+            birthDate
+            name
+            id
+            type {
+                id
+            }
+
+            owner {
+                id
+            }
+
+            visits {
+                totalCount
+            }
+        }
+    }
+}
