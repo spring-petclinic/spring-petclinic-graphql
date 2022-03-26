@@ -8,6 +8,9 @@ This version currenty uses **Spring Boot 2.7 M3** with **GraphQL for Spring 1.0.
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
 
+[![Java CI with Maven](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml)
+
+
 ## Features
 
 As spring-graphql is still experimental, this PetClinic is experimental and in-progress too.
