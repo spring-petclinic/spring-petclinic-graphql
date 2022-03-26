@@ -2,22 +2,15 @@ package org.springframework.samples.petclinic.graphql;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 
 import java.util.Map;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureHttpGraphQlTester
-public class VisitControllerTest {
+public class VisitControllerTests extends AbstractClinicGraphqlTests {
+
     @Test
-    void shouldAddNewVisit(@Autowired WebGraphQlTester graphQlTester) {
-        graphQlTester.mutate()
-            .headers(TestTokens::withUserToken)
-            .build()
+    void shouldAddNewVisit() {
+        userRoleGraphQlTester
             .documentName("addVisitMutation")
             .execute()
             .path("addVisit.visit.description").entity(String.class).isEqualTo("hurray")
@@ -28,9 +21,7 @@ public class VisitControllerTest {
 
     @Test
     void shouldAddNewVisitFromVariables_And_HandlesDateCoercingInVariables(@Autowired WebGraphQlTester graphQlTester) {
-        graphQlTester.mutate()
-            .headers(TestTokens::withUserToken)
-            .build()
+        userRoleGraphQlTester
             .documentName("addVisitMutationWithVariables")
             .variable("addVisitInput", Map.of(
                 "petId", 3,//
@@ -47,9 +38,7 @@ public class VisitControllerTest {
 
     @Test
     void shouldAddNewVisitFromVariablesWithVetId(@Autowired WebGraphQlTester graphQlTester) {
-        graphQlTester.mutate()
-            .headers(TestTokens::withUserToken)
-            .build()
+        userRoleGraphQlTester
             .documentName("addVisitMutationWithVariables")
             .variable("addVisitInput", Map.of(
                 "petId", 3,//
