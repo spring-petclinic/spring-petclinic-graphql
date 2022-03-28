@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2012-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,37 +15,29 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 /**
  * Simple JavaBean domain object representing a visit.
  *
  * @author Ken Krebs
+ * @author Dave Syer
  */
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {
 
-    /**
-     * Holds value of property date.
-     */
-    @Column(name = "visit_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
-    private Date date;
+	@Column(name = "visit_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;
 
-    /**
-     * Holds value of property description.
-     */
-    @NotEmpty
-    @Column(name = "description")
-    private String description;
+	@NotEmpty
+	@Column(name = "description")
+	private String description;
 
     /**
      * Holds value of property pet.
@@ -54,67 +46,50 @@ public class Visit extends BaseEntity {
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
+    @Column(name = "vet_id")
+    private Integer vetId;
 
-    /**
-     * Creates a new instance of Visit for the current date
-     */
-    public Visit() {
-        this.date = new Date();
-    }
+	/**
+	 * Creates a new instance of Visit for the current date
+	 */
+	public Visit() {
+		this.date = LocalDate.now();
+	}
 
+	public LocalDate getDate() {
+		return this.date;
+	}
 
-    /**
-     * Getter for property date.
-     *
-     * @return Value of property date.
-     */
-    public Date getDate() {
-        return this.date;
-    }
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
-    /**
-     * Setter for property date.
-     *
-     * @param date New value of property date.
-     */
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public String getDescription() {
+		return this.description;
+	}
 
-    /**
-     * Getter for property description.
-     *
-     * @return Value of property description.
-     */
-    public String getDescription() {
-        return this.description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    /**
-     * Setter for property description.
-     *
-     * @param description New value of property description.
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Getter for property pet.
-     *
-     * @return Value of property pet.
-     */
     public Pet getPet() {
-        return this.pet;
+        return pet;
     }
 
-    /**
-     * Setter for property pet.
-     *
-     * @param pet New value of property pet.
-     */
     public void setPet(Pet pet) {
         this.pet = pet;
     }
 
+    public Integer getVetId() {
+        return vetId;
+    }
+
+
+    public void setVetId(Integer vetId) {
+        this.vetId = vetId;
+    }
+
+    public boolean hasVetId() {
+	    return this.vetId != null;
+    }
 }

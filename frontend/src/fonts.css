@@ -1,0 +1,172 @@
+@layer base {
+  /* from https://github.com/spring-io/sagan/blob/b23162035bb467fd6b1c0ed12a787cbc045c470f/sagan-client/src/css/main.css */
+  @font-face {
+    font-family: "Metropolis";
+    src: url("./fonts/metropolis-regular-webfont.woff2") format("woff2"),
+      url("./fonts/metropolis-regular-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("./fonts/metropolis-bold-webfont.woff2") format("woff2"),
+      url("./fonts/metropolis-bold-webfont.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Metropolis";
+    src: url("./fonts/metropolis-extrabold-webfont.woff2") format("woff2"),
+      url("./fonts/metropolis-extrabold-webfont.woff") format("woff");
+    font-weight: 600;
+    font-style: normal;
+  }
+  /* open-sans-regular - latin */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.svg#OpenSans")
+        format("svg"); /* Legacy iOS */
+  }
+  /* open-sans-italic - latin */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.svg#OpenSans")
+        format("svg"); /* Legacy iOS */
+  }
+  /* open-sans-600 - latin */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.svg#OpenSans")
+        format("svg"); /* Legacy iOS */
+  }
+  /* open-sans-700 - latin */
+  @font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.svg#OpenSans")
+        format("svg"); /* Legacy iOS */
+  }
+  /* work-sans-regular - latin */
+  @font-face {
+    font-family: "Work Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.svg#WorkSans")
+        format("svg"); /* Legacy iOS */
+  }
+  /* work-sans-700 - latin */
+  @font-face {
+    font-family: "Work Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.eot"); /* IE9 Compat Modes */
+    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.woff2")
+        format("woff2"),
+      /* Super Modern Browsers */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.woff")
+        format("woff"),
+      /* Modern Browsers */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.ttf")
+        format("truetype"),
+      /* Safari, Android, iOS */
+        url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.svg#WorkSans")
+        format("svg"); /* Legacy iOS */
+  }
+}
+@layer base {
+  html {
+    @apply font-open-sans;
+  }
+
+  html,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  strong {
+    @apply text-spr-black;
+  }
+  h1 {
+    @apply text-2xl font-open-sans;
+  }
+
+  p {
+    @apply text-spr-gray-dark;
+  }
+}

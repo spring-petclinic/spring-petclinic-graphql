@@ -1,0 +1,22 @@
+mutation($specialtyIds: [Int!]!) {
+    addVet(input: {
+        firstName: "Klaus", lastName: "Smith"
+        specialtyIds: $specialtyIds
+    }) {
+        ... on AddVetErrorPayload {
+            error
+        }
+
+        ... on AddVetSuccessPayload {
+            vet {
+                id
+                firstName
+                lastName
+                specialties {
+                    id
+                    name
+                }
+            }
+        }
+    }
+}

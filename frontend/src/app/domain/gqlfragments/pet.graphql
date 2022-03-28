@@ -1,9 +1,0 @@
-fragment pet on Pet {
-  id
-  name
-  birthDate
-  type {
-    id
-    name
-  }
-}

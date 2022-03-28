@@ -1,0 +1,23 @@
+query VetAndVisits($vetId: Int!) {
+  vet(id: $vetId) {
+    id
+    firstName
+    lastName
+    visits {
+      visits {
+        date
+        description
+        pet {
+          id
+          name
+
+          owner {
+            id
+            lastName
+            firstName
+          }
+        }
+      }
+    }
+  }
+}

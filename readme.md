@@ -1,146 +1,222 @@
-**NOTE** There is a **new** experimental version using the new **spring-graphql** project. You can find that example on the [spring-graphql branch](https://github.com/spring-petclinic/spring-petclinic-graphql/tree/spring-graphql) in this repository.
+# Spring PetClinic Sample Application using spring-graphql
+
+This PetClinic version uses the new [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
+and is going to be shipped with Spring Boot 2.7.
+
+This version currenty uses **Spring Boot 2.7 M3** with **GraphQL for Spring 1.0.0-M6**.
+
+It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
+provides an example Frontend for the API.
+
 [![Java CI with Maven](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml)
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-petclinic/spring-petclinic-graphql)
 
-# GraphQL version of Spring PetClinic Sample Application
+## Features
 
-This is a [GraphQL API](http://graphql.org/) version of the Spring PetClinic Application. It consists of two parts:
+As spring-graphql is still experimental, this PetClinic is experimental and in-progress too.
 
-* The Spring Boot-based backend, that uses the graphql-java implementation for the server-side GraphQL Api implementation
-* The React-based frontend, that uses React Apollo for running GraphQL queries.
+Some features that are built in:
 
-**Note** This project is in very early stage and has much room for improvement! If you like to help, I'd be more than happy! 
-You can for example open [an issue](https://github.com/spring-petclinic/spring-petclinic-graphql/issues) for discussing things or a [Pull Request](https://github.com/spring-petclinic/spring-petclinic-graphql/pulls) to contribute. 
+* [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `SpecialtyController` and `VetController`)
+* Subscriptions via Websockets (see `VisitController#onNewVisit`)  
+* Own scalar types (See `PetClinicRuntimeWiringConfiguration` and `DateCoercing`)
+* GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
+* Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
+  * Example: ´addVet` mutation is only allowed for users with `ROLE_MANAGER` 
+* Pagination and Sorting of results: implemented with `spring-data`, see `OwnerQueryWiring`
+* Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
-## The Backend
- 
-The backend code in this repository is based on the Rest example
-https://github.com/spring-petclinic/spring-petclinic-rest. Instead of the
-`org.springframework.samples.petclinic.rest` package it contains
-a `org.springframework.samples.petclinic.graphql` package that contains
-the resolvers for the GraphQL API.
+# Running the sample application
 
-### GraphQL Java implementation
+You can run the sample application with two ways:
 
-GraphQL frameworks used in this example:
- 
- * [graphql-java-tools](https://github.com/graphql-java/graphql-java-tools)
- * [graphql-spring-boot](https://github.com/graphql-java/graphql-spring-boot)
+1. The easiest way: run it pre-configured in cloud IDE [GitPod](https://www.gitpod.io/)
+2. Run it locally
 
-## The frontend
+## Run it in GitPod
 
-The frontend is implemented in [TypeScript](http://www.typescriptlang.org/) and uses [React](https://facebook.github.io/react/) for
-the UI.
+To run the application (backend, GraphiQL and React frontend) in GitPod, simply click on the "Open in GitPod" button at the top of this README.
 
-GraphQL frameworks used in the frontend:
+- Note that you need a (free) GitPod account.
+- And please make sure that you allow your browser opening new tabs/windows from gitpod.io!
 
-* [React Apollo](http://dev.apollodata.com/react/)
-* [Apollo GraphQL code generator](https://github.com/apollographql/apollo-codegen) for generating TypeScript types for the queries (only at development time) 
+After clicking on the GitPod button, GitPod creates a new workspace including an Editor for you, builds the application and starts
+backend and frontend. That might take some time!
 
-## Running petclinic locally
-First clone the application:
+When backend and frontend are running, GitPod opens two new browser tabs, one with GraphiQL and one with the
+PetClinic backend. For login options, see below "Accessing the GraphQL API"
 
-```bash
-git clone https://github.com/spring-petclinic/spring-petclinic-graphql.git
+Note that the workspace is your personal workspace, you can make changes, save files, re-open the workspace at any
+time and you can even create git commits and pull requests from it. For more information see GitPod documentation.
+
+In the GitPod editor you can make changes to the app, and after saving the app will be recompiled and redeployed automatically.
+
+![SpringBoot PetClinic in GitPod Workspace](gitpod.png)
+
+
+## Running locally
+
+The server is implemented in the `backend` folder and can be started either from your IDE (`org.springframework.samples.petclinic.PetClinicApplication`) or
+using maven from the root folder of the repository:
+
+```
+./mvnw spring-boot:run -pl backend
 ```
 
-Then build and start the SpringBoot backend using Maven:
+Note: the server runs on port **9977**, so make sure, this port is available.
 
-```bash
-cd spring-petclinic-graphql/backend
-./mvnw spring-boot:run
+(The server uses an in-memory database, so no external DB is needed)
+
+
+
+## Running the frontend
+
+While you can access the whole GraphQL API from GraphiQL this demo application also
+contains a modified version of the classic PetClinic UI. Compared to the original
+client this client is built as a Single-Page-Application using **React** and **Apollo GraphQL**
+and has slightly different features to make it a more realistic use-case for GraphQL.
+
+You can install and start the frontend by using npm:
+
+```
+cd ./frontend
+
+npm install
+
+npm run build:css
+
+npm run generate
+
+npm start
 ```
 
-Finally build and start the frontend:
+The running frontend can be accessed on [http://localhost:3000](http://localhost:3000).
 
-```bash
-cd spring-petclinic-graphql/frontend
-# install dependencies
-yarn install
-	
-# start application
-yarn start
+For valid users to login, see list above.
+
+![SpringBoot PetClinic, React Frontend](petclinic-ui.png)
+
+# Accessing the GraphQL API
+
+You can access the GraphQL API via the included customized version of GraphiQL.
+
+The included GraphiQL adds support for login to the original GraphiQL.
+
+You can use the following users for login:
+
+* **joe/joe**: Regular user
+* **susi/susi**: has Manager Role and is allowed to execute the `createVet` Mutation
+
+After starting the server, GraphiQL runs on [http://localhost:9977](http://localhost:9977)
+
+
+## Sample Queries
+
+Here you can find some sample queries that you can copy+paste and run in GraphiQL. Feel free to explore and try more 😊.
+
+**Query** all owners whose lastname starts with "K" and their pets: 
+```graphql
+query {
+  owners(filter: {lastName: "K"}) {
+    pageInfo {
+      totalCount
+    }
+    owners {
+      id
+      firstName
+      lastName
+      pets {
+        id
+        name
+      }
+    }
+  }
+}
 ```
 
-After running you can access:
-* The [GraphiQL explorer](https://github.com/graphql/graphiql): [http://localhost:9977/](http://localhost:9977/)
-* The frontend: [http://localhost:8080/](http://localhost:8080/) (In case something else runs on Port 8080 another 
-port like 8081 is automatically chosen)
+Add a new Visit using a **mutation** (can be done with user `joe` and `susi`) and read id and pet of the
+new created visit:
 
-![SpringBoot PetClinic, GraphQL Edition](screenshot.png)
+```graphql
+mutation {
+    addVisit(input:{
+        petId:3,
+        description:"Check teeth",
+        date:"2022/03/30",
+        vetId:1
+    }) {
+        newVisit:visit {
+            id
+            pet {
+                id 
+                name 
+                birthDate
+            }
+        }
+    }
+}
+```
 
-# Background: GraphQL
+Add a new veterinarian. This is only allowed for users with `ROLE_MANAGER` and that is `susi`:
+```graphql
+mutation {
+  addVet(input: {
+      firstName: "Dagmar", 
+      lastName: "Smith", 
+      specialtyIds: [1, 3]}) {
+      
+    ... on AddVetSuccessPayload {
+      newVet: vet {
+        id
+        specialties {
+          id
+          name
+        }
+      }
+    }
+      
+    ... on AddVetErrorPayload {
+      error
+    }
+  }
+}
+```
 
-You can find some slides with some GraphQL background informations here: https://spring-petclinic.github.io/spring-petclinic-graphql/talk/graphql-introduction.html 
+Listen for new visits using a **Subscription**
+
+Hint: open Graphiql in two browser tabs in parallel. In 1st window, run the following subscription,
+in the 2nd tab create than a new Visit (see above for an example). The new Visit should automatically
+be seen in 2nd tab, after the Mutation in 1st tab completes.
+
+This mutation selects the treating veterinarian of the new created Visit and the pet that will be visiting.
+
+```graphql
+
+subscription {
+    onNewVisit {
+        description
+        treatingVet {
+            id
+            firstName
+            lastName
+        }
+        pet {
+            id
+            name
+        }
+    }
+
+}
+```
+
+**Note**: The WebSocket/Subscription support in GraphiQL is far from being robust. Use with care!
+
+![SpringBoot PetClinic, GraphiQL](graphiql.png)
+
 
 # Contributing
 
 If you like to help and contribute you're more than welcome! Please open [an issue](https://github.com/spring-petclinic/spring-petclinic-graphql/issues) or a [Pull Request](https://github.com/spring-petclinic/spring-petclinic-graphql/pulls)
- 
-# Contact
 
-You can find [me](https://nilshartmann.net) on [Twitter](https://twitter.com/nilshartmann).
-
-# From the original PetClinic README
-
-## Understanding the Spring Petclinic application with a few diagrams
-<a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
-
-
-## Database configuration
-
-(Note: this is unrelated to GraphQL)
-
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
-gets populated at startup with data.
-A similar setups is provided for MySql and PostgreSQL in case a persistent database configuration is needed.
-To run petclinic locally using persistent database, it is needed to change profile defined in application.properties file.
-
-For MySQL database, it is needed to change param "hsqldb" to "mysql" in string
-```
-spring.profiles.active=hsqldb,spring-data-jpa
-```
- defined in application.properties file.
-
-Before do this, would be good to check properties defined in application-mysql.properties file.
-
-```
-spring.datasource.url = jdbc:mysql://localhost:3306/petclinic?useUnicode=true
-spring.datasource.driverClassName = com.mysql.jdbc.Driver
-spring.datasource.username=root 
-spring.datasource.password=petclinic 
-spring.datasource.driver-class-name=com.mysql.jdbc.Driver 
-spring.jpa.database=MYSQL 
-spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
-spring.jpa.hibernate.ddl-auto=none
-```      
-
-You may also start a MySql database with docker:
-
-```
-docker run --name mysql-petclinic -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
-```
-
-For PostgeSQL database, it is needed to change param "hsqldb" to "postgresql" in string
-```
-spring.profiles.active=hsqldb,spring-data-jpa
-```
- defined in applcation.properties file.
-
-Before do this, would be good to check properties defined in application-postgresql.properties file.
-
-```
-spring.datasource.url=jdbc:postgresql://localhost:5432/petclinic
-spring.datasource.driverClassName=org.postgresql.Driver
-spring.datasource.username=postgres
-spring.datasource.password=petclinic
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database=POSTGRESQL
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=none
-```
-You may also start a Postgres database with docker:
-
-```
-docker run --name postgres-petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 -d postgres:9.6.0
-```
+Initial implementation of this GraphQL-based PetClinic example: [Nils Hartmann](https://nilshartmann.net), [Twitter](https://twitter.com/nilshartmann) 

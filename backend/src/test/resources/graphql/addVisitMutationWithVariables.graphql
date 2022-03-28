@@ -1,0 +1,17 @@
+mutation($addVisitInput: AddVisitInput!) {
+    addVisit(input:$addVisitInput) {
+        visit {
+            date
+            id
+            description
+
+            pet {
+                id
+            }
+
+            treatingVet {
+                id
+            }
+        }
+    }
+}

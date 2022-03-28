@@ -1,0 +1,20 @@
+mutation($updatePetInput: UpdatePetInput!) {
+    updatePet(input: $updatePetInput) {
+        pet {
+            birthDate
+            name
+            id
+            type {
+                id
+            }
+
+            owner {
+                id
+            }
+
+            visits {
+                totalCount
+            }
+        }
+    }
+}

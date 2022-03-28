@@ -16,7 +16,10 @@
 
 package org.springframework.samples.petclinic.util;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -27,7 +30,7 @@ import org.springframework.samples.petclinic.model.BaseEntity;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @see org.springframework.samples.petclinic.model.BaseEntity
+ * @see BaseEntity
  * @since 29.10.2003
  */
 public abstract class EntityUtils {
@@ -49,6 +52,11 @@ public abstract class EntityUtils {
             }
         }
         throw new ObjectRetrievalFailureException(entityClass, entityId);
+    }
+
+    public static LocalDate asDateTime(Date date) {
+        return LocalDate.ofInstant(new Date(date.getTime()).toInstant(), ZoneId.systemDefault());
+
     }
 
 }

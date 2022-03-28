@@ -1,0 +1,52 @@
+@layer components {
+  .Button--primary {
+    @apply hover:bg-spr-green-dark
+      uppercase
+      py-1.5 
+      px-3.5
+      font-medium
+    bg-spr-green
+    text-spr-white
+    border-spr-green
+      border 
+      rounded;
+  }
+
+  .Button--link {
+    @apply uppercase
+      font-bold
+      py-1.5 
+      px-3.5
+    text-spr-blue
+      hover:underline
+      hover:bg-spr-white;
+  }
+
+  .Button--secondary {
+    @apply bg-gray-50 
+    text-spr-black
+      uppercase
+      py-1.5 
+      px-3.5
+      font-medium
+   hover:bg-spr-green-dark
+    hover:text-spr-white
+    hover:border-spr-green
+    border-gray-500
+      border 
+      rounded;
+  }
+
+  .Button--primary:disabled,
+  .Button--primary:disabled {
+    @apply text-gray-400 cursor-default border-spr-green-light bg-spr-green-light;
+  }
+
+  .NavLink {
+    @apply text-spr-black hover:bg-spr-white px-4 py-2 h-12 text-sm font-bold uppercase border-t-4 border-spr-green-light  hover:border-spr-green;
+  }
+
+  .NavLink--active {
+    @apply bg-spr-white  border-t-4 border-spr-green;
+  }
+}

@@ -15,26 +15,21 @@
  */
 package org.springframework.samples.petclinic.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collection;
-import java.util.Date;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Specialty;
-import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.model.*;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p> Base class for Repository integration tests. </p> <p> Subclasses should specify Spring context
@@ -160,7 +155,7 @@ abstract class AbstractClinicRepositoryTests {
         pet.setName("bowser");
         Collection<PetType> types = this.petRepository.findPetTypes();
         pet.setType(EntityUtils.getById(types, PetType.class, 2));
-        pet.setBirthDate(new Date());
+        pet.setBirthDate(EntityUtils.asDateTime(new Date()));
         owner6.addPet(pet);
         assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 
@@ -216,7 +211,7 @@ abstract class AbstractClinicRepositoryTests {
 
     @Test
     void shouldFindVisitsByPetId() throws Exception {
-        Collection<Visit> visits = this.visitRepository.findByPetId(7);
+        Collection<Visit> visits = this.visitRepository.findByPetIdOrderById(7);
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
         assertThat(visitArr[0].getPet()).isNotNull();
@@ -273,7 +268,7 @@ abstract class AbstractClinicRepositoryTests {
 
         Visit visit = new Visit();
         visit.setPet(pet);
-        visit.setDate(new Date());
+        visit.setDate(EntityUtils.asDateTime(new Date()));
         visit.setDescription("new visit");
 
 

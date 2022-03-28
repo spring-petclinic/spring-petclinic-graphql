@@ -1,8 +1,0 @@
-mutation removeSpecialty($input: RemoveSpecialtyInput!) {
-  removeSpecialty(input: $input) {
-    specialties {
-      id
-      name
-    }
-  }
-}

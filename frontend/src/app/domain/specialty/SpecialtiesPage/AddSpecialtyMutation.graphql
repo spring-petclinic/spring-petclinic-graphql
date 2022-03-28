@@ -1,8 +1,0 @@
-mutation addSpecialty($input: AddSpecialtyInput!) {
-  addSpecialty(input: $input) {
-    specialty {
-      id
-      name
-    }
-  }
-}

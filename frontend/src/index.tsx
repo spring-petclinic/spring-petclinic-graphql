@@ -1,36 +1,59 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { AppContainer } from "react-hot-loader";
-import { ApolloProvider } from "react-apollo";
+import React from "react";
+import ReactDOM from "react-dom";
+import "./main.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { AuthTokenProvider } from "login/AuthTokenProvider";
+import { graphqlApiUrl } from "./urls";
 
-import "./app/ui/styles/less/petclinic.less";
-import { createGraphQLClient } from "./createGraphQLClient";
-import App from "./app/App";
+const httpLink = createHttpLink({
+  uri: graphqlApiUrl,
+});
 
-const graphQLClient = createGraphQLClient();
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("petclinic.token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
 
-const renderApp = (Component: typeof App) => {
-  ReactDOM.render(
-    <AppContainer>
-      <ApolloProvider client={graphQLClient}>
-        <BrowserRouter>
-          <Component />
-        </BrowserRouter>
-      </ApolloProvider>
-    </AppContainer>,
-    document.getElementById("mount")
-  );
-};
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        keyFields: ["username"],
+      },
+    },
+  }),
+});
 
-renderApp(App);
+ReactDOM.render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <Router>
+        <AuthTokenProvider>
+          <App />
+        </AuthTokenProvider>
+      </Router>
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
 
-if (module.hot) {
-  module.hot.accept("./app/App", () => {
-    // Hot Re-load should work without re-require according to Webpack 2 docs,
-    // but does not
-    const NextApp = require<RequireImport>("./app/App").default;
-    renderApp(NextApp);
-  });
-}
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
