@@ -17,6 +17,8 @@ import java.util.Date;
 
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)
+ *
+ * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
  */
 @Service
 public class JwtTokenService {

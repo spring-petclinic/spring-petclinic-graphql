@@ -3,16 +3,24 @@ package org.springframework.samples.petclinic.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.samples.petclinic.auth.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,35 +33,42 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Adds JWT-based Authentication and Authorization to the server
  *
+ * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
+ *
  * @author Nils Hartmann
  */
-@EnableWebSecurity
+@Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // Enable @PreAuthorize method-level security
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig  {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserRepository userRepository;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userRepository = userRepository;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(username -> userRepository
+    @Bean
+    public UserDetailsService userDetailsService( UserRepository userRepository) {
+        return username -> userRepository
             .findByUsername(username)
             .orElseThrow(
                 () -> new UsernameNotFoundException(
                     username
                 )
-            ));
+            );
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public AuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
+        p.setUserDetailsService(userDetailsService);
+        return p;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
         http.cors();
@@ -91,6 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Register JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
+
+        return http.build();
     }
 
     @Bean
@@ -113,11 +130,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 }

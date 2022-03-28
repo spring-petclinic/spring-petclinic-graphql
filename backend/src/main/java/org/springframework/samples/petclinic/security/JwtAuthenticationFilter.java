@@ -23,6 +23,8 @@ import java.io.IOException;
  * - if no authentication header is set, no authentication is done
  * - if the given jwt token is either invalid (bad format for example) or expired, authentication is denied
  *
+ * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
+ *
  * @author Nils Hartmann
  */
 @Component
