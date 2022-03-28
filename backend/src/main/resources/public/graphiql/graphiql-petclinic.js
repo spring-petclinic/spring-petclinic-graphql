@@ -114,9 +114,16 @@ function initGraphiQL() {
       });
     }
 
+
     function buildFetcher() {
+      const wsHost = window.location.href
+        .replace("https", "wss")
+        .replace("http", "ws");
+
+      const url = `${wsHost}graphql?token=${token}`
+
       const wsClient = graphqlWs.createClient({
-        url: `ws://localhost:9977/graphql?token=${token}`
+        url
       });
 
       return window.GraphiQLSubscriptionsFetcher.graphQLFetcher(wsClient, graphQLFetcher);
