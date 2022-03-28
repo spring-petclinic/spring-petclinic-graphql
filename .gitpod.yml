@@ -1,5 +1,16 @@
 tasks:
+  - name: Build
+    init: |
+      echo "Start" >> ./time.txt
+      date >> ./time.txt
+      cat ./time.txt
+      ./mvnw package -Dmaven.test.skip=true -pl backend
+      date >> ./time.txt
+      echo "Fertig" >> ./time.txt
+      gp sync-done build
   - name: "Run Petclinic Backend"
+    init: |
+      gp sync-await build
     command: |
       export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3000`
       ./mvnw spring-boot:run -pl backend
