@@ -20,7 +20,6 @@ Use a more readable tab size (opinionated).
 */
 
 :root {
-  -moz-tab-size: 4;
   tab-size: 4;
 }
 
@@ -553,8 +552,7 @@ video {
       textarea,
       select
      {
-  -webkit-appearance: none;
-          appearance: none;
+  appearance: none;
   background-color: #fff;
   border-color: #737373;
   border-width: 1px;
@@ -617,8 +615,7 @@ select {
       [type='checkbox'],
       [type='radio']
      {
-  -webkit-appearance: none;
-          appearance: none;
+  appearance: none;
   padding: 0;
   -webkit-print-color-adjust: exact;
           color-adjust: exact;
@@ -2410,8 +2407,7 @@ p {
 }
 
 .appearance-none {
-  -webkit-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 
 .bg-fixed {
@@ -25457,8 +25453,7 @@ p {
   }
 
   .sm\:appearance-none {
-    -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
   }
 
   .sm\:bg-fixed {
@@ -48461,8 +48456,7 @@ p {
   }
 
   .md\:appearance-none {
-    -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
   }
 
   .md\:bg-fixed {
@@ -71465,8 +71459,7 @@ p {
   }
 
   .lg\:appearance-none {
-    -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
   }
 
   .lg\:bg-fixed {
@@ -94469,8 +94462,7 @@ p {
   }
 
   .xl\:appearance-none {
-    -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
   }
 
   .xl\:bg-fixed {
@@ -117473,8 +117465,7 @@ p {
   }
 
   .\32xl\:appearance-none {
-    -webkit-appearance: none;
-            appearance: none;
+    appearance: none;
   }
 
   .\32xl\:bg-fixed {
