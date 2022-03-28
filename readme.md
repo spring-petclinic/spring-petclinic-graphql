@@ -110,6 +110,106 @@ You can use the following users for login:
 
 After starting the server, GraphiQL runs on [http://localhost:9977](http://localhost:9977)
 
+
+## Sample Queries
+
+Here you can find some sample queries that you can copy+paste and run in GraphiQL. Feel free to explore and try more 😊.
+
+**Query** all owners whose lastname starts with "K" and their pets: 
+```graphql
+query {
+  owners(filter: {lastName: "K"}) {
+    pageInfo {
+      totalCount
+    }
+    owners {
+      id
+      firstName
+      lastName
+      pets {
+        id
+        name
+      }
+    }
+  }
+}
+```
+
+Add a new Visit using a **mutation** (can be done with user `joe` and `susi`) and read id and pet of the
+new created visit:
+
+```graphql
+mutation {
+    addVisit(input:{
+        petId:3,
+        description:"Check teeth",
+        date:"2022/03/30",
+        vetId:1
+    }) {
+        newVisit:visit {
+            id
+            pet {
+                id 
+                name 
+                birthDate
+            }
+        }
+    }
+}
+```
+
+Add a new veterinarian. This is only allowed for users with `ROLE_MANAGER` and that is `susi`:
+```graphql
+mutation {
+  addVet(input: {
+      firstName: "Dagmar", 
+      lastName: "Smith", 
+      specialtyIds: [1, 3]}) {
+      
+    ... on AddVetSuccessPayload {
+      newVet: vet {
+        id
+        specialties {
+          id
+          name
+        }
+      }
+    }
+      
+    ... on AddVetErrorPayload {
+      error
+    }
+  }
+}
+```
+
+Listen for new visits using a **Subscription**
+
+Hint: open Graphiql in two browser tabs in parallel. In 1st window, run the following subscription,
+in the 2nd tab create than a new Visit (see above for an example). The new Visit should automatically
+be seen in 2nd tab, after the Mutation in 1st tab completes.
+
+This mutation selects the treating veterinarian of the new created Visit and the pet that will be visiting.
+
+```graphql
+
+subscription {
+    onNewVisit {
+        description
+        treatingVet {
+            id
+            firstName
+            lastName
+        }
+        pet {
+            id
+            name
+        }
+    }
+
+}
+```
+
 **Note**: The WebSocket/Subscription support in GraphiQL is far from being robust. Use with care!
 
 ![SpringBoot PetClinic, GraphiQL](graphiql.png)
@@ -118,4 +218,5 @@ After starting the server, GraphiQL runs on [http://localhost:9977](http://local
 # Contributing
 
 If you like to help and contribute you're more than welcome! Please open [an issue](https://github.com/spring-petclinic/spring-petclinic-graphql/issues) or a [Pull Request](https://github.com/spring-petclinic/spring-petclinic-graphql/pulls)
- 
+
+Initial implementation of this GraphQL-based PetClinic example: [Nils Hartmann](https://nilshartmann.net), [Twitter](https://twitter.com/nilshartmann) 
