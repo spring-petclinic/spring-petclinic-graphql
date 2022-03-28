@@ -12,6 +12,11 @@ import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
 
+/**
+ * GraphQL handler functions for Pet GraphQL type, Query and Mutation
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
 @Controller
 public class PetController {
 

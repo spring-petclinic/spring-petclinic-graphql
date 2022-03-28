@@ -7,6 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.samples.petclinic.model.Vet;
 
+/**
+ * GraphQL Runtime Wiring Configuration
+ *
+ * RunimeWiring connects the schema with behviour. Most of it is done
+ * aumatically by graphql-java, spring-graphql and Spring Boot starter for spring-graphql
+ * but here we do our own customizations
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
 @Configuration
 public class PetClinicRuntimeWiringConfiguration {
 

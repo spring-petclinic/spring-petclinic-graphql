@@ -17,8 +17,9 @@ import org.springframework.stereotype.Controller;
  * EXAMPLE:
  * --------------------------
  *
- * - Use 'plain' DataFetcher methods with Spring GraphQL (although Annotated Controllers might
- *   be the preferred way to write data fetchers now)
+ * - Access current principal in GraphQL handler functions by using the AuthenticationPrincipal annotation
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Controller
 public class AuthController {

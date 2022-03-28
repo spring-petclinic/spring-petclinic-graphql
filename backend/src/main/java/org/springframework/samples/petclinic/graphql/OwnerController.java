@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * GraphQL handler functions for Ower type, Query and Mutation
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
 @Controller
 public class OwnerController {
 

@@ -8,6 +8,11 @@ import java.time.format.DateTimeFormatter;
 
 import static java.lang.String.format;
 
+/**
+ * Implements own date format (yyyy/MM/dd) for our own "Date" scalar type
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
 public class DateCoercing implements Coercing<LocalDate, String> {
     private static DateTimeFormatter createIsoDateFormat() {
         return DateTimeFormatter.ofPattern("yyyy/MM/dd");

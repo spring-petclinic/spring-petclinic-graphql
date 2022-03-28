@@ -23,6 +23,8 @@ import javax.validation.Valid;
  * HTTP "POST /login with" sending username and password.
  * <p>
  * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @RestController
 public class LoginController {

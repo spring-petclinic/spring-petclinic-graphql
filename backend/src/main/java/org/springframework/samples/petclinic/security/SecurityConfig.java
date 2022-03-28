@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
  *
- * @author Nils Hartmann
+ * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // Enable @PreAuthorize method-level security

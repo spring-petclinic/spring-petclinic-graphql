@@ -25,7 +25,7 @@ import java.io.IOException;
  *
  * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
  *
- * @author Nils Hartmann
+ * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

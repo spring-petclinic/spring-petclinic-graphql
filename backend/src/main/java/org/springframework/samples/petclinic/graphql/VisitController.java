@@ -11,6 +11,12 @@ import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 
+/**
+ * GraphQL handler functions for "Vitis" GraphQL type, Query, Mutation and Subscription
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
+
 @Controller
 public class VisitController {
 

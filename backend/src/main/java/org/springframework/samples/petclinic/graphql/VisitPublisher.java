@@ -13,6 +13,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 import reactor.util.concurrent.Queues;
 
+/**
+ * "Forwards" VisitCreatedEvents that are fired by Spring Boot in our domain layer
+ * to a reactive publisher that is used by the GraphQL layer to publish events
+ * for our GraphQL Subscriptions
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
+
 @Component
 public class VisitPublisher {
 

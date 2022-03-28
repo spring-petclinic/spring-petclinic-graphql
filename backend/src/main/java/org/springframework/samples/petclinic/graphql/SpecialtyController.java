@@ -14,6 +14,11 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * GraphQL handler functions for "Specialty" GraphQL type, Query and Mutation
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
+ */
 @Controller
 public class SpecialtyController {
 

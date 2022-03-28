@@ -16,9 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author Nils Hartmann (nils@nilshartmann.net)
- *
  * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
+ *
+ * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Service
 public class JwtTokenService {
