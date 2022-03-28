@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
  */
 
 @DataJpaTest
-@ActiveProfiles(profiles = {"spring-data-jpa", "hsqldb"})
+@ActiveProfiles(profiles = {"hsqldb"})
 public class ClinicRepositorySpringDataJpaTests extends AbstractClinicRepositoryTests {
 
     @Autowired

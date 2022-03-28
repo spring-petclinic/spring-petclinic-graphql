@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(profiles = {"spring-data-jpa", "hsqldb"})
+@ActiveProfiles(profiles = {"hsqldb"})
 @AutoConfigureMockMvc
 @AutoConfigureHttpGraphQlTester
 public class AbstractClinicGraphqlTests {
