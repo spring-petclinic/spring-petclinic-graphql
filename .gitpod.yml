@@ -1,6 +1,7 @@
 tasks:
   - name: "Run Petclinic Backend"
     command: |
+      export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3000`
       ./mvnw spring-boot:run -pl backend
   - name: "Frontend"
     init: |
