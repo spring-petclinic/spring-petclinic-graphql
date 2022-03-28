@@ -26,7 +26,35 @@ Some features that are built in:
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerQueryWiring`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
-## Running the Server
+# Running the sample application
+
+You can run the sample application with two ways:
+
+1. The easiest way: run it pre-configured in cloud IDE [GitPod](https://www.gitpod.io/)
+2. Run it locally
+
+## Run it in GitPod
+
+To run the application (backend, GraphiQL and React frontend) in GitPod, simply click on the "Open in GitPod" button at the top of this README.
+
+- Note that you need a (free) GitPod account.
+- And please make sure that you allow your browser opening new tabs/windows from gitpod.io!
+
+After clicking on the GitPod button, GitPod creates a new workspace including an Editor for you, builds the application and starts
+backend and frontend. That might take some time!
+
+When backend and frontend are running, GitPod opens two new browser tabs, one with GraphiQL and one with the
+PetClinic backend. For login options, see below "Accessing the GraphQL API"
+
+Note that the workspace is your personal workspace, you can make changes, save files, re-open the workspace at any
+time and you can even create git commits and pull requests from it. For more information see GitPod documentation.
+
+In the GitPod editor you can make changes to the app, and after saving the app will be recompiled and redeployed automatically.
+
+![SpringBoot PetClinic in GitPod Workspace](gitpod.png)
+
+
+## Running locally
 
 The server is implemented in the `backend` folder and can be started either from your IDE (`org.springframework.samples.petclinic.PetClinicApplication`) or
 using maven from the root folder of the repository:
@@ -39,22 +67,6 @@ Note: the server runs on port **9977**, so make sure, this port is available.
 
 (The server uses an in-memory database, so no external DB is needed)
 
-## Accessing the GraphQL API
-
-You can access the GraphQL API via the included customized version of GraphiQL.
-
-The included GraphiQL adds support for login to the original GraphiQL.
-
-You can use the following users for login:
-
-* **joe/joe**: Regular user
-* **susi/susi**: has Manager Role and is allowed to execute the `createVet` Mutation
-
-After starting the server, GraphiQL runs on [http://localhost:9977](http://localhost:9977)
-
-**Note**: The WebSocket/Subscription support in GraphiQL is far from being robust. Use with care!
-
-![SpringBoot PetClinic, GraphiQL](graphiql.png)
 
 
 ## Running the frontend
@@ -84,6 +96,22 @@ For valid users to login, see list above.
 
 ![SpringBoot PetClinic, React Frontend](petclinic-ui.png)
 
+# Accessing the GraphQL API
+
+You can access the GraphQL API via the included customized version of GraphiQL.
+
+The included GraphiQL adds support for login to the original GraphiQL.
+
+You can use the following users for login:
+
+* **joe/joe**: Regular user
+* **susi/susi**: has Manager Role and is allowed to execute the `createVet` Mutation
+
+After starting the server, GraphiQL runs on [http://localhost:9977](http://localhost:9977)
+
+**Note**: The WebSocket/Subscription support in GraphiQL is far from being robust. Use with care!
+
+![SpringBoot PetClinic, GraphiQL](graphiql.png)
 
 
 # Contributing
