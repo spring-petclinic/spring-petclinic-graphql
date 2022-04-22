@@ -3,7 +3,7 @@
 This PetClinic version uses the new [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
 and is going to be shipped with Spring Boot 2.7.
 
-This version currenty uses **Spring Boot 2.7 M3** with **GraphQL for Spring 1.0.0-M6**.
+This version currenty uses **Spring Boot 2.7 RC1** with **GraphQL for Spring 1.0 RC1**.
 
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
@@ -18,13 +18,13 @@ As spring-graphql is still experimental, this PetClinic is experimental and in-p
 
 Some features that are built in:
 
-* [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `SpecialtyController` and `VetController`)
+* [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `graphql/*Controller`-classes, e.g. `SpecialtyController` and `VetController`)
 * Subscriptions via Websockets (see `VisitController#onNewVisit`)  
 * Own scalar types (See `PetClinicRuntimeWiringConfiguration` and `DateCoercing`)
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
   * Example: ´addVet` mutation is only allowed for users with `ROLE_MANAGER` 
-* Pagination and Sorting of results: implemented with `spring-data`, see `OwnerQueryWiring`
+* Pagination and Sorting of results: implemented with `spring-data`, see `OwnerController`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
 # Running the sample application
