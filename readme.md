@@ -14,8 +14,6 @@ provides an example Frontend for the API.
 
 ## Features
 
-As spring-graphql is still experimental, this PetClinic is experimental and in-progress too.
-
 Some features that are built in:
 
 * [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `graphql/*Controller`-classes, e.g. `SpecialtyController` and `VetController`)
@@ -23,7 +21,7 @@ Some features that are built in:
 * Own scalar types (See `PetClinicRuntimeWiringConfiguration` and `DateCoercing`)
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
-  * Example: ´addVet` mutation is only allowed for users with `ROLE_MANAGER` 
+  * Example: `addVet` mutation is only allowed for users with `ROLE_MANAGER` 
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerController`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
@@ -54,6 +52,15 @@ In the GitPod editor you can make changes to the app, and after saving the app w
 
 ![SpringBoot PetClinic in GitPod Workspace](gitpod.png)
 
+### Using IntelliJ with GitPod
+
+Recently GitPod has added support for JetBrain IDEs like IntelliJ. While this support is currenty beta only, you can try it
+and open the PetClinic in IntelliJ. Note that in this scenario you're still working on a complete, ready-to-use workspace
+in the cloud. Only the IntelliJ _UI_ runs locally at your maching.
+
+Please read the [setup instructions here](https://www.gitpod.io/docs/ides-and-editors/intellij).
+
+![SpringBoot PetClinic in GitPod IntelliJ Workspace](screenshot-gitpod-intellij.png)
 
 ## Running locally
 

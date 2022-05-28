@@ -1,12 +1,7 @@
 tasks:
   - name: Build
     init: |
-      echo "Start" >> ./time.txt
-      date >> ./time.txt
-      cat ./time.txt
       ./mvnw package -Dmaven.test.skip=true -pl backend
-      date >> ./time.txt
-      echo "Fertig" >> ./time.txt
       gp sync-done build
   - name: "Run Petclinic Backend"
     init: |
@@ -47,4 +42,16 @@ github:
     addComment: true
     # add a "Review in Gitpod" button to the pull request's description (defaults to false)
     addBadge: true
-
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-test
+    - pivotal.vscode-spring-boot
+    - graphql.vscode-graphql
+jetbrains:
+  intellij:
+    plugins:
+      - com.intellij.lang.jsgraphql
+    prebuilds:
+      version: both
