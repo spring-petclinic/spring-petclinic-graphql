@@ -7,15 +7,6 @@ import java.util.List;
 /**
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
-public class RemoveSpecialtyPayload {
+public record RemoveSpecialtyPayload(List<Specialty> specialties) {
 
-    private final List<Specialty> specialties;
-
-    public RemoveSpecialtyPayload(List<Specialty> specialties) {
-        this.specialties = specialties;
-    }
-
-    public List<Specialty> getSpecialties() {
-        return specialties;
-    }
 }
