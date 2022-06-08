@@ -7,7 +7,7 @@ export default function WelcomePage() {
   const petImgSrc = `${publicPath}/assets/pets.png`;
   return (
     <PageLayout title="Welcome">
-      <Heading>Welcome</Heading>
+      <Heading>Welcome to the Petstore!</Heading>
       <img src={petImgSrc} alt="Pets" />
     </PageLayout>
   );
