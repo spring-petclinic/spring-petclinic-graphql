@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.graphql;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateSpecialtyInput {
     @NotNull

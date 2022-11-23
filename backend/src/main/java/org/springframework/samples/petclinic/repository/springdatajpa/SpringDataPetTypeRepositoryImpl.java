@@ -19,8 +19,8 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -42,7 +42,7 @@ public class SpringDataPetTypeRepositoryImpl implements PetTypeRepositoryOverrid
 		String petTypeId = petType.getId().toString();
 
 		List<Pet> pets = new ArrayList<Pet>();
-		pets = this.em.createQuery("SELECT pet FROM Pet pet WHERE type_id=" + petTypeId).getResultList();
+		pets = this.em.createQuery("SELECT pet FROM Pet pet WHERE pet.type.id=" + petTypeId).getResultList();
 		for (Pet pet : pets){
 			List<Visit> visits = new ArrayList<Visit>();
 			visits = pet.getVisits();

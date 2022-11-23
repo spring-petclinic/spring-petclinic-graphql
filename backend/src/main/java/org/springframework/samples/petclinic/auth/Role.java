@@ -2,7 +2,7 @@ package org.springframework.samples.petclinic.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Taken from https://github.com/spring-petclinic/spring-petclinic-rest
