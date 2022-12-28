@@ -1,0 +1,14 @@
+### PING!
+GET http://localhost:9977/ping
+Authorization: Bearer eyJraWQiOiIxMTA4YzcxNS02MGIwLTQ4OGEtYjg4Yy04NGI1Njg1ZDU1MTEiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic3VzaSIsImV4cCI6MTk4NzYwMDQ0MywiaWF0IjoxNjcyMjQwNDQzLCJzY29wZSI6IlJPTEVfTUFOQUdFUiJ9.hNPB-kTUEzTWEeeOOQIbN3QUeB6jFX4NNesuDGNZ9KXt3T_dfEMIBsdOkwrcPqxtkXMzugwKfSx8VV_aqFznO2NlEzlKA7ngDbjWj0T4Ozr9q1E5aVieWzt9QvI7_AoG21e5upea8T7vUO7Dy64YLFcIPL6Gvhgw0zsSyxNxLbyqQBvwpwu5EzwTWmr9plAjGwIiRbnxkbMqK1mdHuh7QemG9am6-ocfPE5SaLXk1w6Y-wWhMQTDS2JtC__tFumLunUUMqm019lqrILQFRGWqRLZRKnRDP2QEyfrSbOdhacCIPY8KOn0Zk7bstgGCyG71soM0HPnpFXthsScZY4_Zg
+
+### LOGIN
+
+POST http://localhost:9977/login
+Content-Type: application/json
+
+{
+  "username": "joe",
+  "password": "joe"
+}
+

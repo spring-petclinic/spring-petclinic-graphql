@@ -7,7 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 import org.springframework.http.HttpHeaders;
+import org.springframework.samples.petclinic.security.JwtTokenService;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles(profiles = {"hsqldb"})
@@ -15,6 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureHttpGraphQlTester
 public class AbstractClinicGraphqlTests {
 
+    @Autowired
+    private JwtTokenService tokenService;
     protected WebGraphQlTester managerRoleGraphQlTester;
     protected WebGraphQlTester userRoleGraphQlTester;
     protected WebGraphQlTester unauthorizedGraphqlTester;
@@ -24,19 +31,21 @@ public class AbstractClinicGraphqlTests {
         this.unauthorizedGraphqlTester = graphQlTester;
 
         this.userRoleGraphQlTester = graphQlTester.mutate()
-            .headers(AbstractClinicGraphqlTests::withUserToken)
+            .headers(this::withUserToken)
             .build();
 
         this.managerRoleGraphQlTester = graphQlTester.mutate()
-            .headers(AbstractClinicGraphqlTests::withManagerToken)
+            .headers(this::withManagerToken)
             .build();
     }
 
-    private static void withManagerToken(HttpHeaders headers) {
-        headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXNpIiwiaWF0IjoxNjA4ODg5NDQwLCJleHAiOjIzNjYyNzE4NDB9.XG0SEtHiidGuy2A1zy_BfixVMFOv3gGbfwGqEc3F-KU");
+    private void withManagerToken(HttpHeaders headers) {
+        var token = tokenService.generateToken("susi", List.of( () -> "MANAGER"), Instant.now().plus(1, ChronoUnit.HOURS));
+        headers.setBearerAuth(token);
     }
 
-    private static void withUserToken(HttpHeaders headers) {
-        headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2UiLCJpYXQiOjE2MDg4ODk0NDAsImV4cCI6MjM2NjI3MTg0MH0.V36ynhDffqb9LQFsckOdk6lFhcVEDhOCFxFCQDAYG0o");
+    private void withUserToken(HttpHeaders headers) {
+        var token = tokenService.generateToken("joe", List.of( () -> "USER"), Instant.now().plus(1, ChronoUnit.HOURS));
+        headers.setBearerAuth(token);
     }
 }

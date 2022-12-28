@@ -1,28 +1,24 @@
 package org.springframework.samples.petclinic.security;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.samples.petclinic.auth.User;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
-
 /**
- * Login via Username/Password with "REST" API.
+ * Login via Username/Password via HTTP POST endpoint.
  * <p>
  * - The /graphql endpoints requires a valid token. This token can be requests by invoking
  * HTTP "POST /login with" sending username and password.
  * <p>
- * Note that this is an example only. DO NOT IMPLEMENT OWN SECURITY CODE IN REAL PRODUCTION APPS !!!!!!!!!!
  *
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
@@ -31,31 +27,30 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenService tokenService;
+    private final AuthenticationManager authenticationManager;
 
-    public LoginController(AuthenticationProvider authenticationProvider, JwtTokenService jwtTokenService) {
-        this.authenticationProvider = authenticationProvider;
-        this.jwtTokenService = jwtTokenService;
+    public LoginController(JwtTokenService tokenService, AuthenticationManager authenticationManager) {
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        log.info("Authorizing '{}'", request.getUsername());
         try {
-            Authentication authenticate = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
 
-            if (authenticate != null && (authenticate.getPrincipal() instanceof User)) {
-                User principal = (User) authenticate.getPrincipal();
-                String jwtToken = jwtTokenService.createTokenForUser(principal);
+            String token = tokenService.generateToken(authentication);
 
-                return ResponseEntity.ok()
-                    .body(new LoginResponse((jwtToken)));
+            return ResponseEntity.ok(new LoginResponse(token));
 
-            }
-        } catch (AuthenticationException ex) {
-            log.error("Authentication failed: " + ex, ex);
+        } catch (Exception ex) {
+            log.error("could not authenticate: " + ex, ex);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @GetMapping("/ping")

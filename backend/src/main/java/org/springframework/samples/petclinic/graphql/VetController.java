@@ -21,7 +21,7 @@ import java.util.Optional;
  * GraphQL handler functions for Vet GraphQL type, Query and Mutation
  *
  * Note that the addVet mutation is secured in the domain layer, so that only
- * users with ROLE_MANAGER are allowed to create new vets
+ * users with SCOPE_MANAGER are allowed to create new vets
  *
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
