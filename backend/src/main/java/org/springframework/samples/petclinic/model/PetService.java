@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.model;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -10,7 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @Service
@@ -53,6 +56,15 @@ public class PetService {
         petRepository.save(pet);
 
         return pet;
+    }
+
+    public List<Pet> getPetsById(final Set<Integer> ids) {
+        final var auth = SecurityContextHolder.getContext().getAuthentication();
+
+        System.out.println(auth.getName());
+
+        return petRepository.findByIdIn(ids);
+
     }
 
     private <T> void setIfGiven(T value, Consumer<T> s) {

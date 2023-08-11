@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.graphql;
 
+import lombok.SneakyThrows;
+import org.dataloader.DataLoader;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -11,6 +13,7 @@ import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * GraphQL handler functions for Pet GraphQL type, Query and Mutation
@@ -36,8 +39,11 @@ public class PetController {
     }
 
     @QueryMapping
-    public Pet pet(@Argument Integer id) {
-        return petRepository.findById(id);
+    @SneakyThrows
+    public CompletableFuture<Pet> pet(@Argument Integer id,
+                                     final DataLoader<Integer, Pet> petDataLoader) {
+        Thread.sleep(5000);
+        return petDataLoader.load(id);
     }
 
     @SchemaMapping
