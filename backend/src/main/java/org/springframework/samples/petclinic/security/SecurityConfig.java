@@ -120,12 +120,13 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
 
-        String allowedOrigins = env.getProperty("PETCLINIC_ALLOWED_ORIGINS", "http://localhost:3000");
+        String allowedOrigins = env.getProperty("PETCLINIC_ALLOWED_ORIGINS", "http://localhost:[*]");
+
 
         Arrays.stream(allowedOrigins.split(","))
             .forEach(origin -> {
-                log.info("Allowing Cors for host '{}'", origin);
-                config.addAllowedOrigin(origin);
+                log.info("Allowing CORS Origin Pattern '{}'", origin);
+                config.addAllowedOriginPattern(origin);
             });
 
         config.addAllowedHeader("*");

@@ -1,0 +1,27 @@
+query FindOwnerWithPetsAndVisits($ownerId: Int!) {
+  owner(id: $ownerId) {
+    ...OwnerFields
+    pets {
+      id
+      name
+      birthDate
+      type {
+        id
+        name
+      }
+
+      visits {
+        visits {
+          date
+          description
+          id
+          treatingVet {
+            id
+            firstName
+            lastName
+          }
+        }
+      }
+    }
+  }
+}

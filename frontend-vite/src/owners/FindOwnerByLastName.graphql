@@ -1,0 +1,25 @@
+query FindOwnerByLastName($page: Int!, $lastName: String) {
+  owners(
+    page: $page
+    size: 10
+    filter: { lastName: $lastName }
+    orders: [{ field: lastName }, { field: firstName }]
+  ) {
+    pageInfo {
+      hasNext
+      hasPrev
+      nextPage
+      prevPage
+      totalPages
+      currentPage: pageNumber
+      ownersCount: totalCount
+    }
+    owners {
+      ...OwnerFields
+      pets {
+        id
+        name
+      }
+    }
+  }
+}

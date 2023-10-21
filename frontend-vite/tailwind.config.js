@@ -1,15 +1,12 @@
-import colors from "tailwindcss/colors"
+import colors from "tailwindcss/colors";
 import form from "@tailwindcss/forms";
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  darkMode: false, // or 'media' or 'class'
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "media",
   theme: {
     colors: {
-      gray: colors.trueGray,
+      gray: colors.neutral,
       indigo: colors.indigo,
       red: colors.rose,
       yellow: colors.amber,
@@ -35,4 +32,4 @@ export default {
     },
   },
   plugins: [form],
-}
+};

@@ -1,0 +1,12 @@
+query AllVets {
+  vets {
+    id
+    firstName
+    lastName
+
+    specialties {
+      id
+      name
+    }
+  }
+}
