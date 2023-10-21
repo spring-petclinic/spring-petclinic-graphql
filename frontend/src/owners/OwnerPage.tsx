@@ -1,16 +1,17 @@
-import Button from "components/Button";
-import Heading from "components/Heading";
-import Link from "components/Link";
-import PageLayout from "components/PageLayout";
-import Section from "components/Section";
-import Table from "components/Table";
-import { useFindOwnerWithPetsAndVisitsQuery } from "generated/graphql-types";
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import NewVisitPanel from "./NewVisitPanel";
+import Button from "@/components/Button";
+import Heading from "@/components/Heading";
+import PageLayout from "@/components/PageLayout";
+import Section from "@/components/Section";
+import Table from "@/components/Table";
+import { useFindOwnerWithPetsAndVisitsQuery } from "@/generated/graphql-types";
+import { invariant } from "@apollo/client/utilities/globals";
+import Link from "@/components/Link.tsx";
 
 export default function OwnerPage() {
   const { ownerId } = useParams<{ ownerId: string }>();
+  invariant(ownerId, "Missing param ownerId");
 
   const { loading, data, error } = useFindOwnerWithPetsAndVisitsQuery({
     variables: {
@@ -44,7 +45,7 @@ export default function OwnerPage() {
       {data.owner.pets.map((pet) => (
         <div key={pet.id} className="mb-8">
           <Section invert>
-            <div className="md:flex items-baseline justify-between border-b-4 border-spr-white mb-2 pb-2">
+            <div className="mb-2 items-baseline justify-between border-b-4 border-spr-white pb-2 md:flex">
               <Heading level="3">
                 {pet.name} ({pet.type.name}, * {pet.birthDate})
               </Heading>
@@ -66,7 +67,7 @@ export default function OwnerPage() {
                 ])}
               />
             ) : (
-              <b className="block mb-4">No visits yet</b>
+              <b className="mb-4 block">No visits yet</b>
             )}
             <NewVisitPanel petId={pet.id} />
           </Section>

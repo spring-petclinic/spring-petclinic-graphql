@@ -1,6 +1,6 @@
-import Button from "components/Button";
 import * as React from "react";
 import NewVisitForm from "./NewVisitForm";
+import Button from "@/components/Button";
 
 type NewVisitPanelProps = { petId: number };
 

@@ -1,15 +1,14 @@
-import Button from "components/Button";
-import ButtonBar from "components/ButtonBar";
-import Heading from "components/Heading";
-import Input from "components/Input";
-import Label from "components/Label";
-import Section from "components/Section";
-import Select from "components/Select";
+import Button from "@/components/Button";
+import ButtonBar from "@/components/ButtonBar";
+import Heading from "@/components/Heading";
+import Input from "@/components/Input";
+import Label from "@/components/Label";
+import Section from "@/components/Section";
+import Select from "@/components/Select";
 import {
   useAddVetMutation,
   useAllSpecialtiesQuery,
-} from "generated/graphql-types";
-import * as React from "react";
+} from "@/generated/graphql-types.ts";
 import { useForm } from "react-hook-form";
 
 type AddVetFormProps = {
@@ -29,11 +28,15 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
     loading: specialtiesLoading,
   } = useAllSpecialtiesQuery();
   const [addVet, { called, loading, data, error }] = useAddVetMutation({
-	  // Errors in Responses should be retured in 'error' (and not as rejected promise)
-	  // https://www.apollographql.com/docs/react/api/react/hoc/#optionserrorpolicy
-	  errorPolicy: "all"
+    // Errors in Responses should be retured in 'error' (and not as rejected promise)
+    // https://www.apollographql.com/docs/react/api/react/hoc/#optionserrorpolicy
+    errorPolicy: "all",
   });
-  const { register, errors, handleSubmit } = useForm<VetFormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VetFormData>();
 
   const specialtiesOptions = specialtiesData
     ? [
@@ -50,25 +53,25 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
     lastName,
     specialtyIds,
   }: VetFormData) {
-	    const result = await addVet({
-		    variables: {
-			    input: {
-				    firstName,
-				    lastName,
-				    specialtyIds: specialtyIds || [],
-			    },
-		    },
-	    });
-	    if (result.data && "vet" in result.data.result) {
-		    onFinish();
-	    }
+    const result = await addVet({
+      variables: {
+        input: {
+          firstName,
+          lastName,
+          specialtyIds: specialtyIds || [],
+        },
+      },
+    });
+    if (result.data && "vet" in result.data.result) {
+      onFinish();
+    }
   }
 
-  let errorMsg =
-	  error ? error.message :
-    data && "error" in data.result
-      ? `Saving failed: ${data.result.error}`
-      : null;
+  const errorMsg = error
+    ? error.message
+    : data && "error" in data.result
+    ? `Saving failed: ${data.result.error}`
+    : null;
 
   return (
     <Section>
@@ -76,15 +79,13 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
 
       <Input
         type="text"
-        name="firstName"
-        ref={register({ required: true })}
+        {...register("firstName", { required: true })}
         label="First name"
         error={errors.firstName && "Please enter a valid first name"}
       />
       <Input
         type="text"
-        name="lastName"
-        ref={register({ required: true })}
+        {...register("lastName", { required: true })}
         label="Last name"
         error={errors.firstName && "Please enter a valid last name"}
       />
@@ -101,9 +102,8 @@ export default function AddVetForm({ onFinish }: AddVetFormProps) {
       {specialtiesOptions && (
         <Select
           label="Specialties"
-          name="specialtyIds"
           multiple
-          ref={register}
+          {...register("specialtyIds")}
           options={specialtiesOptions}
         />
       )}

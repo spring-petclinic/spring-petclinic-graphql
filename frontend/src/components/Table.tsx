@@ -11,12 +11,12 @@ export default function Table({ title, labels, values }: TableProps) {
   return (
     <>
       {title && <Heading>{title}</Heading>}
-      <table className="w-full mb-3.5">
+      <table className="mb-3.5 w-full">
         {labels && labels.length && (
           <thead>
             <tr>
               {labels.map((label, ix) => (
-                <td key={ix} className="border-b pr-1 py-3.5 font-bold">
+                <td key={ix} className="border-b py-3.5 pr-1 font-bold">
                   {label}
                 </td>
               ))}
@@ -27,7 +27,7 @@ export default function Table({ title, labels, values }: TableProps) {
           {values.map((row, ix) => (
             <tr key={ix}>
               {row.map((col, ix) => (
-                <td key={ix} className="border-b pr-1 py-3.5">
+                <td key={ix} className="border-b py-3.5 pr-1">
                   {col}
                 </td>
               ))}

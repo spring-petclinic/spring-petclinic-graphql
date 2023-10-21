@@ -1,7 +1,0 @@
-query AllVetNames {
-  vets {
-    id
-    firstName
-    lastName
-  }
-}

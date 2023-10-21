@@ -1,6 +1,5 @@
-import Button from "components/Button";
-import ButtonBar from "components/ButtonBar";
-import * as React from "react";
+import ButtonBar from "@/components/ButtonBar.tsx";
+import Button from "@/components/Button.tsx";
 
 type PageInfo = {
   currentPage: number;

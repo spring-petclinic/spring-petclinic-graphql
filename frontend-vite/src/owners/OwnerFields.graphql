@@ -1,8 +1,0 @@
-fragment OwnerFields on Owner {
-  id
-  firstName
-  lastName
-  address
-  city
-  telephone
-}

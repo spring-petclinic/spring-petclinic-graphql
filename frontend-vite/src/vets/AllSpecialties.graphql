@@ -1,6 +1,0 @@
-query AllSpecialties {
-  specialties {
-    id
-    name
-  }
-}

@@ -1,20 +1,17 @@
-import Button from "components/Button";
-import Input from "components/Input";
-import Link from "components/Link";
-import PageLayout from "components/PageLayout";
-import Table from "components/Table";
-import { useFindOwnerByLastNameLazyQuery } from "generated/graphql-types";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import Paginator from "./Paginator";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import PageLayout from "@/components/PageLayout";
+import Table from "@/components/Table";
+import { useFindOwnerByLastNameLazyQuery } from "@/generated/graphql-types";
+import Link from "@/components/Link.tsx";
 
 type FindOwnerFormData = { lastName: string };
 
 export default function OwnersPage() {
-  const [
-    findOwnersByLastName,
-    { loading, data, error, called, refetch },
-  ] = useFindOwnerByLastNameLazyQuery();
+  const [findOwnersByLastName, { loading, data, error, called, refetch }] =
+    useFindOwnerByLastNameLazyQuery();
   const { register, handleSubmit } = useForm<FindOwnerFormData>({});
 
   function handleFindClick({ lastName }: FindOwnerFormData) {
@@ -34,7 +31,7 @@ export default function OwnersPage() {
   let resultTable = null;
   if (called && !loading && !error && data) {
     if (data.owners.owners.length === 0) {
-      resultTable = <div className="max-w-2xl mx-auto">No owners found</div>;
+      resultTable = <div className="mx-auto max-w-2xl">No owners found</div>;
     } else {
       const values = data.owners.owners.map((owner) => [
         <Link to={`/owners/${owner.id}`}>{owner.lastName}</Link>,
@@ -72,12 +69,11 @@ export default function OwnersPage() {
   );
   return (
     <PageLayout title="Search Owner">
-      <div className="max-w-2xl mx-auto">
+      <div className="mx-auto max-w-2xl">
         <div className="flex">
           <Input
-            ref={register}
+            {...register("lastName")}
             label="Last Name"
-            name="lastName"
             action={searchButton}
           />
         </div>

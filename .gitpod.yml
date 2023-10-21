@@ -14,8 +14,9 @@ tasks:
   - name: "Frontend"
     init: |
       cd frontend
-      npm install
-      npm run build
+      corepack enable
+      pnpm install
+      pnpm build
       cp build/index.html build/index-orig.html
     command: |
       gp await-port 9977

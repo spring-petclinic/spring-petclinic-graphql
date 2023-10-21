@@ -1,4 +1,5 @@
 import * as React from "react";
+
 type CardProps = {
   children: React.ReactNode;
   fullWidth?: boolean;
@@ -8,7 +9,7 @@ export default function Card({ children, fullWidth }: CardProps) {
     <div
       className={`${
         fullWidth ? "" : "max-w-2xl"
-      } mx-auto border-gray-100 border-4 rounded flex justify-between items-center p-4 mb-3.5`}
+      } mx-auto mb-3.5 flex items-center justify-between rounded border-4 border-gray-100 p-4`}
     >
       {children}
     </div>
