@@ -16,7 +16,7 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Build with maven
-        run: mvn -B package --file backend/pom.xml
+        run: mvn -B package
 
   frontend:
     runs-on: ubuntu-latest

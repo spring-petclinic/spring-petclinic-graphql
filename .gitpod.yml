@@ -19,7 +19,7 @@ tasks:
       pnpm build
       cp dist/index.html dist/index-orig.html
     command: |
-      gp await-port 9977
+      gp ports await 9977
       export BACKEND_HOST=`gp url 9977`
       cd $GITPOD_REPO_ROOT/frontend
       node patch-index-html.js
