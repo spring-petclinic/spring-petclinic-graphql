@@ -9,7 +9,7 @@ tasks:
     init: |
       gp sync-await build
     command: |
-      export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3000`
+      export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3080`
       ./mvnw spring-boot:run -pl backend
   - name: "Frontend"
     init: |
@@ -17,18 +17,18 @@ tasks:
       corepack enable
       pnpm install
       pnpm build
-      cp build/index.html build/index-orig.html
+      cp dist/index.html dist/index-orig.html
     command: |
       gp await-port 9977
       export BACKEND_HOST=`gp url 9977`
       cd $GITPOD_REPO_ROOT/frontend
       node patch-index-html.js
-      ./node_modules/.bin/serve -s build
+      ./node_modules/.bin/serve -s dist
 ports:
   - port: 9977
     onOpen: open-browser
     visibility: public
-  - port: 3000
+  - port: 3080
     onOpen: open-browser
     visibility: public
 github:
