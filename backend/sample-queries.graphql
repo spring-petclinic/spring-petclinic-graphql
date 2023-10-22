@@ -1,7 +1,8 @@
 query {
     owners {
-        firstName
-        lastName
+       owners {
+           id
+       }
     }
 }
 

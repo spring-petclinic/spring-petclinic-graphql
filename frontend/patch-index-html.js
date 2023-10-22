@@ -10,7 +10,6 @@ if (!BACKEND_HOST) {
 
 console.log({ BACKEND_HOST });
 
-const newData = data
-  .replaceAll("__BACKEND__", BACKEND_HOST)
+const newData = data.replaceAll("__BACKEND__", BACKEND_HOST);
 
 fs.writeFileSync("./build/index.html", newData);
