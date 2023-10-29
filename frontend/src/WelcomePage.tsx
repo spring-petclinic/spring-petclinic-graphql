@@ -4,7 +4,7 @@ import petsImage from "@/assets/pets.png";
 
 export default function WelcomePage() {
   return (
-    <PageLayout title="Welcome">
+    <PageLayout title="Welcome to PetClinic!">
       <Heading>Welcome</Heading>
       <img src={petsImage} alt="Pets" />
     </PageLayout>

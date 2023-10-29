@@ -62,7 +62,7 @@ export default function LoginPage() {
   }
 
   return (
-    <AnonymousPageLayout title="Welcome to PetClinic!">
+    <AnonymousPageLayout title="Login to PetClinic!">
       <Section narrow>
         <Heading>Login</Heading>
         <Input

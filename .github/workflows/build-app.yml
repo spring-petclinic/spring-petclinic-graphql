@@ -167,9 +167,9 @@ jobs:
       - uses: JarvusInnovations/background-action@v1
         name: Run frontend
         with:
-          run: serve &
+          run: serve -l 3080 &
           wait-on: |
-            http-get://localhost:3000
+            http-get://localhost:3080
           tail: true # true = stderr,stdout
           log-output-resume: stderr
           wait-for: 5m
