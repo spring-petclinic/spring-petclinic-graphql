@@ -127,8 +127,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: frontend-dist
-      - name: LS frontend-dist
-        run: ls -R ../frontend-dist
       - name: LS
         run: ls -lR
       - uses: pnpm/action-setup@v2.0.1
