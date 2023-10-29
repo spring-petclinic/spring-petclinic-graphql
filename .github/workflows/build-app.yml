@@ -90,15 +90,15 @@ jobs:
       run:
         working-directory: ./e2e-tests
     steps:
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
-      - name: LS
-        run: ls -lR
       - name: setup playwright
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name: LS
+        run: ls -lR
       - uses: pnpm/action-setup@v2.0.1
         name: Install pnpm
         id: pnpm-install
@@ -109,6 +109,14 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install JDK17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
