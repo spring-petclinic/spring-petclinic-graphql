@@ -115,13 +115,26 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
-      - name: start backend
-        working-directory: ./petclinic-backend-jar
-        run: java -jar backend-0.0.1-SNAPSHOT.jar &
-      - name: wait for backend
-        uses: cygnetdigital/wait_for_response@v2.0.0
+
+      - uses: JarvusInnovations/background-action@v1
+        name: Run Backend
         with:
-          url: http://localhost:9977
+          run: java -jar backend-0.0.1-SNAPSHOT.jar &
+          wait-on: |
+            http://localhost:9977
+          tail: true # true = stderr,stdout
+          log-output-resume: stderr
+          wait-for: 5m
+          log-output: stderr,stdout # same as true
+          log-output-if: true
+          working-directory: ./petclinic-backend-jar
+#      - name: start backend
+#        working-directory: ./petclinic-backend-jar
+#        run: java -jar backend-0.0.1-SNAPSHOT.jar &
+#      - name: wait for backend
+#        uses: cygnetdigital/wait_for_response@v2.0.0
+#        with:
+#          url: http://localhost:9977
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
