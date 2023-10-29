@@ -120,10 +120,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: petclinic-backend-jar
+          path: petclinic-backend-jar
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
           name: frontend-dist
+          path: frontend-dist
       - name: LS
         run: ls -lR
       - uses: pnpm/action-setup@v2.0.1
