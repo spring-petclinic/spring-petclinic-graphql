@@ -1,27 +1,60 @@
-# React + TypeScript + Vite
+# Customized GraphiQL for Spring PetClinic
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This module contains a customized build of the GraphiQL ui.
+It shows how you can create your [own, customized GraphiQL](https://docs.spring.io/spring-graphql/reference/graphiql.html#graphiql.custombuild) for your backend that can be integrated in your Spring backend application.
 
-Currently, two official plugins are available:
+Other than the original GraphiQL it has a login screen because the PetClinic GraphQL is not public, and every
+request needs a JWT to get access to it.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech stack
 
-## Expanding the ESLint configuration
+This module uses [Vite](https://vitejs.dev/) with the `react-ts` template. GraphiQL itself is added to it
+as a [npm module](https://github.com/graphql/graphiql/tree/main/packages/graphiql#using-as-package).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Install the packages
 
-- Configure the top-level `parserOptions` property like this:
+Before you run or build the module, you have to install the node packages:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+
+pnpm install
+
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Use it locally
+
+You can develop, run and test GraphiQL locally without embedding it into the Spring PetClinic GraphQL backend.
+
+To do so, use the Vite command:
+
+```
+pnpm dev
+```
+
+This runs a development server that will connect itself against the running Spring PetClinic Backend. It assumes, your backend runs on `http://localhost:9977` (see `urls.ts`).
+
+If you make changes to the code in this module and save your changes, they're immedately picked up from the dev server
+and should be visible without the need of reloading the GraphiQL page.
+
+## Integration in the Backend
+
+When you open the backend on `http://localhost:9977`, there runs also the customized GraphiQL instance, but now served from spring boot.
+You can update the included version of `petclinic-graphiql` in the `backend` project by running the following steps:
+
+- build `petclinic-graphiql` by running `pnpm build`
+- copy the files from `petclinic-graphiql/dist` to `backend/src/main/resources/graphiql`
+- set the `window.__petclinic__backend_host__` variable in `backend/src/main/resources/graphiql` to `""`:
+  - ```
+    <script>
+      window.__petclinic__backend_host__ = "";
+    </script>
+    ```
+- Re-build the backend project and re-start it
+- Opening `http://localhost:9977` should now run your GraphiQL build
+
+> When you're working on a bash or zsh, the process can be simplified to:
+>
+> ```bash
+>   pnpm build
+>   pnpm copy-to-backend
+> ```

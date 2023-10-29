@@ -2,8 +2,36 @@ on:
   - push
 
 jobs:
-  backend:
+  petclinic-graphiql:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./petclinic-graphiql
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build application
+        run: pnpm build
+      - name: Copy to backend
+        run: pnpm copy-to-backend
+
+  backend:
     runs-on: ubuntu-latest
 
     steps:

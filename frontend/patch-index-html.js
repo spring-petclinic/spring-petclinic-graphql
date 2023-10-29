@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const data = fs.readFileSync("./build/index-orig.html", "utf-8");
+const data = fs.readFileSync("./dist/index-orig.html", "utf-8");
 
 const { BACKEND_HOST } = process.env;
 
@@ -12,4 +12,4 @@ console.log({ BACKEND_HOST });
 
 const newData = data.replaceAll("__BACKEND__", BACKEND_HOST);
 
-fs.writeFileSync("./build/index.html", newData);
+fs.writeFileSync("./dist/index.html", newData);
