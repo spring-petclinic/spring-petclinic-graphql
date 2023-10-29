@@ -1,9 +1,9 @@
 # Spring PetClinic Sample Application using spring-graphql
 
-This PetClinic version uses the new [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
+This PetClinic version uses [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
 and has been [finally released as 1.0.0 GA version](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release) in May 2022.
 
-This version uses **Spring Boot 3.0.x** with **Spring for GraphQL 1.1**.
+This version uses **Spring Boot 3.2.x** with **Spring for GraphQL 1.2.x**.
 
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
@@ -23,6 +23,8 @@ Some features that are built in:
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
   * Example: `addVet` mutation is only allowed for users with `ROLE_MANAGER` 
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerController`
+* Custom GraphiQL Build, that has a login screen
+  * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 
 # Running the sample application
@@ -84,18 +86,16 @@ contains a modified version of the classic PetClinic UI. Compared to the origina
 client this client is built as a Single-Page-Application using **React** and **Apollo GraphQL**
 and has slightly different features to make it a more realistic use-case for GraphQL.
 
-You can install and start the frontend by using npm:
+You can install and start the frontend by using [pnpm](https://pnpm.io/):
 
 ```
 cd ./frontend
 
-npm install
+pnpm install
 
-npm run build:css
+pnpm codegen
 
-npm run generate
-
-npm start
+pnpm start
 ```
 
 The running frontend can be accessed on [http://localhost:3000](http://localhost:3000).
@@ -221,6 +221,12 @@ subscription {
 
 ![SpringBoot PetClinic, GraphiQL](graphiql.png)
 
+## Customized GraphiQL
+
+The backend includes a Spring Petclinic-specific customized version of GraphiQL. Compared GraphiQL that is embedded by default, 
+the customized version has a login form so that it can send JWT Authentication header with each request to the GraphQL backend.
+
+Please see the sub project `petclinic-graphiql` for more information.
 
 # Contributing
 
