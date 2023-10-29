@@ -119,9 +119,9 @@ jobs:
         working-directory: ./petclinic-backend-jar
         run: java -jar backend-0.0.1-SNAPSHOT.jar &
       - name: wait for backend
-        uses: iFaxity/wait-on-action
+        uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          resource: http://localhost:8080
+          resource: http://localhost:9977
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
