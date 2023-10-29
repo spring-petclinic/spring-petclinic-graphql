@@ -67,8 +67,8 @@ public class RSAKeyProvider {
     }
 
     private RSAPublicKey getPublicKey() throws Exception {
-        log.debug("Public key {}", Paths.get(publicKeyResource.getURI()));
-        byte[] keyBytes = Files.readAllBytes(Paths.get(publicKeyResource.getURI()));
+        log.debug("Public key {}", publicKeyResource.getURI());
+        byte[] keyBytes = publicKeyResource.getInputStream().readAllBytes();
         String publicKeyPem = new String(keyBytes)
             .replace("-----BEGIN PUBLIC KEY-----", "")
             .replace("-----END PUBLIC KEY-----", "")
@@ -81,8 +81,8 @@ public class RSAKeyProvider {
     }
 
     private RSAPrivateKey getPrivateKey() throws Exception {
-        log.debug("Private key {}", Paths.get(privateKeyResource.getURI()));
-        byte[] keyBytes = Files.readAllBytes(Paths.get(privateKeyResource.getURI()));
+        log.debug("Private key {}", privateKeyResource.getURI());
+        byte[] keyBytes = privateKeyResource.getInputStream().readAllBytes();
         String privateKeyPEM = new String(keyBytes)
             .replace("-----BEGIN PRIVATE KEY-----", "")
             .replace("-----END PRIVATE KEY-----", "")
