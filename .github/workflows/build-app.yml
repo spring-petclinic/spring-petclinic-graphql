@@ -29,7 +29,9 @@ jobs:
       - name: Build application
         run: pnpm build
       - name: Patch index.html
-        run: patch-index-html
+        run: pnpm patch-index-html
+      - name: show patched index.html
+        run: cat dist/index.html
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
