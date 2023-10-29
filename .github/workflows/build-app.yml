@@ -45,6 +45,12 @@ jobs:
           cache: maven
       - name: Build with maven
         run: mvn -B package
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: petclinic-backend-jar
+          path: backend-0.0.1-SNAPSHOT.jar
+          retention-days: 1
 
   frontend:
     runs-on: ubuntu-latest
@@ -84,6 +90,10 @@ jobs:
       run:
         working-directory: ./e2e-tests
     steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name: LS
+        run: ls -lR
       - name: setup playwright
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -95,8 +105,6 @@ jobs:
         with:
           version: 8
           run_install: false
-      - name: LS
-        run: ls -lR ../backend
       - name: Install dependencies
         run: pnpm install
       - name: Install Playwright Browsers
