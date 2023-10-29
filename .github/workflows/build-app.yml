@@ -121,7 +121,7 @@ jobs:
       - name: wait for backend
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          resource: http://localhost:9977
+          url: http://localhost:9977
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
