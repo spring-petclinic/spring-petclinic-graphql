@@ -3,17 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <groupId>org.springframework.samples.petclinic-graphql</groupId>
-    <artifactId>spring-petclinic-graphql</artifactId>
+    <artifactId>e2e-tests</artifactId>
     <version>2.0.0</version>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>petclinic-graphiql</module>
-        <module>backend</module>
-        <module>frontend</module>
-        <module>e2e-tests</module>
-    </modules>
+    <name>end-to-end tests</name>
+    <description>End-to-end-tests for Spring Petclinic GraphQL Example</description>
 
 </project>
