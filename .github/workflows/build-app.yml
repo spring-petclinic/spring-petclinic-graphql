@@ -109,14 +109,19 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#      - name: Install JDK17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: "17"
-#          distribution: "temurin"
-#          cache: maven
+      - name: Install JDK17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+      - name: start backend
+        working-directory: ./petclinic-backend-jar
+        run: java -jar backend-0.0.1-SNAPSHOT.jar &
+      - name: wait for backend
+        uses: iFaxity/wait-on-action
+        with:
+          resource: http://localhost:8080
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
