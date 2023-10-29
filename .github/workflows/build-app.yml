@@ -121,7 +121,7 @@ jobs:
         with:
           run: java -jar backend-0.0.1-SNAPSHOT.jar &
           wait-on: |
-            http://localhost:9977
+            http-get://localhost:9977
           tail: true # true = stderr,stdout
           log-output-resume: stderr
           wait-for: 5m
