@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: graphiql-dist
-          path: ./dist
+          path: dist/**
           retention-days: 1
 
   backend:
