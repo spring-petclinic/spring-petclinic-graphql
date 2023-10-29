@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --base=/graphiql",
+    "patch-index-html": "node patch-index-html.js dist/index.html",
     "copy-to-backend": "rm -rf ../backend/src/main/resources/graphiql && cp -r dist/ ../backend/src/main/resources/graphiql &&  node patch-index-html.js ../backend/src/main/resources/graphiql/index.html",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "tsc && vite build && vite preview"

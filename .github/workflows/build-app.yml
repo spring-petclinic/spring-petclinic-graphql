@@ -28,8 +28,14 @@ jobs:
         run: pnpm install
       - name: Build application
         run: pnpm build
-      - name: Copy to backend
-        run: pnpm copy-to-backend
+      - name: Patch index.html
+        run: patch-index-html
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: graphiql-dist
+          path: ./dist
+          retention-days: 1
 
   backend:
     runs-on: ubuntu-latest
@@ -43,6 +49,15 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
+      - name: Clear embedded graphiql
+        run: rm -rf backend/src/main/resources/graphiql
+      - name: Download graphiql
+        uses: actions/download-artifact@v3
+        with:
+          name: graphiql-dist
+          path: backend/src/main/resources/graphiql
+      - name: show graphiql artifact
+        run: ls -lR backend/src/main/resources/
       - name: Build with maven
         run: mvn -B package
       - name: Archive artifacts
@@ -82,6 +97,13 @@ jobs:
         run: pnpm run check
       - name: Build application
         run: pnpm build
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-dist
+          path: ./dist
+          retention-days: 1
+
   end-to-end-test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -95,8 +117,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Download all workflow run artifacts
+      - name: Download backend artifacts
         uses: actions/download-artifact@v3
+        with:
+          name: petclinic-backend-jar
+      - name: Download frontend artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-dist
+      - name: LS frontend-dist
+        run: ls -R ../frontend-dist
       - name: LS
         run: ls -lR
       - uses: pnpm/action-setup@v2.0.1
@@ -115,7 +145,6 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
-
       - uses: JarvusInnovations/background-action@v1
         name: Run Backend
         with:
@@ -128,13 +157,19 @@ jobs:
           log-output: stderr,stdout # same as true
           log-output-if: true
           working-directory: ./petclinic-backend-jar
-#      - name: start backend
-#        working-directory: ./petclinic-backend-jar
-#        run: java -jar backend-0.0.1-SNAPSHOT.jar &
-#      - name: wait for backend
-#        uses: cygnetdigital/wait_for_response@v2.0.0
-#        with:
-#          url: http://localhost:9977
+      - uses: JarvusInnovations/background-action@v1
+        name: Run frontend
+        with:
+          run: npm install -g serve |
+            serve  &
+          wait-on: |
+            http-get://localhost:3000
+          tail: true # true = stderr,stdout
+          log-output-resume: stderr
+          wait-for: 5m
+          log-output: stderr,stdout # same as true
+          log-output-if: true
+          working-directory: ./frontend-dist
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3

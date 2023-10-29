@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const data = fs.readFileSync("./dist/index-orig.html", "utf-8");
+const data = fs.readFileSync("./dist/index.html", "utf-8");
 
 const { BACKEND_HOST } = process.env;
 
