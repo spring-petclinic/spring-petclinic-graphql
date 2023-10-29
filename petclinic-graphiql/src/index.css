@@ -4,6 +4,7 @@ body {
   width: 100%;
   overflow: hidden;
 }
+
 #root {
   height: 100vh;
   display: flex;
@@ -18,12 +19,11 @@ body {
   text-align: center;
 }
 
-
 #loginForm {
   font-size: 1rem;
   height: 1.6rem;
+  margin-top: 4rem;
 }
-
 
 #loginForm input,
 #loginForm button {
@@ -31,11 +31,32 @@ body {
   font-size: 1rem;
 }
 
+#loginForm button,
+#loginForm label,
+#loginForm input {
+  margin-left: 1rem;
+}
+
+#loginForm table {
+  text-align: left;
+  border: 1px solid grey;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#loginForm table tr {
+  border-bottom: 1pt solid grey;
+}
+
+#loginForm table th,
+#loginForm table td {
+  padding: 0.5rem;
+}
+
 #petclinicToken {
   white-space: nowrap;
   font-size: 0.6rem;
 }
-
 
 .loginInfo,
 .tokenInfo {

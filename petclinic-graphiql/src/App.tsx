@@ -1,25 +1,78 @@
 import { createGraphiQLFetcher, Fetcher } from "@graphiql/toolkit";
 import { GraphiQL } from "graphiql";
 import "graphiql/graphiql.css";
-import { useMemo, useState } from "react";
-import { graphqlApiUrl, graphqlWsApiUrl } from "./urls.ts";
+import {useEffect, useMemo, useState} from "react";
+import {graphqlApiUrl, graphqlWsApiUrl, pingApiUrl} from "./urls.ts";
 import LoginForm from "./LoginForm.tsx";
 
 import { createClient } from "graphql-ws";
 
-const initialToken = localStorage.getItem("petclinic.graphiql.token");
-const initialUsername = localStorage.getItem("petclinic.graphiql.username");
+type Login = { token: string; username: string};
 
-const initialLogin =
-  initialToken && initialUsername
-    ? { token: initialToken, username: initialUsername }
-    : null;
+type LoginVerificationState = {
+  state: "pending"
+} | {
+  state: "verified",
+  initialLogin: Login | null
+}
 
-function App() {
+export default function App() {
+  const [loginVerificationState, setLoginVerificationState] = useState<LoginVerificationState>({state: "pending"});
+
+  useEffect(() => {
+    const initialToken = localStorage.getItem("petclinic.graphiql.token");
+    const initialUsername = localStorage.getItem("petclinic.graphiql.username");
+
+    if (!initialUsername || !initialToken) {
+      localStorage.removeItem("petclinic.graphiql.token");
+      localStorage.removeItem("petclinic.graphiql.username");
+
+      setLoginVerificationState(({state: "verified", initialLogin: null}))
+      return;
+    }
+
+    // call ping endpoint with initial token
+    //   it it returns HTTP OK token is valid
+    //   otherwise it's not valid anymore
+    fetch(pingApiUrl, {
+      headers: {
+        "Authorization": `Bearer ${initialToken}`
+      }
+    }).then(res => {
+      if (res.ok) {
+        setLoginVerificationState({
+          state: "verified",
+          initialLogin: { token: initialToken, username: initialUsername }
+        })
+
+        return;
+      }
+      console.log("Token not valid anymore? Status from ping", res.status);
+      setLoginVerificationState({
+        state: "verified", initialLogin: null
+      })
+    })
+  }, []);
+
+  if (loginVerificationState.state === "pending") {
+    return <h1>Verify login...</h1>
+  }
+
+  return <AppWithAuth initialLogin={loginVerificationState.initialLogin} />
+
+}
+
+type AppWithAuthProps = {
+  initialLogin: Login|null
+}
+
+function AppWithAuth({initialLogin}: AppWithAuthProps) {
   const [currentLogin, setCurrentLogin] = useState<{
     token: string;
     username: string;
   } | null>(initialLogin);
+
+  console.log("initialLogin", initialLogin);
 
   const [showToken, setShowToken] = useState(false);
 
@@ -85,4 +138,3 @@ function App() {
   return <LoginForm onLogin={(token) => setCurrentLogin(token)} />;
 }
 
-export default App;

@@ -5,6 +5,7 @@ const backendHost = window.__petclinic__backend_host__.replace(
 
 export const graphqlApiUrl = `${backendHost}/graphql`;
 export const loginApiUrl = `${backendHost}/login`;
+export const pingApiUrl = `${backendHost}/ping`;
 
 function buildWsApiUrl() {
   if (backendHost === "") {

@@ -71,6 +71,30 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 
         <button onClick={login}>Login</button>
         <p id="loginFeedback">{loginMsg}</p>
+        <div style={{marginTop: "4rem"}}>
+            <p>Choose one of the following users for login:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>susi</td>
+                  <td>susi</td>
+                  <td>ROLE_MANAGER</td>
+                </tr>
+                <tr>
+                  <td>joe</td>
+                  <td>joe</td>
+                  <td>ROLE_USER</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
       </div>
     </div>
   );
