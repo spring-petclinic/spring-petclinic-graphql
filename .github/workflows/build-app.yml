@@ -158,11 +158,16 @@ jobs:
           log-output: stderr,stdout # same as true
           log-output-if: true
           working-directory: ./petclinic-backend-jar
+      - name: install serve
+        run: npm install -g serve
+        working-directory: ./frontend-dist
+      - name: try serve
+        run: serve --help
+        working-directory: ./frontend-dist
       - uses: JarvusInnovations/background-action@v1
         name: Run frontend
         with:
-          run: npm install -g serve |
-            serve  &
+          run: serve &
           wait-on: |
             http-get://localhost:3000
           tail: true # true = stderr,stdout
