@@ -109,14 +109,14 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install JDK17
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: maven
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Install JDK17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: "17"
+#          distribution: "temurin"
+#          cache: maven
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v3
