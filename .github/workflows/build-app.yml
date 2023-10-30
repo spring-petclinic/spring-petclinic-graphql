@@ -161,13 +161,10 @@ jobs:
       - name: install serve
         run: npm install -g serve
         working-directory: ./frontend-dist
-      - name: try serve
-        run: serve --help
-        working-directory: ./frontend-dist
       - uses: JarvusInnovations/background-action@v1
         name: Run frontend
         with:
-          run: serve -l 3080 &
+          run: serve --single -l 3080 &
           wait-on: |
             http-get://localhost:3080
           tail: true # true = stderr,stdout
