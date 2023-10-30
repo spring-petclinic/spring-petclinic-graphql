@@ -29,7 +29,9 @@ export default function OwnerPage() {
     <PageLayout
       title={`Owners - ${data.owner.firstName} ${data.owner.lastName}`}
     >
-      <Section aria-label={`Contact data ${data.owner.firstName} ${data.owner.lastName}`}>
+      <Section
+        aria-label={`Contact data ${data.owner.firstName} ${data.owner.lastName}`}
+      >
         <Table
           values={[
             ["Name", `${data.owner.firstName} ${data.owner.lastName}`],
