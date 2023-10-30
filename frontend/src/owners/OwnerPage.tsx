@@ -29,7 +29,7 @@ export default function OwnerPage() {
     <PageLayout
       title={`Owners - ${data.owner.firstName} ${data.owner.lastName}`}
     >
-      <Section>
+      <Section aria-label={`Contact data ${data.owner.firstName} ${data.owner.lastName}`}>
         <Table
           values={[
             ["Name", `${data.owner.firstName} ${data.owner.lastName}`],
@@ -44,7 +44,7 @@ export default function OwnerPage() {
       </div>
       {data.owner.pets.map((pet) => (
         <div key={pet.id} className="mb-8">
-          <Section invert>
+          <Section invert aria-label={`Visits of ${pet.name}`}>
             <div className="mb-2 items-baseline justify-between border-b-4 border-spr-white pb-2 md:flex">
               <Heading level="3">
                 {pet.name} ({pet.type.name}, * {pet.birthDate})

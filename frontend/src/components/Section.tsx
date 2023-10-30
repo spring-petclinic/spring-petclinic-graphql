@@ -5,14 +5,11 @@ type SectionProps = {
   narrow?: boolean;
   children: React.ReactNode;
 };
-export default function Section({ children, invert, narrow }: SectionProps) {
-  // const className="bg-gray-50"
-  // narrow ? "max-w-2xl" : "max-w-7xl"
+export default function Section({ children, invert, narrow, ...props }: SectionProps) {
   let className = invert ? "bg-gray-100 p-4 mb-4" : "px-4 pb-8 sm:px-0";
   if (narrow) {
     className = className + " max-w-2xl mx-auto";
   }
-  // className = narrow ? className + ""
 
-  return <div className={className}>{children}</div>;
+  return <section className={className} {...props}>{children}</section>;
 }
