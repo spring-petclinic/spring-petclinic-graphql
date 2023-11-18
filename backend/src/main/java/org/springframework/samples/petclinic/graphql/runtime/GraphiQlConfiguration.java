@@ -18,7 +18,7 @@ public class GraphiQlConfiguration implements WebMvcConfigurer {
     @Order(0)
     public RouterFunction<ServerResponse> graphiQlRouterFunction() {
         RouterFunctions.Builder builder = RouterFunctions.route();
-        ClassPathResource graphiQlPage = new ClassPathResource("/graphiql/index.html");
+        ClassPathResource graphiQlPage = new ClassPathResource("/ui/graphiql/index.html");
         GraphiQlHandler graphiQLHandler = new GraphiQlHandler("/graphql", "/graphql", graphiQlPage);
         builder = builder.GET("/", graphiQLHandler::handleRequest);
         return builder.build();
@@ -27,6 +27,6 @@ public class GraphiQlConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/graphiql/**")
-            .addResourceLocations("classpath:/graphiql/");
+            .addResourceLocations("classpath:/ui/graphiql/");
     }
 }

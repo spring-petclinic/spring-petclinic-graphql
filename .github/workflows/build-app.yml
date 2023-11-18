@@ -52,14 +52,14 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Clear embedded graphiql
-        run: rm -rf backend/src/main/resources/graphiql
+        run: rm -rf backend/src/main/resources/ui/graphiql
       - name: Download graphiql
         uses: actions/download-artifact@v3
         with:
           name: graphiql-dist
-          path: backend/src/main/resources/graphiql
+          path: backend/src/main/resources/ui/graphiql
       - name: show graphiql artifact
-        run: ls -lR backend/src/main/resources/
+        run: ls -lR backend/src/main/resources/ui/
       - name: Build with maven
         run: mvn -B package
       - name: Archive artifacts
