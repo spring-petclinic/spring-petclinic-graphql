@@ -28,7 +28,7 @@ public class SpecialtyService {
 
     @Transactional
     public Specialty updateSpecialty(int specialtyId, @NotEmpty String newName) {
-        Specialty specialty = specialtyRepository.findById(specialtyId);
+        Specialty specialty = specialtyRepository.findById(specialtyId).orElseThrow();
         specialty.setName(newName);
         specialtyRepository.save(specialty);
         return specialty;
@@ -36,7 +36,7 @@ public class SpecialtyService {
 
     @Transactional
     public void deleteSpecialty(int specialtyId) {
-        Specialty specialty = specialtyRepository.findById(specialtyId);
+        Specialty specialty = specialtyRepository.findById(specialtyId).orElseThrow();
         specialtyRepository.delete(specialty);
     }
 }

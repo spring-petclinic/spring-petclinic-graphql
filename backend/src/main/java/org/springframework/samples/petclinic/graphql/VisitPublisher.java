@@ -40,10 +40,10 @@ public class VisitPublisher {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onNewVisit(VisitCreatedEvent event) {
 
-        Visit visit = visitRepository.findById(event.getVisitId());
-        if (visit != null) {
-            this.sink.emitNext(visit, Sinks.EmitFailureHandler.FAIL_FAST);
-        }
+        visitRepository.findById(event.getVisitId())
+            .ifPresent(visit -> {
+                this.sink.emitNext(visit, Sinks.EmitFailureHandler.FAIL_FAST);
+            });
     }
 
     public Flux<Visit> getPublisher() {

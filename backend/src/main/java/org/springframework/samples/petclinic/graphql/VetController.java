@@ -46,7 +46,7 @@ public class VetController {
     }
 
     @QueryMapping
-    public Vet vet(@Argument Integer id) {
+    public Optional<Vet> vet(@Argument Integer id) {
         return vetRepository.findById(id);
     }
 

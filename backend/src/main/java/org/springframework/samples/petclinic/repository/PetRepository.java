@@ -17,30 +17,34 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 
 /**
- * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
- * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ * Repository class for <code>Pet</code> domain objects
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
+ * @author Nils Hartmann
  */
-public interface PetRepository {
+public interface PetRepository extends Repository<Pet, Integer> {
 
     /**
      * Retrieve all <code>PetType</code>s from the data store.
      *
      * @return a <code>Collection</code> of <code>PetType</code>s
      */
-    List<PetType> findPetTypes() throws DataAccessException;
+    @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
+    List<PetType> findPetTypes();
 
     /**
      * Retrieve a <code>Pet</code> from the data store by id.
@@ -49,7 +53,7 @@ public interface PetRepository {
      * @return the <code>Pet</code> if found
      * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
-    Pet findById(Integer id) throws DataAccessException;
+    Optional<Pet> findById(Integer id);
 
     /**
      * Save a <code>Pet</code> to the data store, either inserting or updating it.
@@ -57,7 +61,7 @@ public interface PetRepository {
      * @param pet the <code>Pet</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Pet pet) throws DataAccessException;
+    void save(Pet pet);
 
     /**
      * Retrieve <code>Pet</code>s from the data store, returning all owners
@@ -65,7 +69,7 @@ public interface PetRepository {
      * @return a <code>Collection</code> of <code>Pet</code>s (or an empty <code>Collection</code> if none
      * found)
      */
-	Collection<Pet> findAll() throws DataAccessException;
+	Collection<Pet> findAll();
 
     /**
      * Delete an <code>Pet</code> to the data store by <code>Pet</code>.
@@ -73,6 +77,6 @@ public interface PetRepository {
      * @param pet the <code>Pet</code> to delete
      *
      */
-	void delete(Pet pet) throws DataAccessException;
+	void delete(Pet pet);
 
 }

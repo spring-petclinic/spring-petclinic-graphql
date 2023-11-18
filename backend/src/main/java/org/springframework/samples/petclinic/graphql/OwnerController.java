@@ -78,7 +78,7 @@ public class OwnerController {
     }
 
     @QueryMapping
-    public Owner owner(DataFetchingEnvironment env) {
+    public Optional<Owner> owner(DataFetchingEnvironment env) {
         int id = env.getArgument("id");
         return ownerRepository.findById(id);
     }

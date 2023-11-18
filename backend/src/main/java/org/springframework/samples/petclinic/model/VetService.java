@@ -30,11 +30,9 @@ public class VetService {
         vet.setLastName(lastName);
         for (Integer specialtyId : specialtyIds) {
             log.info("Specialty Id '{}'", specialtyId);
-            Specialty specialty = specialtyRepository.findById(specialtyId);
+            Specialty specialty = specialtyRepository.findById(specialtyId)
+                    .orElseThrow( () -> new InvalidVetDataException("Specialty with Id '%s' not found", specialtyId));
             log.info("Specialty '{}'", specialty);
-            if (specialty == null) {
-                throw new InvalidVetDataException("Specialty with Id '%s' not found", specialtyId);
-            }
             vet.addSpecialty(specialty);
         }
 

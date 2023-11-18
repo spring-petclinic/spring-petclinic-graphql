@@ -17,11 +17,14 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 import org.springframework.lang.Nullable;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
@@ -29,16 +32,16 @@ import org.springframework.samples.petclinic.model.OwnerFilter;
 import org.springframework.samples.petclinic.model.OwnerOrder;
 
 /**
- * Repository class for <code>Owner</code> domain objects All method names are compliant with Spring Data naming
- * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ * Repository class for <code>Owner</code> domain objects
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
+ * @author Nils Hartmann
  */
-public interface OwnerRepository {
+public interface OwnerRepository extends Repository<Owner, Integer> {
 
     /**
      * Retrieve <code>Owner</code>s from the data store by last name, returning all owners whose last name <i>starts</i>
@@ -48,16 +51,16 @@ public interface OwnerRepository {
      * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
      * found)
      */
-    Collection<Owner> findByLastName(String lastName) throws DataAccessException;
+    @Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.lastName LIKE :lastName%")
+    Collection<Owner> findByLastName(String lastName);
 
     /**
      * Retrieve an <code>Owner</code> from the data store by id.
      *
      * @param id the id to search for
      * @return the <code>Owner</code> if found
-     * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
-    Owner findById(Integer id) throws DataAccessException;
+    Optional<Owner> findById(Integer id);
 
 
     /**
@@ -66,7 +69,7 @@ public interface OwnerRepository {
      * @param owner the <code>Owner</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Owner owner) throws DataAccessException;
+    void save(Owner owner);
 
     /**
      * Retrieve <code>Owner</code>s from the data store, returning all owners
@@ -74,15 +77,7 @@ public interface OwnerRepository {
      * @return a <code>Collection</code> of <code>Owner</code>s (or an empty <code>Collection</code> if none
      * found)
      */
-	Collection<Owner> findAll() throws DataAccessException;
-
-    /**
-     * Retrieve <code>Owner</code>s from the data store with optional filter or order, returning retrieved owners
-     *
-     * @return a <code>Collection</code> of <code>Owner</code>s (or an empty <code>Collection</code> if none
-     * found)
-     */
-    Collection<Owner> findAllByFilterOrder(OwnerFilter filter, List<OwnerOrder> orders) throws DataAccessException;
+	Collection<Owner> findAll();
 
     /**
      * Delete an <code>Owner</code> to the data store by <code>Owner</code>.
@@ -90,13 +85,7 @@ public interface OwnerRepository {
      * @param owner the <code>Owner</code> to delete
      *
      */
-	void delete(Owner owner) throws DataAccessException;
+	void delete(Owner owner);
 
-    default Page<Owner> findAll(@Nullable Specification<Owner> spec, Pageable pageable) {
-        throw new UnsupportedOperationException("findAll with specification only supported in spring-data-jpa repo currently!");
-    }
-
-
-
-
+    Page<Owner> findAll(@Nullable Specification<Owner> spec, Pageable pageable);
 }
