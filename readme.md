@@ -26,6 +26,7 @@ Some features that are built in:
 * Custom GraphiQL Build, that has a login screen
   * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
+* End-to-end browser tests: see `e2e-tests` folder for some [Playwright](https://playwright.dev/) based end-to-end tests that test the running application in a real browser. Read description below how to run the tests.
 
 # Running the sample application
 
@@ -226,7 +227,37 @@ subscription {
 The backend includes a Spring Petclinic-specific customized version of GraphiQL. Compared GraphiQL that is embedded by default, 
 the customized version has a login form so that it can send JWT Authentication header with each request to the GraphQL backend.
 
-Please see the sub project `petclinic-graphiql` for more information.
+Please see the subproject `petclinic-graphiql` for more information.
+
+# End-to-end tests
+
+Inside the folder `e2e-tests` you find some Playwright-based end-to-end tests.
+
+To run the test, please make sure, the backend and the frontend processes are running, as described above.
+
+Then install playwright and all its dependencies including the required browsers by running
+
+```
+cd e2e-tests
+pnpm install
+```
+
+Then you can use `pnpm` to start the test:
+
+* `pnpm test` will execute all tests in headless mode in all three configured browsers (Chrome, Firefox, Safari)
+
+* `pnpm test:ui` opens the tests in [Playwright's UI mode](https://playwright.dev/docs/test-ui-mode)
+  * From the started Playwright UI you can individually select which test to run in which browser
+  * You can also debug the tests from there
+* `pnpm test:headed`: runs the tests in a headed (i.e. visible) browser (by default Chrome).
+
+## Running, debugging and developing the tests
+
+For writing and running Playwright tests I prefer VS code with the [Playwright extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+
+But if you want to develop and run the tests in IntelliJ, you can install the [Test Automation Plug-in](https://plugins.jetbrains.com/plugin/20175-test-automation) by Jetbrains.
+
+
 
 # Contributing
 
