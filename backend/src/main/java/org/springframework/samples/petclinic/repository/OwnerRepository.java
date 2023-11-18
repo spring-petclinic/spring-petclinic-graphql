@@ -44,17 +44,6 @@ import org.springframework.samples.petclinic.model.OwnerOrder;
 public interface OwnerRepository extends Repository<Owner, Integer> {
 
     /**
-     * Retrieve <code>Owner</code>s from the data store by last name, returning all owners whose last name <i>starts</i>
-     * with the given name.
-     *
-     * @param lastName Value to search for
-     * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
-     * found)
-     */
-    @Query("SELECT DISTINCT owner FROM Owner owner WHERE owner.lastName LIKE :lastName%")
-    Collection<Owner> findByLastName(String lastName);
-
-    /**
      * Retrieve an <code>Owner</code> from the data store by id.
      *
      * @param id the id to search for

@@ -86,12 +86,17 @@ class ClinicRepositorySpringDataJpaTests {
     }
 
     @Test
-    void shouldFindOwnersByLastName() {
-        Collection<Owner> owners = this.ownerRepository.findByLastName("Davis");
-        assertThat(owners.size()).isEqualTo(2);
+    void shouldFindFall() {
+        OwnerFilter filter = new OwnerFilter();
+        filter.setLastName("Escobito");
+        var page = ownerRepository.findAll(filter, PageRequest.ofSize(10));
+        assertThat(page.getTotalElements()).isEqualTo(1L);
+        assertThat(page.getContent().get(0).getLastName()).isEqualTo("Escobito");
 
-        owners = this.ownerRepository.findByLastName("Daviss");
-        assertThat(owners.isEmpty()).isTrue();
+        filter = new OwnerFilter();
+        filter.setLastName("es");
+        page = ownerRepository.findAll(filter, PageRequest.ofSize(10));
+        assertThat(page.getTotalElements()).isEqualTo(2L);
     }
 
     @Test
@@ -105,9 +110,6 @@ class ClinicRepositorySpringDataJpaTests {
 
     @Test
     void shouldInsertOwner() {
-        Collection<Owner> owners = this.ownerRepository.findByLastName("Schultz");
-        int found = owners.size();
-
         Owner owner = new Owner();
         owner.setFirstName("Sam");
         owner.setLastName("Schultz");
@@ -116,9 +118,6 @@ class ClinicRepositorySpringDataJpaTests {
         owner.setTelephone("4444444444");
         this.ownerRepository.save(owner);
         assertThat(owner.getId().longValue()).isNotEqualTo(0);
-
-        owners = this.ownerRepository.findByLastName("Schultz");
-        assertThat(owners.size()).isEqualTo(found + 1);
     }
 
     @Test
