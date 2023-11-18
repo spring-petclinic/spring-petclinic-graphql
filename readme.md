@@ -27,6 +27,7 @@ Some features that are built in:
   * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
 * End-to-end browser tests: see `e2e-tests` folder for some [Playwright](https://playwright.dev/) based end-to-end tests that test the running application in a real browser. Read description below how to run the tests.
+* GitHub action workflow that builds and runs tests and end-to-end tests on each commit (see `.github/workflows/build-app.yml`)
 
 # Running the sample application
 
