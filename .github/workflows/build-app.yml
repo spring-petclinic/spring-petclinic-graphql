@@ -127,10 +127,15 @@ jobs:
         run: ls -lR
       - name: Import Docker image
         run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
-      - name: Run backend
-        run: docker-compose -f docker-compose-petclinic.yml up
-#      - name: run Backend with docker compose
-#        run: docker-compose -f docker-compose-petclinic.yml up -d
+      - name: run Backend with docker compose
+        run: docker-compose -f docker-compose-petclinic.yml up -d
+      - name: wait for backend
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: 'http://localhost:9977/'
+          responseCode: 200
+          timeout: 60000
+          interval: 500
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
