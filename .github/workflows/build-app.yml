@@ -127,6 +127,8 @@ jobs:
         run: ls -lR
       - name: Import Docker image
         run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
+      - name: run Backend with docker compose
+        run: docker-compose -f docker-compose-petclinic.yml up -d --wait
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
@@ -152,17 +154,17 @@ jobs:
 #          java-version: "17"
 #          distribution: "temurin"
 #          cache: maven
-      - uses: JarvusInnovations/background-action@v1
-        name: Run Backend
-        with:
-          run: docker-compose -f docker-compose-petclinic.yml up -d
-          wait-on: |
-            http-get://localhost:9977
-          tail: true # true = stderr,stdout
-          log-output-resume: stderr
-          wait-for: 5m
-          log-output: stderr,stdout # same as true
-          log-output-if: true
+#      - uses: JarvusInnovations/background-action@v1
+#        name: Run Backend
+#        with:
+#          run: docker-compose -f docker-compose-petclinic.yml up -d
+#          wait-on: |
+#            http-get://localhost:9977
+#          tail: true # true = stderr,stdout
+#          log-output-resume: stderr
+#          wait-for: 5m
+#          log-output: stderr,stdout # same as true
+#          log-output-if: true
       - name: install serve
         run: npm install -g serve
         working-directory: ./frontend-dist
