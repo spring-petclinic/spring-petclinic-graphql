@@ -17,7 +17,7 @@ provides an example Frontend for the API.
 Some features that are built in:
 
 * [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `graphql/*Controller`-classes, e.g. `SpecialtyController` and `VetController`)
-* Subscriptions via Websockets (see `VisitController#onNewVisit`)  
+* Subscriptions via Websockets (see `VisitController#onNewVisit`) including integration test (see `VisitSubscriptionTest`) and examples below  
 * Own scalar types (See `PetClinicRuntimeWiringConfiguration` and `DateCoercing`)
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
@@ -26,8 +26,12 @@ Some features that are built in:
 * Custom GraphiQL Build, that has a login screen
   * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
+  * The tests are using [Spring Boot TestContains support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.testcontainers) to run the required Postgres database. 
 * End-to-end browser tests: see `e2e-tests` folder for some [Playwright](https://playwright.dev/) based end-to-end tests that test the running application in a real browser. Read description below how to run the tests.
-* GitHub action workflow that builds and runs tests and end-to-end tests on each commit (see `.github/workflows/build-app.yml`)
+* GitHub action workflow:
+  * builds and tests the backend
+  * starts the backend including database with docker-compose to run the end-to-end-tests
+  * (see `.github/workflows/build-app.yml`)
 
 # Running the sample application
 
@@ -77,7 +81,8 @@ using maven from the root folder of the repository:
 
 Note: the server runs on port **9977**, so make sure, this port is available.
 
-(The server uses an in-memory database, so no external DB is needed)
+- Note: you need to have docker installed. `docker-compose` needs to be in your path
+- On starup the server uses [Spring Boot docker compose support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.docker-compose) to run the required postgres database
 
 
 
