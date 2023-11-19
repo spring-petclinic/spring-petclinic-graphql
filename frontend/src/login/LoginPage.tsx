@@ -8,9 +8,9 @@ import Heading from "@/components/Heading";
 import Input from "@/components/Input";
 import Label from "@/components/Label";
 import { AnonymousPageLayout } from "@/components/PageLayout";
-import Section from "@/components/Section";
 import Table from "@/components/Table";
 import { loginApiUrl } from "@/urls";
+import { Section } from "@/components/Section.tsx";
 
 type LoginFormData = { username: string; password: string };
 type LoginRequestState = { running?: boolean; error?: string };

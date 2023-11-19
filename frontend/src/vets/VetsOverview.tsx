@@ -9,7 +9,7 @@ import Link from "@/components/Link.tsx";
 import Table from "@/components/Table.tsx";
 import Card from "@/components/Card.tsx";
 import Button from "@/components/Button.tsx";
-import Section from "@/components/Section.tsx";
+import { Section, SectionHeading } from "@/components/Section.tsx";
 
 type Vet = AllVetsQuery["vets"][number];
 type VetsOverviewProps = {
@@ -44,9 +44,9 @@ export default function VetsOverview({
 
   return (
     <>
-      <div className="mb-2 items-baseline justify-between border-b-4 border-spr-white pb-2 md:flex">
+      <SectionHeading>
         <Heading level="3">All Veterinarians</Heading>
-      </div>
+      </SectionHeading>
       <Table labels={["Name", "Specialities"]} values={data.vets.map(vetRow)} />
       <Card fullWidth>
         <p>

@@ -7,13 +7,13 @@ import {
 import { produce } from "immer";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
-import Section from "@/components/Section.tsx";
 import Heading from "@/components/Heading.tsx";
 import Input from "@/components/Input.tsx";
 import Label from "@/components/Label.tsx";
 import Select from "@/components/Select.tsx";
 import ButtonBar from "@/components/ButtonBar.tsx";
 import Button from "@/components/Button.tsx";
+import { Section } from "@/components/Section.tsx";
 
 /** Fragment for updating the Cache after mutation (adding new Visit to existing Pet) */
 const PetVisits = gql`

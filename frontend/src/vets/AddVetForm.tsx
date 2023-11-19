@@ -3,13 +3,13 @@ import ButtonBar from "@/components/ButtonBar";
 import Heading from "@/components/Heading";
 import Input from "@/components/Input";
 import Label from "@/components/Label";
-import Section from "@/components/Section";
 import Select from "@/components/Select";
 import {
   useAddVetMutation,
   useAllSpecialtiesQuery,
 } from "@/generated/graphql-types.ts";
 import { useForm } from "react-hook-form";
+import { Section } from "@/components/Section.tsx";
 
 type AddVetFormProps = {
   onFinish(): void;
