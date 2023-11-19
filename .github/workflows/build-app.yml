@@ -169,7 +169,7 @@ jobs:
         run: npm install -g serve
         working-directory: ./frontend-dist
       - name: wait for backend
-        uses: iFaxity/wait-on-action
+        uses: iFaxity/wait-on-action@1.1.0
         with:
           resource: http://localhost:9977
           timeout: 60000
