@@ -61,12 +61,14 @@ jobs:
       - name: show graphiql artifact
         run: ls -lR backend/src/main/resources/ui/
       - name: Build with maven
-        run: mvn -B package
+        run: ./mvnw -pl backend spring-boot:build-image -Dspring-boot.build-image.imageName=spring-petclinic/petclinic-graphql-backend:0.0.1
+      - name: Export docker image
+        run:  docker save spring-petclinic/petclinic-graphql-backend:0.0.1|gzip>petclinic-graphql-backend.tar.gz
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: petclinic-backend-jar
-          path: ./backend/target/backend-0.0.1-SNAPSHOT.jar
+          name: petclinic-backend-docker
+          path: petclinic-graphql-backend.tar.gz
           retention-days: 1
 
   frontend:
@@ -119,8 +121,11 @@ jobs:
       - name: Download backend artifacts
         uses: actions/download-artifact@v3
         with:
-          name: petclinic-backend-jar
-          path: petclinic-backend-jar
+          name: petclinic-backend-docker
+          path: petclinic-graphql-backend.tar.gz
+      - name: Import Docker image
+        run: gunzip -c petclinic-graphql-backend.tar.gz|docker load
+        working-directory: petclinic-backend-docker
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
@@ -140,16 +145,16 @@ jobs:
       - name: Install Playwright Browsers
         working-directory: ./e2e-tests
         run: pnpm exec playwright install --with-deps
-      - name: Install JDK17
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: maven
+#      - name: Install JDK17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: "17"
+#          distribution: "temurin"
+#          cache: maven
       - uses: JarvusInnovations/background-action@v1
         name: Run Backend
         with:
-          run: java -jar backend-0.0.1-SNAPSHOT.jar &
+          run: docker-compose -f docker-compose-petclinic.yml up -d
           wait-on: |
             http-get://localhost:9977
           tail: true # true = stderr,stdout
@@ -157,7 +162,6 @@ jobs:
           wait-for: 5m
           log-output: stderr,stdout # same as true
           log-output-if: true
-          working-directory: ./petclinic-backend-jar
       - name: install serve
         run: npm install -g serve
         working-directory: ./frontend-dist
