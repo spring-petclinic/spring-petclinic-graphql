@@ -1,5 +1,5 @@
 fragment DefaultVisit on Visit {
-    id
-    date
-    description
+  id
+  date
+  description
 }
