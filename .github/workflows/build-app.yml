@@ -129,13 +129,6 @@ jobs:
         run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
       - name: run Backend with docker compose
         run: docker-compose -f docker-compose-petclinic.yml up -d
-      - name: wait for backend
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: 'http://localhost:9977/'
-          responseCode: 200
-          timeout: 60000
-          interval: 500
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
@@ -175,6 +168,10 @@ jobs:
       - name: install serve
         run: npm install -g serve
         working-directory: ./frontend-dist
+      - name: wait for backend on port 9977
+        uses: iFaxity/wait-on-action@v1.1.0
+        with:
+          resource: http-get://localhost:9977
       - uses: JarvusInnovations/background-action@v1
         name: Run frontend
         with:
