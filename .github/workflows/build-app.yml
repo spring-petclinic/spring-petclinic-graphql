@@ -128,7 +128,7 @@ jobs:
       - name: Import Docker image
         run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
       - name: run Backend with docker compose
-        run: docker-compose -f docker-compose-petclinic.yml up -d --wait
+        run: docker-compose -f docker-compose-petclinic.yml up -d
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
@@ -168,6 +168,11 @@ jobs:
       - name: install serve
         run: npm install -g serve
         working-directory: ./frontend-dist
+      - name: wait for backend
+        uses: iFaxity/wait-on-action
+        with:
+          resource: http://localhost:9977
+          timeout: 60000
       - uses: JarvusInnovations/background-action@v1
         name: Run frontend
         with:
