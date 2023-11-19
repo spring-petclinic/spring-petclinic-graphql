@@ -21,8 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
 import org.springframework.samples.petclinic.model.*;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.test.context.ActiveProfiles;
@@ -54,9 +59,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-@DataJpaTest
-@ActiveProfiles(profiles = {"hsqldb"})
+@SpringBootTest
 @Transactional
+@Import(PetClinicTestDbConfiguration.class)
 class ClinicRepositorySpringDataJpaTests {
 
     @Autowired

@@ -1,13 +1,8 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
-
 INSERT INTO users (USERNAME, PASSWORD, ENABLED, FULLNAME) VALUES ('joe', '{noop}joe', true, 'Joe Hill');
 INSERT INTO users (USERNAME, PASSWORD, ENABLED, FULLNAME) VALUES ('susi', '{noop}susi', true, 'Susi Smith');
 
 INSERT INTO roles (ID, USERNAME, ROLE) VALUES (0, 'susi', 'MANAGER');
 INSERT INTO roles (ID, USERNAME, ROLE) VALUES (1, 'joe', 'USER');
-
-
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
@@ -62,3 +57,11 @@ INSERT INTO visits VALUES (1, 7, 4, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (2, 8, NULL, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (3, 8, 4, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (4, 7, NULL, '2013-01-04', 'spayed');
+
+ALTER SEQUENCE roles_id_seq RESTART WITH 100;
+ALTER SEQUENCE vets_id_seq RESTART WITH 100;
+ALTER SEQUENCE specialties_id_seq RESTART WITH 100;
+ALTER SEQUENCE types_id_seq RESTART WITH 100;
+ALTER SEQUENCE owners_id_seq RESTART WITH 100;
+ALTER SEQUENCE pets_id_seq RESTART WITH 100;
+ALTER SEQUENCE visits_id_seq RESTART WITH 100;

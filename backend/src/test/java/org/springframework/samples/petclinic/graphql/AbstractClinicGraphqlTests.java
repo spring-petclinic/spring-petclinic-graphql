@@ -1,12 +1,15 @@
 package org.springframework.samples.petclinic.graphql;
 
+import com.github.dockerjava.api.model.ContainerConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
 import org.springframework.http.HttpHeaders;
+import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
 import org.springframework.samples.petclinic.security.JwtTokenService;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -15,9 +18,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles(profiles = {"hsqldb"})
 @AutoConfigureMockMvc
 @AutoConfigureHttpGraphQlTester
+@Import(PetClinicTestDbConfiguration.class)
 public class AbstractClinicGraphqlTests {
 
     @Autowired
