@@ -11,7 +11,7 @@ public class PetClinicTestDbConfiguration {
 
     @Bean
     @ServiceConnection
-    public PostgreSQLContainer<?> neo4jContainer() {
-        return new PostgreSQLContainer<>("postgres:16.1").withReuse(true);
+    public PostgreSQLContainer<?> postgresContainer() {
+        return new PostgreSQLContainer<>("postgres:16.1");
     }
 }

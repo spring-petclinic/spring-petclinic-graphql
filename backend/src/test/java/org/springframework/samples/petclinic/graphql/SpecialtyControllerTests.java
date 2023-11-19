@@ -10,11 +10,11 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     @Test
     public void specialtiesQueryReturnsList() {
         String query = "query {" +
-            "  specialties {" +
-            "    id" +
-            "    name" +
-            "  }" +
-            "}";
+                       "  specialties {" +
+                       "    id" +
+                       "    name" +
+                       "  }" +
+                       "}";
 
         userRoleGraphQlTester
             .document(query)
@@ -24,16 +24,15 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
-    @DirtiesContext
     public void updateSpecialtyWorks() {
         String query = "mutation {" +
-            "  updateSpecialty(input: {specialtyId: 1, name: \"test\"}) {" +
-            "    specialty {" +
-            "      id" +
-            "      name" +
-            "    }" +
-            "  }" +
-            "}";
+                       "  updateSpecialty(input: {specialtyId: 1, name: \"test\"}) {" +
+                       "    specialty {" +
+                       "      id" +
+                       "      name" +
+                       "    }" +
+                       "  }" +
+                       "}";
 
         userRoleGraphQlTester
             .document(query)
@@ -43,16 +42,15 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
-    @DirtiesContext
     public void addSpecialtyWorks() {
         String query = "mutation {" +
-            "  addSpecialty(input: {name: \"xxx\"}) {" +
-            "    specialty {" +
-            "      id" +
-            "      name" +
-            "    }" +
-            "  }" +
-            "}";
+                       "  addSpecialty(input: {name: \"xxx\"}) {" +
+                       "    specialty {" +
+                       "      id" +
+                       "      name" +
+                       "    }" +
+                       "  }" +
+                       "}";
 
         userRoleGraphQlTester
             .document(query)
@@ -62,14 +60,13 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
-    @DirtiesContext
     public void addAndRemoveSpecialtyWorks() {
         String getQuery = "query {" +
-            "  specialties {" +
-            "    id" +
-            "    name" +
-            "  }" +
-            "}";
+                          "  specialties {" +
+                          "    id" +
+                          "    name" +
+                          "  }" +
+                          "}";
 
         final int specialtyCount = userRoleGraphQlTester
             .document(getQuery)
@@ -77,13 +74,13 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
             .path("specialties").entityList(Object.class).get().size();
 
         String query = "mutation {" +
-            "  addSpecialty(input: {name: \"yyy\"}) {" +
-            "    specialty {" +
-            "      id" +
-            "      name" +
-            "    }" +
-            "  }" +
-            "}";
+                       "  addSpecialty(input: {name: \"yyy\"}) {" +
+                       "    specialty {" +
+                       "      id" +
+                       "      name" +
+                       "    }" +
+                       "  }" +
+                       "}";
 
         GraphQlTester.Response response = userRoleGraphQlTester
             .document(query)
@@ -94,12 +91,12 @@ public class SpecialtyControllerTests extends AbstractClinicGraphqlTests {
         Assertions.assertNotNull(id);
 
         String removeQuery = "mutation {" +
-            "  removeSpecialty(input: {specialtyId: " + id + "}) {" +
-            "    specialties {" +
-            "      id" +
-            "    }" +
-            "  }" +
-            "}";
+                             "  removeSpecialty(input: {specialtyId: " + id + "}) {" +
+                             "    specialties {" +
+                             "      id" +
+                             "    }" +
+                             "  }" +
+                             "}";
 
         this.userRoleGraphQlTester.document(removeQuery)
             .execute()

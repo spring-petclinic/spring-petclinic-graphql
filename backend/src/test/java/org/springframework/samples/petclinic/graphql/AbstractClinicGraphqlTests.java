@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
 import org.springframework.samples.petclinic.security.JwtTokenService;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -21,6 +22,7 @@ import java.util.List;
 @AutoConfigureMockMvc
 @AutoConfigureHttpGraphQlTester
 @Import(PetClinicTestDbConfiguration.class)
+@Transactional
 public class AbstractClinicGraphqlTests {
 
     @Autowired

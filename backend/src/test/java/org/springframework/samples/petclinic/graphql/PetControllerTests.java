@@ -43,7 +43,6 @@ public class PetControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
-    @DirtiesContext
     public void addPetMutation_shouldAddNewPet() {
         userRoleGraphQlTester.documentName("addPetMutation")
             .execute()
@@ -59,7 +58,6 @@ public class PetControllerTests extends AbstractClinicGraphqlTests {
     }
 
     @Test
-    @DirtiesContext
     public void updatePetMutation_shouldUpdatePet() {
         userRoleGraphQlTester.documentName("updatePetMutation")
             .variable("updatePetInput", Map.of(
