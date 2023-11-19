@@ -123,9 +123,10 @@ jobs:
         with:
           name: petclinic-backend-docker
           path: petclinic-graphql-backend.tar.gz
+      - name: ls
+        run: ls -lR
       - name: Import Docker image
         run: gunzip -c petclinic-graphql-backend.tar.gz|docker load
-        working-directory: petclinic-backend-docker
       - name: Download frontend artifacts
         uses: actions/download-artifact@v3
         with:
