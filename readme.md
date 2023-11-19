@@ -194,11 +194,8 @@ mutation {
 
 Listen for new visits using a **Subscription**
 
-Hint: open Graphiql in two browser tabs in parallel. In 1st window, run the following subscription,
-in the 2nd tab create than a new Visit (see above for an example). The new Visit should automatically
-be seen in 2nd tab, after the Mutation in 1st tab completes.
-
-This mutation selects the treating veterinarian of the new created Visit and the pet that will be visiting.
+This mutation selects the treating veterinarian of the new created Visit and the pet that will be visiting. You can
+either create a new Visit using the mutation above or using the frontend application.
 
 ```graphql
 
@@ -219,7 +216,8 @@ subscription {
 }
 ```
 
-**Note**: The WebSocket/Subscription support in GraphiQL is far from being robust. Use with care!
+**Note:** In the frontend application, you can open an Owner an see all its pets including their visits. If you add a new visit to one of the pets, in all other browser windows that have the Owner page with that Owner open, the new visit should be added to the table automatically, because the `OwnerPage` React component uses a subscription to update the table contents in the background. 
+
 
 ![SpringBoot PetClinic, GraphiQL](graphiql.png)
 

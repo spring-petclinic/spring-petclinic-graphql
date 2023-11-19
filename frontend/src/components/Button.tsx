@@ -13,6 +13,7 @@ export default function Button({
   disabled,
   onClick,
   type = "primary",
+  ...props
 }: ButtonProps) {
   const className = clsx(
     type === "primary" &&
@@ -31,7 +32,12 @@ export default function Button({
   //     ? "bg-spr-white text-spr-black uppercase py-1.5 px-3.5 hover:bg-spr-green hover:text-spr-white font-medium font-semibold hover:border-spr-green border-spr-black border rounded disabled:cursor-default"
   //     : "bg-spr-black text-spr-white uppercase py-1 px-3.5 hover:bg-spr-green font-helvetica hover:border-spr-green border-spr-black border disabled:cursor-default ";
   return (
-    <button onClick={onClick} className={className} disabled={disabled}>
+    <button
+      {...props}
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

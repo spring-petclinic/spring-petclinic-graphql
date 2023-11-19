@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
+import org.springframework.graphql.test.tester.WebSocketGraphQlTester;
 import org.springframework.http.HttpHeaders;
 import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
 import org.springframework.samples.petclinic.security.JwtTokenService;
@@ -23,10 +24,8 @@ import java.util.List;
 @AutoConfigureHttpGraphQlTester
 @Import(PetClinicTestDbConfiguration.class)
 @Transactional
-public class AbstractClinicGraphqlTests {
+public class AbstractClinicGraphqlTests extends GraphQlTokenProvider {
 
-    @Autowired
-    private JwtTokenService tokenService;
     protected WebGraphQlTester managerRoleGraphQlTester;
     protected WebGraphQlTester userRoleGraphQlTester;
     protected WebGraphQlTester unauthorizedGraphqlTester;
@@ -45,12 +44,10 @@ public class AbstractClinicGraphqlTests {
     }
 
     private void withManagerToken(HttpHeaders headers) {
-        var token = tokenService.generateToken("susi", List.of( () -> "MANAGER"), Instant.now().plus(1, ChronoUnit.HOURS));
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(createManagerToken());
     }
 
     private void withUserToken(HttpHeaders headers) {
-        var token = tokenService.generateToken("joe", List.of( () -> "USER"), Instant.now().plus(1, ChronoUnit.HOURS));
-        headers.setBearerAuth(token);
+        headers.setBearerAuth(createUserToken());
     }
 }

@@ -1,12 +1,32 @@
 package org.springframework.samples.petclinic.graphql;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.graphql.server.WebGraphQlHandler;
+import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.graphql.test.tester.WebGraphQlTester;
+import org.springframework.graphql.test.tester.WebSocketGraphQlTester;
+import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
+import org.springframework.web.reactive.socket.client.WebSocketClient;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.util.Map;
 
 public class VisitControllerTests extends AbstractClinicGraphqlTests {
+
+    private static final Logger log = LoggerFactory.getLogger( VisitControllerTests.class );
 
     @Test
     public void visit_shouldIncludeTreatingVet() {

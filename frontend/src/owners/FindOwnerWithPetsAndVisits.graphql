@@ -12,14 +12,7 @@ query FindOwnerWithPetsAndVisits($ownerId: Int!) {
 
       visits {
         visits {
-          date
-          description
-          id
-          treatingVet {
-            id
-            firstName
-            lastName
-          }
+          ...VisitWithVet
         }
       }
     }

@@ -1,10 +1,7 @@
-import { gql } from "@apollo/client";
 import {
-  PetVisitsFragment,
   useAddVisitMutation,
   useAllVetNamesQuery,
 } from "@/generated/graphql-types.ts";
-import { produce } from "immer";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import Heading from "@/components/Heading.tsx";
@@ -14,18 +11,6 @@ import Select from "@/components/Select.tsx";
 import ButtonBar from "@/components/ButtonBar.tsx";
 import Button from "@/components/Button.tsx";
 import { Section } from "@/components/Section.tsx";
-
-/** Fragment for updating the Cache after mutation (adding new Visit to existing Pet) */
-const PetVisits = gql`
-  fragment PetVisits on Pet {
-    id
-    visitConnection: visits {
-      visits {
-        id
-      }
-    }
-  }
-`;
 
 type VisitFormData = {
   description: string;
@@ -41,34 +26,20 @@ const emptyVetOption = {
 type NewVisitFormProps = {
   onFinish(): void;
   petId: number;
+  petName: string;
 };
 
-export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
+export default function NewVisitForm({
+  onFinish,
+  petId,
+  petName,
+}: NewVisitFormProps) {
   const {
     loading: vetsLoading,
     data: vetsData,
     error: vetsError,
   } = useAllVetNamesQuery();
-  const [addVisit, { called, loading, error }] = useAddVisitMutation({
-    update(cache, { data }) {
-      if (!data) {
-        return;
-      }
-      const existingPet = cache.readFragment<PetVisitsFragment>({
-        fragment: PetVisits,
-        id: `Pet:${petId}`,
-      });
-      if (existingPet) {
-        const newData = produce(existingPet, (draftPet) => {
-          draftPet.visitConnection.visits.push(data.addVisit.visit);
-        });
-        cache.writeFragment<PetVisitsFragment>({
-          fragment: PetVisits,
-          data: newData,
-        });
-      }
-    },
-  });
+  const [addVisit, { called, loading, error }] = useAddVisitMutation();
   const {
     register,
     handleSubmit,
@@ -104,7 +75,7 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
   }
 
   return (
-    <Section>
+    <Section aria-label={`Add visit for pet ${petName}`}>
       <Heading level="3">Add Visit</Heading>
 
       <Input

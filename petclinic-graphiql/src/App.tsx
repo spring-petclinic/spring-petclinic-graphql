@@ -1,23 +1,26 @@
 import { createGraphiQLFetcher, Fetcher } from "@graphiql/toolkit";
 import { GraphiQL } from "graphiql";
 import "graphiql/graphiql.css";
-import {useEffect, useMemo, useState} from "react";
-import {graphqlApiUrl, graphqlWsApiUrl, pingApiUrl} from "./urls.ts";
+import { useEffect, useMemo, useState } from "react";
+import { graphqlApiUrl, graphqlWsApiUrl, pingApiUrl } from "./urls.ts";
 import LoginForm from "./LoginForm.tsx";
 
 import { createClient } from "graphql-ws";
 
-type Login = { token: string; username: string};
+type Login = { token: string; username: string };
 
-type LoginVerificationState = {
-  state: "pending"
-} | {
-  state: "verified",
-  initialLogin: Login | null
-}
+type LoginVerificationState =
+  | {
+      state: "pending";
+    }
+  | {
+      state: "verified";
+      initialLogin: Login | null;
+    };
 
 export default function App() {
-  const [loginVerificationState, setLoginVerificationState] = useState<LoginVerificationState>({state: "pending"});
+  const [loginVerificationState, setLoginVerificationState] =
+    useState<LoginVerificationState>({ state: "pending" });
 
   useEffect(() => {
     const initialToken = localStorage.getItem("petclinic.graphiql.token");
@@ -27,46 +30,46 @@ export default function App() {
       localStorage.removeItem("petclinic.graphiql.token");
       localStorage.removeItem("petclinic.graphiql.username");
 
-      setLoginVerificationState(({state: "verified", initialLogin: null}))
+      setLoginVerificationState({ state: "verified", initialLogin: null });
       return;
     }
 
-    // call ping endpoint with initial token
-    //   it it returns HTTP OK token is valid
-    //   otherwise it's not valid anymore
+    // call ping endpoint with initial token:
+    //   - if it returns HTTP OK, token is valid
+    //   - otherwise it's not valid anymore, and user has to login again
     fetch(pingApiUrl, {
       headers: {
-        "Authorization": `Bearer ${initialToken}`
-      }
-    }).then(res => {
+        Authorization: `Bearer ${initialToken}`,
+      },
+    }).then((res) => {
       if (res.ok) {
         setLoginVerificationState({
           state: "verified",
-          initialLogin: { token: initialToken, username: initialUsername }
-        })
+          initialLogin: { token: initialToken, username: initialUsername },
+        });
 
         return;
       }
       console.log("Token not valid anymore? Status from ping", res.status);
       setLoginVerificationState({
-        state: "verified", initialLogin: null
-      })
-    })
+        state: "verified",
+        initialLogin: null,
+      });
+    });
   }, []);
 
   if (loginVerificationState.state === "pending") {
-    return <h1>Verify login...</h1>
+    return <h1>Verify login...</h1>;
   }
 
-  return <AppWithAuth initialLogin={loginVerificationState.initialLogin} />
-
+  return <AppWithAuth initialLogin={loginVerificationState.initialLogin} />;
 }
 
 type AppWithAuthProps = {
-  initialLogin: Login|null
-}
+  initialLogin: Login | null;
+};
 
-function AppWithAuth({initialLogin}: AppWithAuthProps) {
+function AppWithAuth({ initialLogin }: AppWithAuthProps) {
   const [currentLogin, setCurrentLogin] = useState<{
     token: string;
     username: string;
@@ -137,4 +140,3 @@ function AppWithAuth({initialLogin}: AppWithAuthProps) {
 
   return <LoginForm onLogin={(token) => setCurrentLogin(token)} />;
 }
-

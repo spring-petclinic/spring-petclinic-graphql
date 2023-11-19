@@ -25,10 +25,7 @@ class LoginPage {
 }
 
 class TableModel {
-  constructor(
-    readonly page: Page,
-    readonly tableLocator: Locator
-  ) {}
+  constructor(readonly page: Page, readonly tableLocator: Locator) {}
 
   async expectTableRowContent(
     rowIx: number,
@@ -40,6 +37,14 @@ class TableModel {
     for (const [ix, content] of cellContents.entries()) {
       await expect(row.locator("td").nth(ix)).toHaveText(content);
     }
+  }
+
+  rows() {
+    return this.tableLocator.locator("tbody tr");
+  }
+
+  rowCount() {
+    return this.rows().count();
   }
 }
 

@@ -18,3 +18,15 @@ export function Section({ children, invert, narrow, ...props }: SectionProps) {
     </section>
   );
 }
+
+type SectionHeadingProps = {
+  children: React.ReactNode;
+};
+
+export function SectionHeading({ children }: SectionHeadingProps) {
+  return (
+    <div className="mb-2 items-baseline justify-between border-b-4 border-spr-white pb-2 md:flex">
+      {children}
+    </div>
+  );
+}
