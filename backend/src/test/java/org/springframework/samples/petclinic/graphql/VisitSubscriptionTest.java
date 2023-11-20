@@ -41,8 +41,10 @@ public class VisitSubscriptionTest extends GraphQlTokenProvider {
     VisitService visitService;
 
     @Test
-    void onNewVisit_for_new_visits() {
-        String url = format("http://localhost:%s/graphql?access_token=%s", port,
+    void onNewVisit_for_new_visits(@Autowired GraphQlProperties graphQlProperties) {
+        String url = format("http://localhost:%s/%s?access_token=%s",
+            port,
+            graphQlProperties.getWebsocket().getPath(),
             createUserToken());
 
         // https://docs.spring.io/spring-graphql/reference/testing.html#testing.subscriptions
