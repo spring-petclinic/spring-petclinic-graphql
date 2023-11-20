@@ -72,19 +72,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.cors();
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        // for h2 explorer
-        http.headers().frameOptions().sameOrigin();
-
 
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
                 .shouldFilterAllDispatcherTypes(false)
                 // allow login
-                .requestMatchers("/login/**").permitAll()
+                .requestMatchers("/api/login/**").permitAll()
 //                // allow access to graphiql
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
@@ -122,28 +116,5 @@ public class SecurityConfig {
     @Bean
     JwtDecoder jwtDecoder() throws JOSEException {
         return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(Environment env) {
-
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-
-        String allowedOrigins = env.getProperty("PETCLINIC_ALLOWED_ORIGINS", "http://localhost:[*]");
-
-
-        Arrays.stream(allowedOrigins.split(","))
-            .forEach(origin -> {
-                log.info("Allowing CORS Origin Pattern '{}'", origin);
-                config.addAllowedOriginPattern(origin);
-            });
-
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 }

@@ -18,4 +18,11 @@ services:
       - SPRING_DATASOURCE_USERNAME=klaus
       - SPRING_DATASOURCE_PASSWORD=secretpw
     ports:
-      - "9977:9977"
+      - "3091:9977"
+  petclinic_graphql_frontend:
+    image: spring-petclinic/petclinic-graphql-frontend:0.0.1
+    container_name: petclinic_graphql_frontend
+    depends_on:
+      - petclinic_graphql_backend
+    ports:
+      - "3090:3090"

@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
 
-test("graphiql works", async ({ page }) => {
-  await page.goto("http://localhost:9977");
+const graphiqlUrl = process.env.PW_GRAPHIQL_URL || "http://localhost:9977";
+
+test(`customized graphiql at '${graphiqlUrl}' works`, async ({ page }) => {
+  await page.goto(graphiqlUrl);
 
   await expect(page).toHaveTitle(/GraphiQL :: Spring PetClinic/i);
 

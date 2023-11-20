@@ -1,7 +1,6 @@
 # Spring PetClinic Sample Application using spring-graphql
 
-This PetClinic version uses [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that has been [introduced](https://spring.io/blog/2021/07/06/hello-spring-graphql) in july 2021
-and has been [finally released as 1.0.0 GA version](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release) in May 2022.
+This PetClinic version uses [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that is part of Spring Boot [since version 2.7](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release).
 
 This version uses **Spring Boot 3.2.x** with **Spring for GraphQL 1.2.x**.
 
@@ -16,14 +15,14 @@ provides an example Frontend for the API.
 
 Some features that are built in:
 
-* [Annotated Controllers](https://docs.spring.io/spring-graphql/docs/current-SNAPSHOT/reference/html/#controllers) (see `graphql/*Controller`-classes, e.g. `SpecialtyController` and `VetController`)
+* [Annotated Controllers](https://docs.spring.io/spring-graphql/reference/controllers.html) (see `graphql/*Controller`-classes, e.g. `SpecialtyController` and `VetController`)
 * Subscriptions via Websockets (see `VisitController#onNewVisit`) including integration test (see `VisitSubscriptionTest`) and examples below  
 * Own scalar types (See `PetClinicRuntimeWiringConfiguration` and `DateCoercing`)
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
   * Example: `addVet` mutation is only allowed for users with `ROLE_MANAGER` 
 * Pagination and Sorting of results: implemented with `spring-data`, see `OwnerController`
-* Custom GraphiQL Build, that has a login screen
+* Custom GraphiQL Build, that has its own login screen, since the PetClinic GraphQL is only accessible with a Token
   * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
   * The tests are using [Spring Boot TestContains support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.testcontainers) to run the required Postgres database. 
@@ -82,9 +81,7 @@ using maven from the root folder of the repository:
 Note: the server runs on port **9977**, so make sure, this port is available.
 
 - Note: you need to have docker installed. `docker-compose` needs to be in your path
-- On starup the server uses [Spring Boot docker compose support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.docker-compose) to run the required postgres database
-
-
+- On startup the server uses [Spring Boot docker compose support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.docker-compose) to run the required postgres database
 
 ## Running the frontend
 
@@ -105,11 +102,40 @@ pnpm codegen
 pnpm start
 ```
 
-The running frontend can be accessed on [http://localhost:3000](http://localhost:3000).
+The running frontend can be accessed on [http://localhost:3080](http://localhost:3080).
 
 For valid users to login, see list above.
 
 ![SpringBoot PetClinic, React Frontend](petclinic-ui.png)
+
+# Deployment
+
+There are two scenarios: local development environment and "production" environment
+
+**Local development**
+
+In local development:
+
+- the backend runs on http://localhost:9977 (GraphQL API and graphiql)
+- the Vite development server for the frontend runs on http://localhost:3080
+- the postgres database is started automatically by Spring Boot using the `docker-compose.yml` file in the root folder
+
+In this scenario, the vite server acts also as a reverse proxy, that proxies all requests to `/api`, `/graphql` and `/graphqlws` to the backend server (localhost:9977). The proxy is configured in `frontend/vite.config.ts`
+
+If you like you can run the customized graphiql with its own Vite development server (using `pnpm dev` in `petclinic-graphiql`) that runs on http://localhost:3081. 
+This is handy if you want to make changes to GraphiQL. 
+
+**"Production" environment**
+
+In this setup, the backend and frontend process run as docker containers using a docker-compose setup that is described in `docker-compose-petclinic.yml`:
+
+- the backend port is exposed as http://localhost:3091 (GraphQL API and graphiql)
+- the nginx for the frontend is exposed as http://localhost:3090
+- the postgres database is not exposed outside the container
+
+Here the nginx acts as the proxy to the backend.
+
+You can build the docker images for backend and frontend using the `build-local.sh` scripts. Also, these images are build during the GitHub workflow.
 
 # Accessing the GraphQL API
 
@@ -254,6 +280,7 @@ Then you can use `pnpm` to start the test:
   * From the started Playwright UI you can individually select which test to run in which browser
   * You can also debug the tests from there
 * `pnpm test:headed`: runs the tests in a headed (i.e. visible) browser (by default Chrome).
+* `pnpm test:docker-compose` runs the test agains the docker-compose-based setup (localhost:3090/localhost:3091)
 
 ## Running, debugging and developing the tests
 

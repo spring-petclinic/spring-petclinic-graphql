@@ -87,7 +87,7 @@ export function DefaultNavBar() {
                     >
                       <span className="sr-only">Open user menu</span>
                       <ProfileImage
-                        url={`http://localhost:9977/images/${username}.png`}
+                        url={`/images/${username}.png`}
                         alt={`Profile image of ${username}`}
                       />
                     </button>

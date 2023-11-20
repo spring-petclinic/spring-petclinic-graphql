@@ -28,10 +28,6 @@ jobs:
         run: pnpm install
       - name: Build application
         run: pnpm build
-      - name: Patch index.html
-        run: pnpm patch-index-html
-      - name: show patched index.html
-        run: cat dist/index.html
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -95,17 +91,19 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-#      - name: Run Codegen
-#        run: pnpm run codegen
       - name: Code checks
         run: pnpm run check
       - name: Build application
         run: pnpm build
+      - name: Build frontend docker image
+        run: docker build . --tag spring-petclinic/petclinic-graphql-frontend:0.0.1
+      - name: Export frontend docker image
+        run:  docker save spring-petclinic/petclinic-graphql-frontend:0.0.1|gzip>petclinic-graphql-frontend.tar.gz
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: frontend-dist
-          path: ./frontend/dist/**
+          name: petclinic-frontend-docker
+          path: petclinic-graphql-frontend.tar.gz
           retention-days: 1
 
   end-to-end-test:
@@ -123,19 +121,19 @@ jobs:
         with:
           name: petclinic-backend-docker
           path: petclinic-backend-docker
-      - name: ls
-        run: ls -lR
-      - name: Import Docker image
-        run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
-      - name: run Backend with docker compose
-        run: docker-compose -f docker-compose-petclinic.yml up -d
-      - name: Download frontend artifacts
+      - name: Download frontend docker image
         uses: actions/download-artifact@v3
         with:
-          name: frontend-dist
-          path: frontend-dist
+          name: petclinic-frontend-docker
+          path: petclinic-frontend-docker
       - name: LS
         run: ls -lR
+      - name: Import backend Docker image
+        run: gunzip -c petclinic-backend-docker/petclinic-graphql-backend.tar.gz|docker load
+      - name: Import frontend Docker image
+        run: gunzip -c petclinic-frontend-docker/petclinic-graphql-frontend.tar.gz|docker load
+      - name: run docker compose
+        run: docker-compose -f docker-compose-petclinic.yml up -d
       - uses: pnpm/action-setup@v2.0.1
         name: Install pnpm
         id: pnpm-install
@@ -148,45 +146,17 @@ jobs:
       - name: Install Playwright Browsers
         working-directory: ./e2e-tests
         run: pnpm exec playwright install --with-deps
-#      - name: Install JDK17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: "17"
-#          distribution: "temurin"
-#          cache: maven
-#      - uses: JarvusInnovations/background-action@v1
-#        name: Run Backend
-#        with:
-#          run: docker-compose -f docker-compose-petclinic.yml up -d
-#          wait-on: |
-#            http-get://localhost:9977
-#          tail: true # true = stderr,stdout
-#          log-output-resume: stderr
-#          wait-for: 5m
-#          log-output: stderr,stdout # same as true
-#          log-output-if: true
-      - name: install serve
-        run: npm install -g serve
-        working-directory: ./frontend-dist
-      - name: wait for backend on port 9977
+      - name: wait for backend on port 3090
         uses: iFaxity/wait-on-action@v1.1.0
         with:
-          resource: http-get://localhost:9977
-      - uses: JarvusInnovations/background-action@v1
-        name: Run frontend
+          resource: http-get://localhost:3090
+      - name: wait for frontend on port 3091
+        uses: iFaxity/wait-on-action@v1.1.0
         with:
-          run: serve --single -l 3080 &
-          wait-on: |
-            http-get://localhost:3080
-          tail: true # true = stderr,stdout
-          log-output-resume: stderr
-          wait-for: 5m
-          log-output: stderr,stdout # same as true
-          log-output-if: true
-          working-directory: ./frontend-dist
+          resource: http-get://localhost:3091
       - name: Run Playwright tests
         working-directory: ./e2e-tests
-        run: pnpm exec playwright test
+        run: pnpm test:docker-compose
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed

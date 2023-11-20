@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.graphql.runtime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,10 +18,14 @@ public class GraphiQlConfiguration implements WebMvcConfigurer {
 
     @Bean
     @Order(0)
-    public RouterFunction<ServerResponse> graphiQlRouterFunction() {
+    public RouterFunction<ServerResponse> graphiQlRouterFunction(@Autowired GraphQlProperties graphQlProperties) {
         RouterFunctions.Builder builder = RouterFunctions.route();
         ClassPathResource graphiQlPage = new ClassPathResource("/ui/graphiql/index.html");
-        GraphiQlHandler graphiQLHandler = new GraphiQlHandler("/graphql", "/graphql", graphiQlPage);
+        GraphiQlHandler graphiQLHandler = new GraphiQlHandler(
+            graphQlProperties.getPath(),
+            graphQlProperties.getWebsocket().getPath(),
+            graphiQlPage
+        );
         builder = builder.GET("/", graphiQLHandler::handleRequest);
         return builder.build();
     }
