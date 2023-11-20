@@ -99,9 +99,11 @@ class ClinicRepositorySpringDataJpaTests {
         assertThat(page.getContent().get(0).getLastName()).isEqualTo("Escobito");
 
         filter = new OwnerFilter();
+        // lastname search is "Starts with", i.e. all names that start
+        // with "es" should be returned (case insensitive)
         filter.setLastName("es");
         page = ownerRepository.findAll(filter, PageRequest.ofSize(10));
-        assertThat(page.getTotalElements()).isEqualTo(4L);
+        assertThat(page.getTotalElements()).isEqualTo(2L);
     }
 
     @Test
