@@ -101,7 +101,7 @@ class ClinicRepositorySpringDataJpaTests {
         filter = new OwnerFilter();
         filter.setLastName("es");
         page = ownerRepository.findAll(filter, PageRequest.ofSize(10));
-        assertThat(page.getTotalElements()).isEqualTo(2L);
+        assertThat(page.getTotalElements()).isEqualTo(4L);
     }
 
     @Test
@@ -110,7 +110,7 @@ class ClinicRepositorySpringDataJpaTests {
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets().size()).isEqualTo(1);
         assertThat(owner.getPets().get(0).getType()).isNotNull();
-        assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+        assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("Cat");
     }
 
     @Test
@@ -365,7 +365,7 @@ class ClinicRepositorySpringDataJpaTests {
     @Test
     void shouldFindPetTypeById() {
         PetType petType = findPetTypeById(1);
-        assertThat(petType.getName()).isEqualTo("cat");
+        assertThat(petType.getName()).isEqualTo("Cat");
     }
 
     private PetType findPetTypeById(int petTypeId) {
@@ -376,9 +376,9 @@ class ClinicRepositorySpringDataJpaTests {
     public void shouldFindAllPetTypes() {
         Collection<PetType> petTypes = this.petRepository.findPetTypes();
         PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
-        assertThat(petType1.getName()).isEqualTo("cat");
+        assertThat(petType1.getName()).isEqualTo("Cat");
         PetType petType3 = EntityUtils.getById(petTypes, PetType.class, 3);
-        assertThat(petType3.getName()).isEqualTo("lizard");
+        assertThat(petType3.getName()).isEqualTo("Lizard");
     }
 
     @Test

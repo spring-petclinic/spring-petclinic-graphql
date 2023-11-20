@@ -29,7 +29,7 @@ petclinicTest("owner search works", async ({ page, loginPage }) => {
 
   await page.getByRole("textbox", { name: /last name/i }).fill("");
   await page.getByRole("button", { name: /find/i }).click();
-  await expect(page.getByText(/10 owners found/i)).toBeVisible();
+  await expect(page.getByText(/57 owners found/i)).toBeVisible();
 });
 
 petclinicTest("owner detail works", async ({ page, loginPage, tableModel }) => {
@@ -105,7 +105,8 @@ petclinicTest("add visit", async ({ context, page, loginPage, tableModel }) => {
     description
   );
 
-  // Check subscription
+  // Check subscription: new created visit
+  //  should automatically be visible in second browser tab
   await secondLuckyVisitsTable.expectTableRowContent(
     oldVisitCount,
     "2024/08/20",

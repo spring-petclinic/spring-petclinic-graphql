@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.graphql;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Map;
@@ -11,7 +13,7 @@ public class PetControllerTests extends AbstractClinicGraphqlTests {
     public void petsQuery_shouldReturnAllPets() {
         userRoleGraphQlTester.document("query { pets { id name } }")
             .execute()
-            .path("data.pets[*]").entityList(Object.class).hasSize(13)
+            .path("data.pets[*]").entityList(Object.class).hasSize(70)
             .path("data.pets[0].id").hasValue()
             .path("data.pets[0].name").hasValue();
     }
@@ -44,6 +46,7 @@ public class PetControllerTests extends AbstractClinicGraphqlTests {
 
     @Test
     public void addPetMutation_shouldAddNewPet() {
+
         userRoleGraphQlTester.documentName("addPetMutation")
             .execute()
             .path("data.addPet.pet.id").hasValue()
@@ -54,7 +57,7 @@ public class PetControllerTests extends AbstractClinicGraphqlTests {
 
         userRoleGraphQlTester.document("query { pets { id } }")
             .execute()
-            .path("data.pets[*]").entityList(Object.class).hasSize(14);
+            .path("data.pets[*]").entityList(Object.class).hasSize(71);
     }
 
     @Test

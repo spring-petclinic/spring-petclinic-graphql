@@ -80,7 +80,7 @@ public class OwnerFilter implements Specification<Owner> {
         if (isSet(lastName)) {
             predicates.add(criteriaBuilder.like(
                 criteriaBuilder.lower(
-                    root.get("lastName")), "%" + lastName.toLowerCase() + "%"));
+                    root.get("lastName")), lastName.toLowerCase() + "%"));
         }
 
         if (isSet(address)) {
