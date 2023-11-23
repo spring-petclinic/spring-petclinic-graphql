@@ -10,20 +10,11 @@ test(`customized graphiql at '${graphiqlUrl}' works`, async ({ page }) => {
   await page.getByRole("textbox", { name: /username/i }).fill("susi");
   await page.getByRole("textbox", { name: /password/i }).fill("susi");
   await page.getByRole("button", { name: /login/i }).click();
-
-  await expect(page.getByLabel("Query Editor")).toBeVisible();
-
-  await page.getByLabel("Query Editor").getByRole("textbox").fill(`
-  {
-    me {
-      username
-    }
-  }
-  `);
+  await page.getByRole("button", { name: /Prettify query/i }).click();
 
   await page.getByRole("button", { name: /execute query/i }).click();
 
-  await expect(page.locator(".graphiql-response")).toHaveText(
-    /"username": "susi"/i
-  );
+  await expect(page.getByText(/"username"/i)).toHaveCount(1);
+
+  await expect(page.getByLabel("Result Window")).toHaveText(/"username": "susi"/i);
 });
