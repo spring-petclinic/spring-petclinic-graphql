@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import jakarta.servlet.DispatcherType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +16,11 @@ import org.springframework.samples.petclinic.auth.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,7 +44,7 @@ import java.util.Arrays;
  * @author Nils Hartmann (nils@nilshartmann.net)
  */
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // Enable @PreAuthorize method-level security
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
@@ -70,19 +74,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf(AbstractHttpConfigurer::disable);
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(authorizeHttpRequests ->
             authorizeHttpRequests
-                .shouldFilterAllDispatcherTypes(false)
+                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                 // allow login
                 .requestMatchers("/api/login/**").permitAll()
 //                // allow access to graphiql
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
-                .requestMatchers("/s.html").permitAll()
                 .requestMatchers("/index.html").permitAll()
                 .requestMatchers("/graphiql/**").permitAll()
                 // ...while all other endpoints (INCLUDING /graphql !) should be authenticated
@@ -90,7 +93,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         );
 
-        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        http.oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
