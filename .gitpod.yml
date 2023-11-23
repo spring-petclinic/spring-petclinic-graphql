@@ -17,13 +17,10 @@ tasks:
       corepack enable
       pnpm install
       pnpm build
-      cp dist/index.html dist/index-orig.html
     command: |
       gp ports await 9977
-      export BACKEND_HOST=`gp url 9977`
       cd $GITPOD_REPO_ROOT/frontend
-      node patch-index-html.js
-      ./node_modules/.bin/serve -s dist
+      pnpm dev
 ports:
   - port: 9977
     onOpen: open-browser
@@ -31,20 +28,6 @@ ports:
   - port: 3080
     onOpen: open-browser
     visibility: public
-github:
-  prebuilds:
-    # enable for the default branch (defaults to true)
-    master: true
-    # enable for all branches in this repo
-    branches: true
-    # enable for pull requests coming from this repo (defaults to true)
-    pullRequests: true
-    # add a check to pull requests (defaults to true)
-    addCheck: true
-    # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
-    addComment: true
-    # add a "Review in Gitpod" button to the pull request's description (defaults to false)
-    addBadge: true
 vscode:
   extensions:
     - redhat.java
