@@ -133,7 +133,91 @@ function AppWithAuth({ initialLogin }: AppWithAuthProps) {
           </div>
         )}
 
-        <GraphiQL fetcher={fetcher} />
+        <GraphiQL
+          fetcher={fetcher}
+          defaultQuery={`
+#    _____                 _      ____  _        _____     _    _____ _ _       _      
+#   / ____|               | |    / __ \\| |      |  __ \\   | |  / ____| (_)     (_)     
+#  | |  __ _ __ __ _ _ __ | |__ | |  | | |      | |__) |__| |_| |    | |_ _ __  _  ___ 
+#  | | |_ | '__/ _\` | '_ \\| '_ \\| |  | | |      |  ___/ _ \\ __| |    | | | '_ \\| |/ __|
+#  | |__| | | | (_| | |_) | | | | |__| | |____  | |  |  __/ |_| |____| | | | | | | (__ 
+#   \\_____|_|  \\__,_| .__/|_| |_|\\___\\_\\______| |_|   \\___|\\__|\\_____|_|_|_| |_|_|\\___|
+#                   | |                                                                
+#                   |_|                                                                          
+          
+          
+# Some sample queries:
+
+# Username of currently logged in user:
+query Me { me { username } }
+
+# Find first to owners whose name starts with "d"
+query TwoOwners {
+  owners(
+    first: 2
+    filter: { lastName: "d" }
+    order: [{ field: lastName }, { field: firstName, direction: DESC }]
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        firstName
+        lastName
+        pets {
+          id
+          name
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# Sample Mutation: add a new visit 
+#  (hint: run the onNewVisit subscription in second GraphiQL instance,
+#  before running the mutation)
+mutation AddVisit {
+    addVisit(input:{
+        petId:3,
+        description:"Check teeth",
+        date:"2024/03/30",
+        vetId:1
+    }) {
+        newVisit:visit {
+            id
+            pet {
+                id 
+                name 
+                birthDate
+            }
+        }
+    }
+}    
+
+# Subscription for new visits
+# When running this subscription, the operation runs until
+#   you close it. While the operation is running, new visits
+#   are received
+subscription NewVisit {
+    newVisit: onNewVisit {
+        description
+        treatingVet {
+            id
+            firstName
+            lastName
+        }
+        pet {
+            id
+            name
+        }
+    }
+}
+        `}
+        />
       </>
     );
   }

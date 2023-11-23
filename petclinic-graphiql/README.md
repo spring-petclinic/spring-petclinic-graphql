@@ -31,10 +31,9 @@ To do so, use the Vite command:
 pnpm dev
 ```
 
-This runs a development server that will connect itself against the running Spring PetClinic Backend. It assumes, your backend runs on `http://localhost:9977` (see `urls.ts`).
+This runs a development server that will connect itself against the running Spring PetClinic Backend. It assumes your backend runs on `http://localhost:9977` (see `urls.ts` and `vite.config.ts` for proxy settings).
 
-If you make changes to the code in this module and save your changes, they're immedately picked up from the dev server
-and should be visible without the need of reloading the GraphiQL page.
+If you make changes to the code in this module and save your changes, they're immediately picked up from the dev server and should be visible without the need of reloading the GraphiQL page.
 
 ## Integration in the Backend
 
@@ -42,13 +41,7 @@ When you open the backend on `http://localhost:9977`, there runs also the custom
 You can update the included version of `petclinic-graphiql` in the `backend` project by running the following steps:
 
 - build `petclinic-graphiql` by running `pnpm build`
-- copy the files from `petclinic-graphiql/dist` to `backend/src/main/resources/graphiql`
-- set the `window.__petclinic__backend_host__` variable in `backend/src/main/resources/graphiql` to `""`:
-  - ```
-    <script>
-      window.__petclinic__backend_host__ = "";
-    </script>
-    ```
+- copy the files from `petclinic-graphiql/dist` to `backend/src/main/resources/ui/graphiql`
 - Re-build the backend project and re-start it
 - Opening `http://localhost:9977` should now run your GraphiQL build
 
