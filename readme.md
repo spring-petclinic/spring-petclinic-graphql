@@ -1,11 +1,11 @@
 # Spring PetClinic Sample Application using spring-graphql
 
-This PetClinic version uses [spring-graphql](https://github.com/spring-projects/spring-graphql) project, that is part of Spring Boot [since version 2.7](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release).
-
-This version uses **Spring Boot 3.2.x** with **Spring for GraphQL 1.2.x**.
+This PetClinic example uses [Spring for GraphQL](https://github.com/spring-projects/spring-graphql), that is part of Spring Boot [since version 2.7](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release).
 
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
+
+Versions curretly used are **Spring Boot 3.2.x** with **Spring for GraphQL 1.2.x**.
 
 [![Java CI with Maven](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml)
 
@@ -295,7 +295,7 @@ subscription {
 
 ## Customized GraphiQL
 
-The backend includes a Spring Petclinic-specific customized version of GraphiQL. Compared GraphiQL that is embedded by default, 
+The backend includes a Spring Petclinic-specific customized version of GraphiQL. Compared to GraphiQL that is embedded by default, 
 the customized version has a login form so that it can send JWT Authentication header with each request to the GraphQL backend.
 
 Please see the subproject `petclinic-graphiql` for more information.
