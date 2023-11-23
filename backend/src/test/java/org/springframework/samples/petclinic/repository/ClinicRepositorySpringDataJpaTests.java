@@ -20,25 +20,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.orm.ObjectRetrievalFailureException;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.samples.petclinic.PetClinicTestDbConfiguration;
 import org.springframework.samples.petclinic.model.*;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.samples.petclinic.model.OwnerFilter.NO_FILTER;
 
 /**
  * <p> Base class for Repository integration tests. </p> <p> Subclasses should specify Spring context
@@ -191,13 +190,11 @@ class ClinicRepositorySpringDataJpaTests {
 
     @Test
     void shouldFindVets() {
-        Collection<Vet> vets = this.vetRepository.findAll();
+        var vets = this.vetRepository.findBy(ScrollPosition.offset(), Sort.by("lastName", "firstName"), Limit.of(2));
 
-        Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-        assertThat(vet.getLastName()).isEqualTo("Douglas");
-        assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-        assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-        assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+        assertThat(vets.size()).isEqualTo(2);
+        assertThat(vets.getContent().get(0).getId()).isEqualTo(1);
+        assertThat(vets.getContent().get(1).getId()).isEqualTo(3);
     }
 
     @Test
@@ -310,18 +307,15 @@ class ClinicRepositorySpringDataJpaTests {
 
     @Test
     void shouldInsertVet() {
-        Collection<Vet> vets = this.vetRepository.findAll();
-        int found = vets.size();
-
         Vet vet = new Vet();
         vet.setFirstName("John");
         vet.setLastName("Dow");
 
-        this.vetRepository.save(vet);
-        assertThat(vet.getId().longValue()).isNotEqualTo(0);
+        var newVet = this.vetRepository.save(vet);
+        assertThat(newVet.getId()).isNotNull();
 
-        vets = this.vetRepository.findAll();
-        assertThat(vets.size()).isEqualTo(found + 1);
+        var foundVet = this.vetRepository.findById(newVet.getId());
+        assertThat(foundVet.isPresent()).isTrue();
     }
 
     @Test
@@ -350,6 +344,45 @@ class ClinicRepositorySpringDataJpaTests {
         assertThat(owner1.getFirstName()).isEqualTo("George");
         Owner owner3 = EntityUtils.getById(owners, Owner.class, 3);
         assertThat(owner3.getFirstName()).isEqualTo("Eduardo");
+    }
+
+    @Test
+    void shouldFindOwnersPaginated() {
+        var owners = this.ownerRepository.findBy(NO_FILTER, c -> c.
+            limit(5)
+            .sortBy(Sort.by("lastName"))
+            .scroll(ScrollPosition.offset()));
+
+        assertThat(owners.size()).isEqualTo(5);
+        assertThat(owners.getContent().get(0).getId()).isEqualTo(48);
+        assertThat(owners.getContent().get(1).getId()).isEqualTo(7);
+        assertThat(owners.getContent().get(2).getId()).isEqualTo(55);
+        assertThat(owners.getContent().get(3).getId()).isEqualTo(19);
+        assertThat(owners.getContent().get(4).getId()).isEqualTo(6);
+
+        var newPosition = owners.positionAt(2);
+        owners = this.ownerRepository.findBy(NO_FILTER, c -> c.
+            limit(5)
+            .sortBy(Sort.by("lastName"))
+            .scroll(newPosition));
+        assertThat(owners.size()).isEqualTo(5);
+        assertThat(owners.getContent().get(0).getId()).isEqualTo(19);
+        assertThat(owners.getContent().get(1).getId()).isEqualTo(6);
+        assertThat(owners.getContent().get(2).getId()).isEqualTo(17);
+        assertThat(owners.getContent().get(3).getId()).isEqualTo(2);
+        assertThat(owners.getContent().get(4).getId()).isEqualTo(4);
+
+        // with filter
+        var filter = new OwnerFilter();
+        filter.setLastName("da");
+        owners = this.ownerRepository.findBy(filter, c -> c.
+            limit(5)
+            .sortBy(Sort.by("lastName"))
+            .scroll(ScrollPosition.offset(1)));
+        assertThat(owners.size()).isEqualTo(2);
+        assertThat(owners.getContent().get(0).getId()).isEqualTo(2);
+        assertThat(owners.getContent().get(1).getId()).isEqualTo(4);
+
     }
 
     @Test

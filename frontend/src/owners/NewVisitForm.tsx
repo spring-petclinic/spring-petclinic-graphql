@@ -11,6 +11,7 @@ import Select from "@/components/Select.tsx";
 import ButtonBar from "@/components/ButtonBar.tsx";
 import Button from "@/components/Button.tsx";
 import { Section } from "@/components/Section.tsx";
+import { filterNull } from "@/utils.ts";
 
 type VisitFormData = {
   description: string;
@@ -49,10 +50,13 @@ export default function NewVisitForm({
   const vetOptions = vetsData
     ? [
         emptyVetOption,
-        ...vetsData.vets.map((vet) => ({
-          value: vet.id,
-          label: `${vet.firstName} ${vet.lastName}`,
-        })),
+        ...vetsData.vets.edges
+          .filter(filterNull)
+          .map((v) => v.node)
+          .map((vet) => ({
+            value: vet.id,
+            label: `${vet.firstName} ${vet.lastName}`,
+          })),
       ]
     : null;
 

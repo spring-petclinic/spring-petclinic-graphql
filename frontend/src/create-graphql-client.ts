@@ -8,7 +8,10 @@ import { graphqlApiUrl, graphqlWsApiUrl } from "@/urls.ts";
 import { setContext } from "@apollo/client/link/context";
 import { createClient } from "graphql-ws";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { getMainDefinition } from "@apollo/client/utilities";
+import {
+  getMainDefinition,
+  relayStylePagination,
+} from "@apollo/client/utilities";
 
 // noinspection JSUnusedLocalSymbols
 // const token =
@@ -59,6 +62,12 @@ export function createGraphqlClient() {
     link: authLink.concat(splitLink),
     cache: new InMemoryCache({
       typePolicies: {
+        Query: {
+          fields: {
+            //https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination
+            owners: relayStylePagination(),
+          },
+        },
         User: {
           keyFields: ["username"],
         },

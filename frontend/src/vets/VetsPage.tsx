@@ -9,7 +9,7 @@ export default function VetsPage() {
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
 
   return (
-    <PageLayout title="Veterinarians">
+    <PageLayout title="Manage Veterinarians">
       {formOpen || (
         <VetsOverview vetId={vetId} onAddVetClick={() => setFormOpen(true)} />
       )}

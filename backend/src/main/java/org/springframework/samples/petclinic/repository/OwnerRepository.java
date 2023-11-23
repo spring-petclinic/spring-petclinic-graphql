@@ -16,20 +16,15 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 import org.springframework.lang.Nullable;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.OwnerFilter;
-import org.springframework.samples.petclinic.model.OwnerOrder;
 
 /**
  * Repository class for <code>Owner</code> domain objects
@@ -41,7 +36,7 @@ import org.springframework.samples.petclinic.model.OwnerOrder;
  * @author Vitaliy Fedoriv
  * @author Nils Hartmann
  */
-public interface OwnerRepository extends Repository<Owner, Integer> {
+public interface OwnerRepository extends Repository<Owner, Integer>, JpaSpecificationExecutor<Owner> {
 
     /**
      * Retrieve an <code>Owner</code> from the data store by id.
@@ -76,5 +71,4 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      */
 	void delete(Owner owner);
 
-    Page<Owner> findAll(@Nullable Specification<Owner> spec, Pageable pageable);
 }

@@ -6,7 +6,7 @@ schema {
     subscription: Subscription
 }
 
-" Interface that describes a Person, i.e. a Vet or an Owner"
+"Interface that describes a Person, i.e. a Vet or an Owner"
 interface Person {
     firstName: String!
     id: Int!
@@ -23,9 +23,9 @@ type AddPetPayload {
     pet: Pet!
 }
 
-" Return Value of the addSpecialty Mutation"
+"Return Value of the addSpecialty Mutation"
 type AddSpecialtyPayload {
-    " The new Specialty including the assigned Id"
+    "The new Specialty including the assigned Id"
     specialty: Specialty!
 }
 
@@ -42,7 +42,6 @@ type AddVisitPayload {
 }
 
 """
-
 For motivation of how the Mutation look see:
 https://dev-blog.apollodata.com/designing-graphql-mutations-e09de826ed97
 """
@@ -77,23 +76,7 @@ type Owner implements Person {
     telephone: String!
 }
 
-type OwnerSearchResult {
-    owners: [Owner!]!
-    pageInfo: PageInfo!
-}
-
-type PageInfo {
-    hasNext: Boolean!
-    hasPrev: Boolean!
-    nextPage: Int
-    pageNumber: Int!
-    prevPage: Int
-    totalCount: Int!
-    totalPages: Int!
-}
-
 """
-
 A pet that might or might not have been seen in this petclinic for
 one or more visits
 """
@@ -113,18 +96,61 @@ type PetType {
     name: String!
 }
 
+type OwnerConnection {
+    edges: [OwnerEdge]!
+    pageInfo: PageInfo!
+}
+
+type OwnerEdge {
+    node: Owner!
+    cursor: String!
+}
+
+type VetConnection {
+    edges: [VetEdge]!
+    pageInfo: PageInfo!
+}
+
+type VetEdge {
+    node: Vet!
+    cursor: String!
+}
+
+type PageInfo {
+    hasPreviousPage: Boolean!
+    hasNextPage: Boolean!
+    startCursor: String
+    endCursor: String
+}
+
 " The Query type provides all entry points to the PetClinic GraphQL schema"
 type Query {
     me: User!
     " Return the Owner with the specified id"
     owner(id: Int!): Owner!
-    """
 
-    Return all known Pet Owners with optional filter or orders
-    If size is unset, it defaults to 20
-    If page is unset, it defaults to 0
+    # Note: OwnerConnection and all required types (Edge and PageInfo) could be
+    #       added by Spring for GraphQL at runtime to the schema.
+    #       Disadvantage is, that tooling has problems (Code Generator, IntelliJ plug-in)
+    #       so I deceided to hand code the types instead.
+    #       Nevertheless there is no need forJava classes for the Connection and dependent types,
+    #       because Spring for GraphQL does the mapping for us.
+    #
+    # Note: first, after, last and before are automatically processed by Spring for GraphQL
+    #       and are passed with a ScrollSubrange object to the QueryMapping function
+    #
+    #
     """
-    owners(filter: OwnerFilter, orders: [OwnerOrder!], page: Int, size: Int): OwnerSearchResult!
+    Find a list of owners according to the specified position, filter and order
+
+    Note that you either have to specify first _or_ last
+    """
+    owners(first:Int, after:String, last:Int, before:String,
+        "Use a filter to narrow your search results"
+        filter: OwnerFilter,
+        order: [OwnerOrder!]): OwnerConnection!
+
+    # owners(filter: OwnerFilter, orders: [OwnerOrder!], page: Int, size: Int): OwnerSearchResult!
     " Return the Pet with the specified id"
     pet(id: Int!): Pet
     " Return a List of all pets that have been registered in the PetClinic"
@@ -137,7 +163,7 @@ type Query {
     " Return the specified Vet or null if undefined"
     vet(id: Int!): Vet
     " Return all known veterinaries"
-    vets: [Vet!]!
+    vets(first:Int, after:String, last:Int, before:String): VetConnection!
 }
 
 type RemoveSpecialtyPayload {
@@ -216,7 +242,7 @@ enum OrderField {
 }
 
 " The input for types of query orders"
-enum OrderType {
+enum OrderDirection {
     ASC
     DESC
 }
@@ -271,7 +297,7 @@ input OwnerFilter {
 " The input for owners query by order"
 input OwnerOrder {
     field: OrderField!
-    order: OrderType
+    direction: OrderDirection = ASC
 }
 
 input RemoveSpecialtyInput {

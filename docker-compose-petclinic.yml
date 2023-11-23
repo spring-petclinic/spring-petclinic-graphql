@@ -8,6 +8,7 @@ services:
       - POSTGRES_PASSWORD=secretpw
       - POSTGRES_USER=klaus
       - POSTGRES_DB=petclinic_graphql_db
+      - POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=en
   petclinic_graphql_backend:
     image: spring-petclinic/petclinic-graphql-backend:0.0.1
     container_name: petclinic_graphql_backend

@@ -1,7 +1,7 @@
 import {
-  AllVetsQuery,
   useAllVetsQuery,
   useVetAndVisitsQuery,
+  VetInfoFragment,
 } from "@/generated/graphql-types.ts";
 import PageLayout from "@/components/PageLayout.tsx";
 import Heading from "@/components/Heading.tsx";
@@ -9,9 +9,10 @@ import Link from "@/components/Link.tsx";
 import Table from "@/components/Table.tsx";
 import Card from "@/components/Card.tsx";
 import Button from "@/components/Button.tsx";
-import { Section, SectionHeading } from "@/components/Section.tsx";
+import { Section } from "@/components/Section.tsx";
+import { filterNull } from "@/utils.ts";
 
-type Vet = AllVetsQuery["vets"][number];
+type Vet = VetInfoFragment;
 type VetsOverviewProps = {
   vetId?: string;
   onAddVetClick(): void;
@@ -33,7 +34,7 @@ export default function VetsOverview({
   }
 
   function vetRow(vet: Vet) {
-    const fullname = `${vet.firstName} ${vet.lastName}`;
+    const fullname = `${vet.lastName}, ${vet.firstName}`;
     const specialties = vet.specialties.map((s) => s.name).join(", ");
     if (String(vet.id) === vetId) {
       return [<b>{fullname}</b>, <b>{specialties}</b>];
@@ -44,14 +45,18 @@ export default function VetsOverview({
 
   return (
     <>
-      <SectionHeading>
-        <Heading level="3">All Veterinarians</Heading>
-      </SectionHeading>
-      <Table labels={["Name", "Specialities"]} values={data.vets.map(vetRow)} />
+      <Table
+        labels={["Name", "Specialities"]}
+        values={data.vets.edges
+          .filter(filterNull)
+          .map((r) => r.node)
+          .map(vetRow)}
+        title={"All Veterinarians"}
+      />
       <Card fullWidth>
         <p>
           You can add a new veterinary here. Note that this is only allowed for
-          users, that have <code>ROLE_MANAGER</code>
+          users with role <code>ROLE_MANAGER</code>
         </p>
         <Button onClick={onAddVetClick}>Add Veterinary</Button>
       </Card>

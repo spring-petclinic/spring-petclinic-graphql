@@ -10,5 +10,5 @@ services:
       - POSTGRES_PASSWORD=secretpw
       - POSTGRES_USER=klaus
       - POSTGRES_DB=petclinic_graphql_db
-#    volumes:
-#      - ./docker/initdb:/docker-entrypoint-initdb.d
+      # https://stackoverflow.com/a/74095511/6134498
+      - POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=en

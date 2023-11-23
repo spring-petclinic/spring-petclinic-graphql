@@ -21,7 +21,8 @@ Some features that are built in:
 * GraphQL Interfaces (GraphQL Type `Person`) and Unions (GraphQL Type `AddVetPayload`), see class `PetClinicRuntimeWiringConfiguration`
 * Security: the `/graphql` http and WebSocket endpoints are secured and can only be accessed using a JWT token. More fine grained security is implemented using `@PreAuthorize` (see `VetService`)
   * Example: `addVet` mutation is only allowed for users with `ROLE_MANAGER` 
-* Pagination and Sorting of results: implemented with `spring-data`, see `OwnerController`
+* Pagination, Filtering and Sorting of results: Implemented using the [Pagination support](https://docs.spring.io/spring-graphql/reference/request-execution.html#execution.pagination) of Spring GraphQL, see `OwnerController`. The result of the `owners` field is a `Connection` object defined in the [Cursor Connection specification](https://relay.dev/graphql/connections.htm).
+  * The Apollo client in the React frontend uses the [`relayStylePagination`](https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination) helper function to automatically manage the Client-side cache with new objects read using the `after` cursor query argument. (See `OwnerSearchPage.tsx`)  
 * Custom GraphiQL Build, that has its own login screen, since the PetClinic GraphQL is only accessible with a Token
   * see project `petclinic-graphiql`
 * Tests: See `test` folder for typical GraphQL endpoint tests, including tests for security
@@ -155,24 +156,64 @@ After starting the server, GraphiQL runs on [http://localhost:9977](http://local
 
 Here you can find some sample queries that you can copy+paste and run in GraphiQL. Feel free to explore and try more 😊.
 
-**Query** all owners whose lastname starts with "K" and their pets: 
+**Query** find first 2 owners whose lastname starts with "D" and their pets,
+order by lastname and firstname
+
 ```graphql
-query {
-  owners(filter: {lastName: "K"}) {
-    pageInfo {
-      totalCount
-    }
-    owners {
-      id
-      firstName
-      lastName
-      pets {
-        id
-        name
+  query {
+    owners(
+      first: 2
+      filter: { lastName: "d" }
+      order: [{ field: lastName }, { field: firstName, direction: DESC }]
+    ) {
+      edges {
+        cursor
+        node {
+          id
+          firstName
+          lastName
+          pets {
+            id
+            name
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
-}
+```
+
+The following query should return two items, but we have more then two owners in the database staring with a `d`. Thus, the `pageInfo.hasNextPage`-field returned in the result of the query above is `true` and the `endCursor` points to the last object returned. Using this cursor as `after` we can receive the next batch of Owners:
+
+```graphql
+  query {
+    owners(
+      first: 2
+      after: "T18y"
+      filter: { lastName: "d" }
+      order: [{ field: lastName }, { field: firstName, direction: DESC }]
+    ) {
+      edges {
+        cursor
+        node {
+          id
+          firstName
+          lastName
+          pets {
+            id
+            name
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
 ```
 
 Add a new Visit using a **mutation** (can be done with user `joe` and `susi`) and read id and pet of the

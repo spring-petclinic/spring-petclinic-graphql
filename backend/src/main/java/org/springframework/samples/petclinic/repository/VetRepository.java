@@ -19,6 +19,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.ScrollPosition;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Window;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.Vet;
 
@@ -34,18 +38,13 @@ import org.springframework.samples.petclinic.model.Vet;
  */
 public interface VetRepository extends Repository<Vet, Integer> {
 
-    /**
-     * Retrieve all <code>Vet</code>s from the data store.
-     *
-     * @return a <code>Collection</code> of <code>Vet</code>s
-     */
-    Collection<Vet> findAll();
-
 	Optional<Vet> findById(Integer id);
 
-	void save(Vet vet);
+	Vet save(Vet vet);
 
 	void delete(Vet vet);
+
+    Window<Vet> findBy(ScrollPosition position, Sort sort, Limit limit);
 
 
 }

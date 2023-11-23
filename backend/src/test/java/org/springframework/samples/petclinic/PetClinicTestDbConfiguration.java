@@ -12,6 +12,8 @@ public class PetClinicTestDbConfiguration {
     @Bean
     @ServiceConnection
     public PostgreSQLContainer<?> postgresContainer() {
-        return new PostgreSQLContainer<>("postgres:16.1");
+        return new PostgreSQLContainer<>("postgres:16.1-alpine")
+            // https://stackoverflow.com/a/74095511/6134498
+            .withEnv("POSTGRES_INITDB_ARGS", "--locale-provider=icu --icu-locale=en");
     }
 }
