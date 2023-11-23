@@ -1,0 +1,825 @@
+import * as Apollo from "@apollo/client";
+import { gql } from "@apollo/client";
+
+export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+
+/** All built-in and custom scalars, mapped to their actual values */
+export interface Scalars {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  Date: any;
+}
+
+export interface OwnerFilter {
+  firstName?: Maybe<Scalars["String"]>;
+  lastName?: Maybe<Scalars["String"]>;
+  address?: Maybe<Scalars["String"]>;
+  city?: Maybe<Scalars["String"]>;
+  telephone?: Maybe<Scalars["String"]>;
+}
+
+export enum OrderType {
+  Asc = "ASC",
+  Desc = "DESC",
+}
+
+export enum OrderField {
+  Id = "id",
+  FirstName = "firstName",
+  LastName = "lastName",
+  Address = "address",
+  City = "city",
+  Telephone = "telephone",
+}
+
+export interface OwnerOrder {
+  field: OrderField;
+  order?: Maybe<OrderType>;
+}
+
+export interface AddPetInput {
+  ownerId: Scalars["Int"];
+  name: Scalars["String"];
+  birthDate: Scalars["Date"];
+  typeId: Scalars["Int"];
+}
+
+export interface UpdatePetInput {
+  petId: Scalars["Int"];
+  name?: Maybe<Scalars["String"]>;
+  birthDate?: Maybe<Scalars["Date"]>;
+  typeId?: Maybe<Scalars["Int"]>;
+}
+
+export interface AddOwnerInput {
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  address: Scalars["String"];
+  city: Scalars["String"];
+  telephone: Scalars["String"];
+}
+
+export interface UpdateOwnerInput {
+  ownerId: Scalars["Int"];
+  firstName?: Maybe<Scalars["String"]>;
+  lastName?: Maybe<Scalars["String"]>;
+  address?: Maybe<Scalars["String"]>;
+  city?: Maybe<Scalars["String"]>;
+  telephone?: Maybe<Scalars["String"]>;
+}
+
+export interface AddVetInput {
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  specialtyIds: Array<Scalars["Int"]>;
+}
+
+export interface AddVisitInput {
+  petId: Scalars["Int"];
+  description: Scalars["String"];
+  date: Scalars["Date"];
+  vetId?: Maybe<Scalars["Int"]>;
+}
+
+export interface AddSpecialtyInput {
+  name: Scalars["String"];
+}
+
+export interface UpdateSpecialtyInput {
+  specialtyId: Scalars["Int"];
+  name: Scalars["String"];
+}
+
+export interface RemoveSpecialtyInput {
+  specialtyId: Scalars["Int"];
+}
+
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = { me: { username: string; fullname: string } };
+
+export type AddVisitMutationVariables = Exact<{
+  input: AddVisitInput;
+}>;
+
+export type AddVisitMutation = {
+  addVisit: { visit: { date: any; description: string; id: number } };
+};
+
+export type AllVetNamesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllVetNamesQuery = {
+  vets: Array<{ id: number; firstName: string; lastName: string }>;
+};
+
+export type FindOwnerByLastNameQueryVariables = Exact<{
+  page: Scalars["Int"];
+  lastName?: Maybe<Scalars["String"]>;
+}>;
+
+export type FindOwnerByLastNameQuery = {
+  owners: {
+    pageInfo: {
+      hasNext: boolean;
+      hasPrev: boolean;
+      nextPage?: Maybe<number>;
+      prevPage?: Maybe<number>;
+      totalPages: number;
+      currentPage: number;
+      ownersCount: number;
+    };
+    owners: Array<
+      { pets: Array<{ id: number; name: string }> } & OwnerFieldsFragment
+    >;
+  };
+};
+
+export type FindOwnerWithPetsAndVisitsQueryVariables = Exact<{
+  ownerId: Scalars["Int"];
+}>;
+
+export type FindOwnerWithPetsAndVisitsQuery = {
+  owner: {
+    pets: Array<{
+      id: number;
+      name: string;
+      birthDate: any;
+      type: { id: number; name: string };
+      visits: {
+        visits: Array<{
+          date: any;
+          description: string;
+          id: number;
+          treatingVet?: Maybe<{
+            id: number;
+            firstName: string;
+            lastName: string;
+          }>;
+        }>;
+      };
+    }>;
+  } & OwnerFieldsFragment;
+};
+
+export type PetVisitsFragment = {
+  id: number;
+  visitConnection: { visits: Array<{ id: number }> };
+};
+
+export type OwnerFieldsFragment = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  telephone: string;
+};
+
+export type AddVetMutationVariables = Exact<{
+  input: AddVetInput;
+}>;
+
+export type AddVetMutation = {
+  result:
+    | {
+        vet?: Maybe<{
+          id: number;
+          firstName: string;
+          lastName: string;
+          specialties: Array<{ id: number; name: string }>;
+        }>;
+      }
+    | { error: string };
+};
+
+export type AllSpecialtiesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllSpecialtiesQuery = {
+  specialties: Array<{ id: number; name: string }>;
+};
+
+export type AllVetsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllVetsQuery = {
+  vets: Array<{
+    id: number;
+    firstName: string;
+    lastName: string;
+    specialties: Array<{ id: number; name: string }>;
+  }>;
+};
+
+export type VetAndVisitsQueryVariables = Exact<{
+  vetId: Scalars["Int"];
+}>;
+
+export type VetAndVisitsQuery = {
+  vet?: Maybe<{
+    id: number;
+    firstName: string;
+    lastName: string;
+    visits: {
+      visits: Array<{
+        date: any;
+        description: string;
+        pet: {
+          id: number;
+          name: string;
+          owner: { id: number; lastName: string; firstName: string };
+        };
+      }>;
+    };
+  }>;
+};
+
+export const PetVisitsFragmentDoc = gql`
+  fragment PetVisits on Pet {
+    id
+    visitConnection: visits {
+      visits {
+        id
+      }
+    }
+  }
+`;
+export const OwnerFieldsFragmentDoc = gql`
+  fragment OwnerFields on Owner {
+    id
+    firstName
+    lastName
+    address
+    city
+    telephone
+  }
+`;
+export const MeDocument = gql`
+  query Me {
+    me {
+      username
+      fullname
+    }
+  }
+`;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>,
+) {
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
+
+export function useMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>,
+) {
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(
+    MeDocument,
+    baseOptions,
+  );
+}
+
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const AddVisitDocument = gql`
+  mutation AddVisit($input: AddVisitInput!) {
+    addVisit(input: $input) {
+      visit {
+        date
+        description
+        id
+      }
+    }
+  }
+`;
+export type AddVisitMutationFn = Apollo.MutationFunction<
+  AddVisitMutation,
+  AddVisitMutationVariables
+>;
+
+/**
+ * __useAddVisitMutation__
+ *
+ * To run a mutation, you first call `useAddVisitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddVisitMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addVisitMutation, { data, loading, error }] = useAddVisitMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddVisitMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddVisitMutation,
+    AddVisitMutationVariables
+  >,
+) {
+  return Apollo.useMutation<AddVisitMutation, AddVisitMutationVariables>(
+    AddVisitDocument,
+    baseOptions,
+  );
+}
+
+export type AddVisitMutationHookResult = ReturnType<typeof useAddVisitMutation>;
+export type AddVisitMutationResult = Apollo.MutationResult<AddVisitMutation>;
+export type AddVisitMutationOptions = Apollo.BaseMutationOptions<
+  AddVisitMutation,
+  AddVisitMutationVariables
+>;
+export const AllVetNamesDocument = gql`
+  query AllVetNames {
+    vets {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+/**
+ * __useAllVetNamesQuery__
+ *
+ * To run a query within a React component, call `useAllVetNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllVetNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllVetNamesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllVetNamesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllVetNamesQuery,
+    AllVetNamesQueryVariables
+  >,
+) {
+  return Apollo.useQuery<AllVetNamesQuery, AllVetNamesQueryVariables>(
+    AllVetNamesDocument,
+    baseOptions,
+  );
+}
+
+export function useAllVetNamesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllVetNamesQuery,
+    AllVetNamesQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<AllVetNamesQuery, AllVetNamesQueryVariables>(
+    AllVetNamesDocument,
+    baseOptions,
+  );
+}
+
+export type AllVetNamesQueryHookResult = ReturnType<typeof useAllVetNamesQuery>;
+export type AllVetNamesLazyQueryHookResult = ReturnType<
+  typeof useAllVetNamesLazyQuery
+>;
+export type AllVetNamesQueryResult = Apollo.QueryResult<
+  AllVetNamesQuery,
+  AllVetNamesQueryVariables
+>;
+export const FindOwnerByLastNameDocument = gql`
+  query FindOwnerByLastName($page: Int!, $lastName: String) {
+    owners(
+      page: $page
+      size: 10
+      filter: { lastName: $lastName }
+      orders: [{ field: lastName }, { field: firstName }]
+    ) {
+      pageInfo {
+        hasNext
+        hasPrev
+        nextPage
+        prevPage
+        totalPages
+        currentPage: pageNumber
+        ownersCount: totalCount
+      }
+      owners {
+        ...OwnerFields
+        pets {
+          id
+          name
+        }
+      }
+    }
+  }
+  ${OwnerFieldsFragmentDoc}
+`;
+
+/**
+ * __useFindOwnerByLastNameQuery__
+ *
+ * To run a query within a React component, call `useFindOwnerByLastNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindOwnerByLastNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindOwnerByLastNameQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      lastName: // value for 'lastName'
+ *   },
+ * });
+ */
+export function useFindOwnerByLastNameQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindOwnerByLastNameQuery,
+    FindOwnerByLastNameQueryVariables
+  >,
+) {
+  return Apollo.useQuery<
+    FindOwnerByLastNameQuery,
+    FindOwnerByLastNameQueryVariables
+  >(FindOwnerByLastNameDocument, baseOptions);
+}
+
+export function useFindOwnerByLastNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindOwnerByLastNameQuery,
+    FindOwnerByLastNameQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    FindOwnerByLastNameQuery,
+    FindOwnerByLastNameQueryVariables
+  >(FindOwnerByLastNameDocument, baseOptions);
+}
+
+export type FindOwnerByLastNameQueryHookResult = ReturnType<
+  typeof useFindOwnerByLastNameQuery
+>;
+export type FindOwnerByLastNameLazyQueryHookResult = ReturnType<
+  typeof useFindOwnerByLastNameLazyQuery
+>;
+export type FindOwnerByLastNameQueryResult = Apollo.QueryResult<
+  FindOwnerByLastNameQuery,
+  FindOwnerByLastNameQueryVariables
+>;
+export const FindOwnerWithPetsAndVisitsDocument = gql`
+  query FindOwnerWithPetsAndVisits($ownerId: Int!) {
+    owner(id: $ownerId) {
+      ...OwnerFields
+      pets {
+        id
+        name
+        birthDate
+        type {
+          id
+          name
+        }
+        visits {
+          visits {
+            date
+            description
+            id
+            treatingVet {
+              id
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+  ${OwnerFieldsFragmentDoc}
+`;
+
+/**
+ * __useFindOwnerWithPetsAndVisitsQuery__
+ *
+ * To run a query within a React component, call `useFindOwnerWithPetsAndVisitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindOwnerWithPetsAndVisitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindOwnerWithPetsAndVisitsQuery({
+ *   variables: {
+ *      ownerId: // value for 'ownerId'
+ *   },
+ * });
+ */
+export function useFindOwnerWithPetsAndVisitsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FindOwnerWithPetsAndVisitsQuery,
+    FindOwnerWithPetsAndVisitsQueryVariables
+  >,
+) {
+  return Apollo.useQuery<
+    FindOwnerWithPetsAndVisitsQuery,
+    FindOwnerWithPetsAndVisitsQueryVariables
+  >(FindOwnerWithPetsAndVisitsDocument, baseOptions);
+}
+
+export function useFindOwnerWithPetsAndVisitsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindOwnerWithPetsAndVisitsQuery,
+    FindOwnerWithPetsAndVisitsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    FindOwnerWithPetsAndVisitsQuery,
+    FindOwnerWithPetsAndVisitsQueryVariables
+  >(FindOwnerWithPetsAndVisitsDocument, baseOptions);
+}
+
+export type FindOwnerWithPetsAndVisitsQueryHookResult = ReturnType<
+  typeof useFindOwnerWithPetsAndVisitsQuery
+>;
+export type FindOwnerWithPetsAndVisitsLazyQueryHookResult = ReturnType<
+  typeof useFindOwnerWithPetsAndVisitsLazyQuery
+>;
+export type FindOwnerWithPetsAndVisitsQueryResult = Apollo.QueryResult<
+  FindOwnerWithPetsAndVisitsQuery,
+  FindOwnerWithPetsAndVisitsQueryVariables
+>;
+export const AddVetDocument = gql`
+  mutation AddVet($input: AddVetInput!) {
+    result: addVet(input: $input) {
+      ... on AddVetSuccessPayload {
+        vet {
+          id
+          firstName
+          lastName
+          specialties {
+            id
+            name
+          }
+        }
+      }
+      ... on AddVetErrorPayload {
+        error
+      }
+    }
+  }
+`;
+export type AddVetMutationFn = Apollo.MutationFunction<
+  AddVetMutation,
+  AddVetMutationVariables
+>;
+
+/**
+ * __useAddVetMutation__
+ *
+ * To run a mutation, you first call `useAddVetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddVetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addVetMutation, { data, loading, error }] = useAddVetMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddVetMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddVetMutation,
+    AddVetMutationVariables
+  >,
+) {
+  return Apollo.useMutation<AddVetMutation, AddVetMutationVariables>(
+    AddVetDocument,
+    baseOptions,
+  );
+}
+
+export type AddVetMutationHookResult = ReturnType<typeof useAddVetMutation>;
+export type AddVetMutationResult = Apollo.MutationResult<AddVetMutation>;
+export type AddVetMutationOptions = Apollo.BaseMutationOptions<
+  AddVetMutation,
+  AddVetMutationVariables
+>;
+export const AllSpecialtiesDocument = gql`
+  query AllSpecialties {
+    specialties {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useAllSpecialtiesQuery__
+ *
+ * To run a query within a React component, call `useAllSpecialtiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllSpecialtiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllSpecialtiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllSpecialtiesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllSpecialtiesQuery,
+    AllSpecialtiesQueryVariables
+  >,
+) {
+  return Apollo.useQuery<AllSpecialtiesQuery, AllSpecialtiesQueryVariables>(
+    AllSpecialtiesDocument,
+    baseOptions,
+  );
+}
+
+export function useAllSpecialtiesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllSpecialtiesQuery,
+    AllSpecialtiesQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<AllSpecialtiesQuery, AllSpecialtiesQueryVariables>(
+    AllSpecialtiesDocument,
+    baseOptions,
+  );
+}
+
+export type AllSpecialtiesQueryHookResult = ReturnType<
+  typeof useAllSpecialtiesQuery
+>;
+export type AllSpecialtiesLazyQueryHookResult = ReturnType<
+  typeof useAllSpecialtiesLazyQuery
+>;
+export type AllSpecialtiesQueryResult = Apollo.QueryResult<
+  AllSpecialtiesQuery,
+  AllSpecialtiesQueryVariables
+>;
+export const AllVetsDocument = gql`
+  query AllVets {
+    vets {
+      id
+      firstName
+      lastName
+      specialties {
+        id
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useAllVetsQuery__
+ *
+ * To run a query within a React component, call `useAllVetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllVetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllVetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllVetsQuery(
+  baseOptions?: Apollo.QueryHookOptions<AllVetsQuery, AllVetsQueryVariables>,
+) {
+  return Apollo.useQuery<AllVetsQuery, AllVetsQueryVariables>(
+    AllVetsDocument,
+    baseOptions,
+  );
+}
+
+export function useAllVetsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllVetsQuery,
+    AllVetsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<AllVetsQuery, AllVetsQueryVariables>(
+    AllVetsDocument,
+    baseOptions,
+  );
+}
+
+export type AllVetsQueryHookResult = ReturnType<typeof useAllVetsQuery>;
+export type AllVetsLazyQueryHookResult = ReturnType<typeof useAllVetsLazyQuery>;
+export type AllVetsQueryResult = Apollo.QueryResult<
+  AllVetsQuery,
+  AllVetsQueryVariables
+>;
+export const VetAndVisitsDocument = gql`
+  query VetAndVisits($vetId: Int!) {
+    vet(id: $vetId) {
+      id
+      firstName
+      lastName
+      visits {
+        visits {
+          date
+          description
+          pet {
+            id
+            name
+            owner {
+              id
+              lastName
+              firstName
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useVetAndVisitsQuery__
+ *
+ * To run a query within a React component, call `useVetAndVisitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVetAndVisitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVetAndVisitsQuery({
+ *   variables: {
+ *      vetId: // value for 'vetId'
+ *   },
+ * });
+ */
+export function useVetAndVisitsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    VetAndVisitsQuery,
+    VetAndVisitsQueryVariables
+  >,
+) {
+  return Apollo.useQuery<VetAndVisitsQuery, VetAndVisitsQueryVariables>(
+    VetAndVisitsDocument,
+    baseOptions,
+  );
+}
+
+export function useVetAndVisitsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    VetAndVisitsQuery,
+    VetAndVisitsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<VetAndVisitsQuery, VetAndVisitsQueryVariables>(
+    VetAndVisitsDocument,
+    baseOptions,
+  );
+}
+
+export type VetAndVisitsQueryHookResult = ReturnType<
+  typeof useVetAndVisitsQuery
+>;
+export type VetAndVisitsLazyQueryHookResult = ReturnType<
+  typeof useVetAndVisitsLazyQuery
+>;
+export type VetAndVisitsQueryResult = Apollo.QueryResult<
+  VetAndVisitsQuery,
+  VetAndVisitsQueryVariables
+>;

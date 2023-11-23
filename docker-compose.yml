@@ -1,0 +1,14 @@
+version: "3"
+services:
+  petclinic_graphql_db:
+    image: postgres:16.1-alpine
+    command: ["postgres", "-c", "log_statement=all"]
+    container_name: petclinic_graphql_db
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=secretpw
+      - POSTGRES_USER=klaus
+      - POSTGRES_DB=petclinic_graphql_db
+      # https://stackoverflow.com/a/74095511/6134498
+      - POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=en

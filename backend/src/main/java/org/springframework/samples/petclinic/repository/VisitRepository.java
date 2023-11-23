@@ -17,22 +17,24 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Visit;
 
 /**
- * Repository class for <code>Visit</code> domain objects All method names are compliant with Spring Data naming
- * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+ * Repository class for <code>Visit</code> domain objects
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
+ * @author Nils Hartmann
  */
-public interface VisitRepository {
+public interface VisitRepository extends Repository<Visit, Integer> {
 
     /**
      * Save a <code>Visit</code> to the data store, either inserting or updating it.
@@ -40,15 +42,15 @@ public interface VisitRepository {
      * @param visit the <code>Visit</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Visit visit) throws DataAccessException;
+    void save(Visit visit);
 
     List<Visit> findByPetIdOrderById(Integer petId);
 
-	Visit findById(Integer id) throws DataAccessException;
+	Optional<Visit> findById(Integer id);
 
-	Collection<Visit> findAll() throws DataAccessException;
+	Collection<Visit> findAll();
 
-	void delete(Visit visit) throws DataAccessException;
+	void delete(Visit visit);
 
     List<Visit> findByVetId(Integer id);
 }

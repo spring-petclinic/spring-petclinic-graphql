@@ -1,0 +1,29 @@
+version: "3"
+services:
+  petclinic_graphql_db:
+    image: postgres:16.1-alpine
+    command: ["postgres", "-c", "log_statement=all"]
+    container_name: petclinic_graphql_db
+    environment:
+      - POSTGRES_PASSWORD=secretpw
+      - POSTGRES_USER=klaus
+      - POSTGRES_DB=petclinic_graphql_db
+      - POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=en
+  petclinic_graphql_backend:
+    image: spring-petclinic/petclinic-graphql-backend:0.0.1
+    container_name: petclinic_graphql_backend
+    depends_on:
+      - petclinic_graphql_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://petclinic_graphql_db:5432/petclinic_graphql_db
+      - SPRING_DATASOURCE_USERNAME=klaus
+      - SPRING_DATASOURCE_PASSWORD=secretpw
+    ports:
+      - "3091:9977"
+  petclinic_graphql_frontend:
+    image: spring-petclinic/petclinic-graphql-frontend:0.0.1
+    container_name: petclinic_graphql_frontend
+    depends_on:
+      - petclinic_graphql_backend
+    ports:
+      - "3090:3090"

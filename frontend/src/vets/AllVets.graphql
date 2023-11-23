@@ -1,12 +1,20 @@
+fragment VetInfo on Vet {
+  id
+  firstName
+  lastName
+
+  specialties {
+    id
+    name
+  }
+}
+
 query AllVets {
   vets {
-    id
-    firstName
-    lastName
-
-    specialties {
-      id
-      name
+    edges {
+      node {
+        ...VetInfo
+      }
     }
   }
 }

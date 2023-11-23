@@ -16,7 +16,7 @@ type AuthContextProviderProps = {
 
 export function AuthTokenProvider({ children }: AuthContextProviderProps) {
   const [token, setToken] = React.useState<string | null | undefined>(
-    undefined
+    undefined,
   );
 
   React.useEffect(() => {

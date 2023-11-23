@@ -1,22 +1,76 @@
-import Button from "components/Button";
-import Heading from "components/Heading";
-import Link from "components/Link";
-import PageLayout from "components/PageLayout";
-import Section from "components/Section";
-import Table from "components/Table";
-import { useFindOwnerWithPetsAndVisitsQuery } from "generated/graphql-types";
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import NewVisitPanel from "./NewVisitPanel";
+import Button from "@/components/Button";
+import Heading from "@/components/Heading";
+import PageLayout from "@/components/PageLayout";
+import Table from "@/components/Table";
+import {
+  OnNewVisitDocument,
+  OnNewVisitSubscription,
+  useFindOwnerWithPetsAndVisitsQuery,
+} from "@/generated/graphql-types";
+import { invariant } from "@apollo/client/utilities/globals";
+import Link from "@/components/Link.tsx";
+import { useEffect } from "react";
+import { Section, SectionHeading } from "@/components/Section.tsx";
+import { produce } from "immer";
 
 export default function OwnerPage() {
   const { ownerId } = useParams<{ ownerId: string }>();
+  invariant(ownerId, "Missing param ownerId");
 
-  const { loading, data, error } = useFindOwnerWithPetsAndVisitsQuery({
-    variables: {
-      ownerId: parseInt(ownerId),
-    },
-  });
+  const { loading, data, error, subscribeToMore } =
+    useFindOwnerWithPetsAndVisitsQuery({
+      variables: {
+        ownerId: parseInt(ownerId),
+      },
+    });
+
+  useEffect(() => {
+    subscribeToMore<OnNewVisitSubscription>({
+      document: OnNewVisitDocument,
+      updateQuery: (prev, { subscriptionData }) => {
+        const newVisit = subscriptionData.data.newVisit;
+        if (!newVisit) {
+          return prev;
+        }
+
+        console.log("Received newVisit", newVisit);
+
+        if (newVisit.pet.owner.id !== parseInt(ownerId)) {
+          console.log(
+            "new visit received for owner, ignoring: ",
+            newVisit.pet.owner.id,
+          );
+          return prev;
+        }
+
+        const petId = newVisit.pet.id;
+
+        const newOwner = produce(prev, (draft) => {
+          const pet = draft.owner.pets.find((p) => p.id === petId);
+          if (!pet) {
+            return draft;
+          }
+
+          if (pet.visits.visits.find((v) => v.id === newVisit.id)) {
+            console.log("visit alread add to pet");
+            return draft;
+          }
+
+          console.log("Add newVisit to pet", pet);
+
+          pet.visits.visits.push(newVisit);
+          return draft;
+        });
+
+        return newOwner;
+      },
+    });
+  }, [ownerId, subscribeToMore]);
+  //
+  // // const x = useOnNewVisitSubscription();
+  // // console.log(x.loading, x.data);
 
   if (loading) {
     return <PageLayout title="Owners">Loading</PageLayout>;
@@ -28,7 +82,9 @@ export default function OwnerPage() {
     <PageLayout
       title={`Owners - ${data.owner.firstName} ${data.owner.lastName}`}
     >
-      <Section>
+      <Section
+        aria-label={`Contact data ${data.owner.firstName} ${data.owner.lastName}`}
+      >
         <Table
           values={[
             ["Name", `${data.owner.firstName} ${data.owner.lastName}`],
@@ -43,13 +99,13 @@ export default function OwnerPage() {
       </div>
       {data.owner.pets.map((pet) => (
         <div key={pet.id} className="mb-8">
-          <Section invert>
-            <div className="md:flex items-baseline justify-between border-b-4 border-spr-white mb-2 pb-2">
+          <Section invert aria-label={`Visits of ${pet.name}`}>
+            <SectionHeading>
               <Heading level="3">
                 {pet.name} ({pet.type.name}, * {pet.birthDate})
               </Heading>
               <Button type="link">Edit {pet.name}</Button>
-            </div>
+            </SectionHeading>
             {pet.visits.visits.length ? (
               <Table
                 labels={["Visit Date", "Treating vet", "Description"]}
@@ -66,9 +122,9 @@ export default function OwnerPage() {
                 ])}
               />
             ) : (
-              <b className="block mb-4">No visits yet</b>
+              <b className="mb-4 block">No visits yet</b>
             )}
-            <NewVisitPanel petId={pet.id} />
+            <NewVisitPanel petId={pet.id} petName={pet.name} />
           </Section>
         </div>
       ))}

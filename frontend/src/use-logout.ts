@@ -1,5 +1,5 @@
 import { useApolloClient } from "@apollo/client";
-import { useAuthToken } from "login/AuthTokenProvider";
+import { useAuthToken } from "./login/AuthTokenProvider";
 
 export function useLogout() {
   const client = useApolloClient();

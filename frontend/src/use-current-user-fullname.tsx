@@ -1,4 +1,4 @@
-import { useMeQuery } from "generated/graphql-types";
+import { useMeQuery } from "./generated/graphql-types";
 
 export function useCurrentUser() {
   const { loading, error, data } = useMeQuery();

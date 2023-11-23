@@ -11,11 +11,11 @@ type InputProps = {
 };
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
-  { action, disabled, error, id, label, name, type = "text" },
-  ref
+  { action, disabled, error, id, label, name, type = "text", ...rest },
+  ref,
 ) {
   return (
-    <div className="py-3.5 w-full">
+    <div className="w-full py-3.5">
       <div className="col-span-3 sm:col-span-2">
         <label className="block">
           {label}
@@ -26,7 +26,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
               name={name}
               id={id}
               disabled={disabled}
-              className="flex-1 focus:ring-3 hover:border-spr-green focus:border-spr-green focus:ring-spr-green"
+              className="focus:ring-3 flex-1 hover:border-spr-green focus:border-spr-green focus:ring-spr-green"
+              {...rest}
             />
             {action}
           </div>

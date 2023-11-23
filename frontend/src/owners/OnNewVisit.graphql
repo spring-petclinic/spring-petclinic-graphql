@@ -1,0 +1,12 @@
+subscription OnNewVisit {
+  newVisit: onNewVisit {
+    ...VisitWithVet
+    pet {
+      id
+      name
+      owner {
+        id
+      }
+    }
+  }
+}

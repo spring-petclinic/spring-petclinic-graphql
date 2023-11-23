@@ -1,53 +1,104 @@
-import Button from "components/Button";
-import Input from "components/Input";
-import Link from "components/Link";
-import PageLayout from "components/PageLayout";
-import Table from "components/Table";
-import { useFindOwnerByLastNameLazyQuery } from "generated/graphql-types";
-import * as React from "react";
 import { useForm } from "react-hook-form";
-import Paginator from "./Paginator";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import PageLayout from "@/components/PageLayout";
+import Table from "@/components/Table";
+import {
+  FindOwnerByLastNameQueryVariables,
+  OrderDirection,
+  useFindOwnerByLastNameLazyQuery,
+} from "@/generated/graphql-types";
+import Link from "@/components/Link.tsx";
+import ButtonBar from "@/components/ButtonBar.tsx";
+import { useState } from "react";
+import { filterNull } from "@/utils.ts";
 
 type FindOwnerFormData = { lastName: string };
 
 export default function OwnersPage() {
   const [
     findOwnersByLastName,
-    { loading, data, error, called, refetch },
+    { loading, data, error, called, fetchMore, refetch },
   ] = useFindOwnerByLastNameLazyQuery();
-  const { register, handleSubmit } = useForm<FindOwnerFormData>({});
+  const { register, handleSubmit, getValues } = useForm<FindOwnerFormData>({});
+  const [orderBy, setOrderBy] = useState<"ASC" | "DESC">("ASC");
 
-  function handleFindClick({ lastName }: FindOwnerFormData) {
-    findOwnersByLastName({
-      variables: lastName ? { lastName, page: 0 } : { lastName: null, page: 0 },
-    });
+  function handleFindClick() {
+    search(orderBy);
   }
 
-  function handlePageClick(newPageNumber: number) {
-    if (refetch) {
-      refetch({
-        page: newPageNumber,
-      });
+  function search(orderBy: "ASC" | "DESC") {
+    const { lastName }: FindOwnerFormData = getValues();
+    console.log("lastname", lastName);
+    console.log("orderby", orderBy);
+    const dir = orderBy === "ASC" ? OrderDirection.Asc : OrderDirection.Desc;
+    const variables: FindOwnerByLastNameQueryVariables = lastName
+      ? { lastName, after: null, dir }
+      : { lastName: null, after: null, dir };
+
+    if (!called) {
+      findOwnersByLastName({ variables });
+    } else {
+      refetch(variables);
     }
+  }
+
+  function handleOrderChange(newOrder: "ASC" | "DESC") {
+    setOrderBy(newOrder);
+    search(newOrder);
+  }
+
+  function handleFetchMore() {
+    fetchMore({
+      variables: {
+        after: data?.owners.pageInfo.endCursor,
+      },
+    });
   }
 
   let resultTable = null;
   if (called && !loading && !error && data) {
-    if (data.owners.owners.length === 0) {
-      resultTable = <div className="max-w-2xl mx-auto">No owners found</div>;
+    if (data.owners.edges.length === 0) {
+      resultTable = <div className="mx-auto max-w-2xl">No owners found</div>;
     } else {
-      const values = data.owners.owners.map((owner) => [
-        <Link to={`/owners/${owner.id}`}>{owner.lastName}</Link>,
-        owner.firstName,
-        owner.address,
-        owner.city,
-        owner.telephone,
-        owner.pets.map((pet) => pet.name).join(", "),
-      ]);
+      const values = data.owners.edges
+        .filter(filterNull)
+        .map(({ node: owner }) => [
+          <Link to={`/owners/${owner.id}`}>{owner.lastName}</Link>,
+          owner.firstName,
+          owner.address,
+          owner.city,
+          owner.telephone,
+          owner.pets.map((pet) => pet.name).join(", "),
+        ]);
       resultTable = (
         <div className="mt-8 border-4 border-gray-100 p-4">
           <Table
-            title={`${data.owners.pageInfo.ownersCount} owners found`}
+            title={`Owners`}
+            actions={
+              <div>
+                <Button
+                  type="primary"
+                  aria-label={"Order owners by lastname, ascending"}
+                  onClick={() => {
+                    handleOrderChange("ASC");
+                  }}
+                  disabled={orderBy === "ASC"}
+                >
+                  Asc
+                </Button>
+                <Button
+                  type="primary"
+                  aria-label={"Order owners by lastname, descending"}
+                  onClick={() => {
+                    handleOrderChange("DESC");
+                  }}
+                  disabled={orderBy === "DESC"}
+                >
+                  Desc
+                </Button>
+              </div>
+            }
             labels={[
               "Last name",
               "First name",
@@ -58,27 +109,29 @@ export default function OwnersPage() {
             ]}
             values={values}
           />
-          <Paginator
-            pageInfo={data.owners.pageInfo}
-            onPageClick={handlePageClick}
-          />
+          <ButtonBar align={"center"}>
+            <Button
+              disabled={!data.owners.pageInfo.hasNextPage}
+              onClick={handleFetchMore}
+            >
+              Load more
+            </Button>
+          </ButtonBar>
         </div>
       );
     }
   }
 
-  const searchButton = (
-    <Button onClick={handleSubmit(handleFindClick)}>Find</Button>
-  );
   return (
     <PageLayout title="Search Owner">
-      <div className="max-w-2xl mx-auto">
+      <div className="mx-auto max-w-2xl">
         <div className="flex">
           <Input
-            ref={register}
+            {...register("lastName")}
             label="Last Name"
-            name="lastName"
-            action={searchButton}
+            action={
+              <Button onClick={handleSubmit(handleFindClick)}>Find</Button>
+            }
           />
         </div>
       </div>

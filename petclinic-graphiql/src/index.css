@@ -1,0 +1,82 @@
+body {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#loginPage {
+  font-family: Arial, Helvetica, sans-serif;
+
+  max-width: 1200px;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+#loginForm {
+  font-size: 1rem;
+  height: 1.6rem;
+  margin-top: 4rem;
+}
+
+#loginForm input,
+#loginForm button {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+#loginForm button,
+#loginForm label,
+#loginForm input {
+  margin-left: 1rem;
+}
+
+#loginForm table {
+  text-align: left;
+  border: 1px solid grey;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#loginForm table tr {
+  border-bottom: 1pt solid grey;
+}
+
+#loginForm table th,
+#loginForm table td {
+  padding: 0.5rem;
+}
+
+#petclinicToken {
+  white-space: nowrap;
+  font-size: 0.6rem;
+}
+
+.loginInfo,
+.tokenInfo {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  padding: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.loginInfo button,
+.tokenInfo button
+{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+}
+
+.tokenInfo textarea { flex: 1}
+.tokenInfo--buttons {
+  display: flex;
+  flex-direction: column;
+}

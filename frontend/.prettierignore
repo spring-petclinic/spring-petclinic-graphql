@@ -1,0 +1,4 @@
+.eslintrc.jcs
+pnpm-lock.yaml
+./src/assets/*
+src/fonts/**

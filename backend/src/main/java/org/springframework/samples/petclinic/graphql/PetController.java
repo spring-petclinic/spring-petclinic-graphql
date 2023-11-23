@@ -36,7 +36,7 @@ public class PetController {
     }
 
     @QueryMapping
-    public Pet pet(@Argument Integer id) {
+    public Optional<Pet> pet(@Argument Integer id) {
         return petRepository.findById(id);
     }
 

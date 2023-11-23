@@ -28,8 +28,8 @@ public class PetService {
 
     @Transactional
     public Pet addPet(int ownerId, int petTypeId, @NotEmpty String petName, @NotNull LocalDate petBirthData) {
-        final Owner owner = ownerRepository.findById(ownerId);
-        final PetType type = petTypeRepository.findById(petTypeId);
+        final Owner owner = ownerRepository.findById(ownerId).orElseThrow();
+        final PetType type = petTypeRepository.findById(petTypeId).orElseThrow();
 
         Pet pet = new Pet();
         pet.setName(petName);
@@ -44,16 +44,17 @@ public class PetService {
 
     @Transactional
     public Pet updatePet(int petId, Optional<Integer> petTypeId, String petName, LocalDate petBirthData) {
-        final Pet pet = petRepository.findById(petId);
+        final Pet pet = petRepository.findById(petId).orElseThrow();
 
         setIfGiven(petBirthData, pet::setBirthDate);
         setIfGiven(petName, pet::setName);
-        setIfGiven(petTypeId.map(petTypeRepository::findById).orElse(null), pet::setType);
+        setIfGiven(petTypeId.flatMap(petTypeRepository::findById).orElse(null), pet::setType);
 
         petRepository.save(pet);
 
         return pet;
     }
+
 
     private <T> void setIfGiven(T value, Consumer<T> s) {
         if (value != null) {

@@ -36,7 +36,7 @@ public class VisitController {
         if (!visit.hasVetId()) {
             return null;
         }
-        return vetRepository.findById(visit.getVetId());
+        return vetRepository.findById(visit.getVetId()).orElseThrow();
     }
 
     @MutationMapping

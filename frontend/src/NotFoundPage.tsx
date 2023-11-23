@@ -1,6 +1,5 @@
-import Heading from "components/Heading";
-import PageLayout from "components/PageLayout";
-import * as React from "react";
+import Heading from "./components/Heading";
+import PageLayout from "./components/PageLayout";
 
 export default function NotFoundPage() {
   return (

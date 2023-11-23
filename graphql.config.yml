@@ -1,0 +1,9 @@
+schema: ./backend/src/main/resources/graphql/petclinic.graphqls
+extensions:
+  endpoints:
+    PetClinic GraphQL Endpoint:
+      url: http://localhost:9977/graphql
+      headers:
+        user-agent: JS GraphQL
+        Authorization: Bearer eyJraWQiOiJjZTc4OTU3Yi03NGM2LTQ0MDEtOTZmYy1hMzQ2YWFiNDE2NGEiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoic3VzaSIsImV4cCI6MjAxMzI4MzUzNSwiaWF0IjoxNjk3OTIzNTM1LCJzY29wZSI6Ik1BTkFHRVIifQ.BkYCmxfNUzmVmsA1aD5plfzpIy0wtFBsHGFid187LNz5Jur4LuMV54OsP-V2wjlKgacC-BnC4apLqJskmeE7dIZDq-3iXi94nqURoIsAZf_6lkwfKgQ5FIx_9Kzszm8n5OV8zQnmZjpRUN-v4FJ0-ByMFmIAxjvqNBFdpJ3tfyzLUaPI8LU4kxC_GO_rsFfxjTe5JQtxgFfRMIfe-8z8aVNJd9na0DxT-Mj-Kj6COKX5PVq0Dv6LRsBB5_sktv-IBV7WUWhc_skpd1IU83WhD_aMRpbB7WhM-TTO85sQljOqs22HIo_V-dSzpo4vXz61CppI6mH7wHfDQr5PiHxBzQ
+      introspect: false

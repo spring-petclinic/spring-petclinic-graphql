@@ -36,7 +36,7 @@ public class OwnerService {
 
     @Transactional
     public Owner updateOwner(@NotEmpty int ownerId, String firstName, String lastName, String telephone, String address, String city) {
-        Owner owner = ownerRepository.findById(ownerId);
+        Owner owner = ownerRepository.findById(ownerId).orElseThrow();
 
         setIfGiven(address, owner::setAddress);
         setIfGiven(firstName, owner::setFirstName);

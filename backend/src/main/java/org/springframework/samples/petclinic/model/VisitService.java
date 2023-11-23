@@ -27,7 +27,7 @@ public class VisitService {
 
     @Transactional
     public Visit addVisit(int petId, @NotEmpty String description, @NotNull LocalDate date, Optional<Integer> vetId) {
-        Pet pet = petRepository.findById(petId);
+        Pet pet = petRepository.findById(petId).orElseThrow();
 
         Visit visit = new Visit();
         visit.setDescription(description);

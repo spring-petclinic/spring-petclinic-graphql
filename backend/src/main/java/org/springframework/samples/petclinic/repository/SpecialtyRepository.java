@@ -17,23 +17,26 @@
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.Specialty;
 
 /**
  * @author Vitaliy Fedoriv
+ * @author Nils Hartmann
  *
  */
 
-public interface SpecialtyRepository {
+public interface SpecialtyRepository extends Repository<Specialty, Integer> {
 
-	Specialty findById(Integer id) throws DataAccessException;
+	Optional<Specialty> findById(Integer id);
 
-	Collection<Specialty> findAll() throws DataAccessException;
+	Collection<Specialty> findAll();
 
-	void save(Specialty specialty) throws DataAccessException;
+	void save(Specialty specialty);
 
-	void delete(Specialty specialty) throws DataAccessException;
+	void delete(Specialty specialty);
 
 }

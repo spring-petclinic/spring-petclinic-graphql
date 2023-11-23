@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Login via Username/Password via HTTP POST endpoint.
  * <p>
  * - The /graphql endpoints requires a valid token. This token can be requests by invoking
- * HTTP "POST /login with" sending username and password.
+ * HTTP "POST /api/login with" sending username and password.
  * <p>
  *
  * @author Nils Hartmann (nils@nilshartmann.net)
@@ -35,7 +35,7 @@ public class LoginController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         log.info("Authorizing '{}'", request.getUsername());
         try {

@@ -66,31 +66,36 @@ public class VetControllerTests extends AbstractClinicGraphqlTests{
 
     @Test
     public void vetsReturnsListOfAllVets() {
-        String query = "query {" +
-            "  vets {" +
-            "    id" +
-            "    specialties {" +
-            "      id" +
-            "    }"+
-            "    visits {" +
-            "      totalCount" +
-            "      visits {" +
-            "        id" +
-            "        pet {" +
-            "          id" +
-            "        }" +
-            "      }" +
-            "    }" +
-            "  }" +
-            "}";
+        // language=GraphQL
+        String query = """
+
+            query {
+              vets {
+                edges {
+                  node { id lastName firstName visits { visits { id pet { id } } } }
+                  cursor
+                }
+                pageInfo { hasNextPage }
+              }
+            }
+        """
+        ;
 
         userRoleGraphQlTester.document(query)
             .execute()
-            .path("vets").entityList(Object.class).hasSizeGreaterThan(3)
-            .path("vets[2].specialties").entityList(Object.class).hasSize(2)
-            .path("vets[3].visits.totalCount").entity(int.class).isEqualTo(2)
-            .path("vets[3].visits.visits[0].id").entity(String.class).isEqualTo("1")
-            .path("vets[3].visits.visits[0].pet.id").entity(String.class).isEqualTo("7")
+            .path("vets.edges").entityList(Object.class).hasSize(10)
+            .path("vets.edges[0].node.id").entity(int.class).isEqualTo(1)
+            .path("vets.edges[1].node.id").entity(int.class).isEqualTo(3)
+            .path("vets.edges[1].node.lastName").entity(String.class).isEqualTo("Douglas")
+            .path("vets.edges[5].node.id").entity(int.class).isEqualTo(4)
+            .path("vets.edges[5].node.visits.visits").entityList(Object.class).hasSize(2)
+            .path("vets.edges[5].node.visits.visits[0].id").entity(int.class).isEqualTo(1)
+            .path("vets.edges[5].node.visits.visits[0].pet.id").entity(int.class).isEqualTo(7)
+            .path("vets.edges[5].node.visits.visits[1].id").entity(int.class).isEqualTo(3)
+            .path("vets.edges[5].node.visits.visits[1].pet.id").entity(int.class).isEqualTo(8)
+            .path("vets.edges[8].node.id").entity(int.class).isEqualTo(5)
+            .path("vets.edges[9].node.id").entity(int.class).isEqualTo(9)
+            .path("vets.pageInfo.hasNextPage").entity(boolean.class).isEqualTo(false)
         ;
     }
 

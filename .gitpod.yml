@@ -9,41 +9,25 @@ tasks:
     init: |
       gp sync-await build
     command: |
-      export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3000`
+      export SPRING_DOCKER_COMPOSE_FILE=/workspace/spring-petclinic-graphql/docker-compose.yml
       ./mvnw spring-boot:run -pl backend
   - name: "Frontend"
     init: |
       cd frontend
-      npm install
-      npm run build
-      cp build/index.html build/index-orig.html
+      corepack enable
+      pnpm install
+      pnpm build
     command: |
-      gp await-port 9977
-      export BACKEND_HOST=`gp url 9977`
+      gp ports await 9977
       cd $GITPOD_REPO_ROOT/frontend
-      node patch-index-html.js
-      ./node_modules/.bin/serve -s build
+      pnpm dev
 ports:
   - port: 9977
     onOpen: open-browser
     visibility: public
-  - port: 3000
+  - port: 3080
     onOpen: open-browser
     visibility: public
-github:
-  prebuilds:
-    # enable for the default branch (defaults to true)
-    master: true
-    # enable for all branches in this repo
-    branches: true
-    # enable for pull requests coming from this repo (defaults to true)
-    pullRequests: true
-    # add a check to pull requests (defaults to true)
-    addCheck: true
-    # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
-    addComment: true
-    # add a "Review in Gitpod" button to the pull request's description (defaults to false)
-    addBadge: true
 vscode:
   extensions:
     - redhat.java

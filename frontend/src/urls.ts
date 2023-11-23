@@ -1,11 +1,20 @@
-declare var process: any;
-
-const backendHost = window.__petclinic__backend_host__.replace(
-  "__BACKEND__",
-  "http://localhost:9977"
-);
+const backendHost = "";
 export const graphqlApiUrl = `${backendHost}/graphql`;
-export const loginApiUrl = `${backendHost}/login`;
+export const loginApiUrl = `${backendHost}/api/login`;
+
+function buildWsApiUrl() {
+  if (backendHost === "") {
+    const url = new URL(window.location.href);
+    return `${url.protocol}//${url.host}/graphqlws`;
+  } else {
+    return `${backendHost}/graphqlws`;
+  }
+}
+
+export const graphqlWsApiUrl = buildWsApiUrl()
+  .replace("https", "wss")
+  .replace("http", "ws");
 
 console.log("USING GRAPHQL API URL", graphqlApiUrl);
+console.log("USING GRAPHQL SUBSCRIPTION URL", graphqlWsApiUrl);
 console.log("USING LOGIN API URL", loginApiUrl);

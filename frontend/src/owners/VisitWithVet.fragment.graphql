@@ -1,0 +1,8 @@
+fragment VisitWithVet on Visit {
+  ...DefaultVisit
+  treatingVet {
+    id
+    firstName
+    lastName
+  }
+}

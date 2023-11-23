@@ -1,20 +1,20 @@
-import { AnonymousPageLayout } from "components/PageLayout";
-import { useMeLazyQuery } from "generated/graphql-types";
-import { useAuthToken } from "login/AuthTokenProvider";
-import LoginPage from "login/LoginPage";
-import NotFoundPage from "NotFoundPage";
-import OwnerPage from "owners/OwnerPage";
-import OwnersPage from "owners/OwnerSearchPage";
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import VetsPage from "vets/VetsPage";
-import WelcomePage from "WelcomePage";
+import { useAuthToken } from "@/login/AuthTokenProvider.tsx";
+import { useMeLazyQuery } from "@/generated/graphql-types.ts";
+import LoginPage from "@/login/LoginPage.tsx";
+import { AnonymousPageLayout } from "@/components/PageLayout.tsx";
+import { Route, Routes } from "react-router-dom";
+import WelcomePage from "@/WelcomePage.tsx";
+import OwnersPage from "@/owners/OwnerSearchPage.tsx";
+import OwnerPage from "@/owners/OwnerPage.tsx";
+import VetsPage from "@/vets/VetsPage.tsx";
+import NotFoundPage from "@/NotFoundPage.tsx";
+import { useEffect } from "react";
 
 function App() {
   const [token] = useAuthToken();
   const [queryMe, { called, loading, error }] = useMeLazyQuery();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // don't try to read user data if we don't have token.
     if (token) {
       queryMe();
@@ -30,23 +30,17 @@ function App() {
   }
 
   return (
-    <Switch>
-      <Route path="/" exact>
-        <WelcomePage />
+    <Routes>
+      <Route path="/">
+        <Route index element={<WelcomePage />} />
+        <Route path={"owners"}>
+          <Route index element={<OwnersPage />} />
+          <Route path={":ownerId"} element={<OwnerPage />} />
+        </Route>
+        <Route path="/vets/:vetId?" element={<VetsPage />} />
       </Route>
-      <Route path="/owners/:ownerId" exact>
-        <OwnerPage />
-      </Route>
-      <Route path="/owners" exact>
-        <OwnersPage />
-      </Route>
-      <Route path="/vets/:vetId?">
-        <VetsPage />
-      </Route>
-      <Route>
-        <NotFoundPage />
-      </Route>
-    </Switch>
+      <Route path={"*"} element={<NotFoundPage />} />
+    </Routes>
   );
 }
 

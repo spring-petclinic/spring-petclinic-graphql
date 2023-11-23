@@ -1,32 +1,17 @@
-import { gql } from "@apollo/client";
-import Button from "components/Button";
-import ButtonBar from "components/ButtonBar";
-import Heading from "components/Heading";
-import Input from "components/Input";
-import Label from "components/Label";
-import Section from "components/Section";
-import Select from "components/Select";
-import dayjs from "dayjs";
 import {
   useAddVisitMutation,
-  PetVisitsFragment,
   useAllVetNamesQuery,
-} from "generated/graphql-types";
-import produce from "immer";
-import * as React from "react";
+} from "@/generated/graphql-types.ts";
+import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
-
-/** Fragment for updating the Cache after mutation (adding new Visit to existing Pet) */
-const PetVisits = gql`
-  fragment PetVisits on Pet {
-    id
-    visitConnection: visits {
-      visits {
-        id
-      }
-    }
-  }
-`;
+import Heading from "@/components/Heading.tsx";
+import Input from "@/components/Input.tsx";
+import Label from "@/components/Label.tsx";
+import Select from "@/components/Select.tsx";
+import ButtonBar from "@/components/ButtonBar.tsx";
+import Button from "@/components/Button.tsx";
+import { Section } from "@/components/Section.tsx";
+import { filterNull } from "@/utils.ts";
 
 type VisitFormData = {
   description: string;
@@ -42,43 +27,36 @@ const emptyVetOption = {
 type NewVisitFormProps = {
   onFinish(): void;
   petId: number;
+  petName: string;
 };
 
-export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
+export default function NewVisitForm({
+  onFinish,
+  petId,
+  petName,
+}: NewVisitFormProps) {
   const {
     loading: vetsLoading,
     data: vetsData,
     error: vetsError,
   } = useAllVetNamesQuery();
-  const [addVisit, { called, loading, error }] = useAddVisitMutation({
-    update(cache, { data }) {
-      if (!data) {
-        return;
-      }
-      const existingPet = cache.readFragment<PetVisitsFragment>({
-        fragment: PetVisits,
-        id: `Pet:${petId}`,
-      });
-      if (existingPet) {
-        const newData = produce(existingPet, (draftPet) => {
-          draftPet.visitConnection.visits.push(data.addVisit.visit);
-        });
-        cache.writeFragment<PetVisitsFragment>({
-          fragment: PetVisits,
-          data: newData,
-        });
-      }
-    },
-  });
-  const { register, errors, handleSubmit } = useForm<VisitFormData>();
+  const [addVisit, { called, loading, error }] = useAddVisitMutation();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VisitFormData>();
 
   const vetOptions = vetsData
     ? [
         emptyVetOption,
-        ...vetsData.vets.map((vet) => ({
-          value: vet.id,
-          label: `${vet.firstName} ${vet.lastName}`,
-        })),
+        ...vetsData.vets.edges
+          .filter(filterNull)
+          .map((v) => v.node)
+          .map((vet) => ({
+            value: vet.id,
+            label: `${vet.firstName} ${vet.lastName}`,
+          })),
       ]
     : null;
 
@@ -101,20 +79,18 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
   }
 
   return (
-    <Section>
+    <Section aria-label={`Add visit for pet ${petName}`}>
       <Heading level="3">Add Visit</Heading>
 
       <Input
         type="date"
-        name="date"
-        ref={register({ required: true, valueAsDate: true })}
+        {...register("date", { required: true, valueAsDate: true })}
         label="Date"
         error={errors.date && "Please enter a valid date"}
       />
       <Input
         type="text"
-        name="description"
-        ref={register({ required: true })}
+        {...register("description", { required: true })}
         label="Description"
         error={errors.description && "Please fill in a description"}
       />
@@ -127,9 +103,8 @@ export default function NewVisitForm({ onFinish, petId }: NewVisitFormProps) {
       {vetsLoading && <Label type="info">Loading Vets...</Label>}
       {vetOptions && (
         <Select
-          ref={register}
+          {...register("vet")}
           label="Vet (optional)"
-          name="vet"
           options={vetOptions}
           defaultValue={emptyVetOption.value}
         />

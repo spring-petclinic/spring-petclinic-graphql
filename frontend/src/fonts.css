@@ -2,21 +2,24 @@
   /* from https://github.com/spring-io/sagan/blob/b23162035bb467fd6b1c0ed12a787cbc045c470f/sagan-client/src/css/main.css */
   @font-face {
     font-family: "Metropolis";
-    src: url("./fonts/metropolis-regular-webfont.woff2") format("woff2"),
+    src:
+      url("./fonts/metropolis-regular-webfont.woff2") format("woff2"),
       url("./fonts/metropolis-regular-webfont.woff") format("woff");
     font-style: normal;
     font-weight: normal;
   }
   @font-face {
     font-family: "Metropolis";
-    src: url("./fonts/metropolis-bold-webfont.woff2") format("woff2"),
+    src:
+      url("./fonts/metropolis-bold-webfont.woff2") format("woff2"),
       url("./fonts/metropolis-bold-webfont.woff") format("woff");
     font-weight: 500;
     font-style: normal;
   }
   @font-face {
     font-family: "Metropolis";
-    src: url("./fonts/metropolis-extrabold-webfont.woff2") format("woff2"),
+    src:
+      url("./fonts/metropolis-extrabold-webfont.woff2") format("woff2"),
       url("./fonts/metropolis-extrabold-webfont.woff") format("woff");
     font-weight: 600;
     font-style: normal;
@@ -27,7 +30,8 @@
     font-style: normal;
     font-weight: 400;
     src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.eot?#iefix")
+    src:
+      url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/open-sans-v17-latin/open-sans-v17-latin-regular.woff2")
@@ -48,7 +52,8 @@
     font-style: italic;
     font-weight: 400;
     src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.eot?#iefix")
+    src:
+      url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/open-sans-v17-latin/open-sans-v17-latin-italic.woff2")
@@ -69,7 +74,8 @@
     font-style: normal;
     font-weight: 600;
     src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.eot?#iefix")
+    src:
+      url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/open-sans-v17-latin/open-sans-v17-latin-600.woff2")
@@ -90,7 +96,8 @@
     font-style: normal;
     font-weight: 700;
     src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.eot?#iefix")
+    src:
+      url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/open-sans-v17-latin/open-sans-v17-latin-700.woff2")
@@ -111,7 +118,8 @@
     font-style: normal;
     font-weight: 400;
     src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.eot?#iefix")
+    src:
+      url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/work-sans-v5-latin/work-sans-v5-latin-regular.woff2")
@@ -132,7 +140,8 @@
     font-style: normal;
     font-weight: 700;
     src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.eot"); /* IE9 Compat Modes */
-    src: url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.eot?#iefix")
+    src:
+      url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.eot?#iefix")
         format("embedded-opentype"),
       /* IE6-IE8 */
         url("./fonts/work-sans-v5-latin/work-sans-v5-latin-700.woff2")
@@ -163,7 +172,7 @@
     @apply text-spr-black;
   }
   h1 {
-    @apply text-2xl font-open-sans;
+    @apply font-open-sans text-2xl;
   }
 
   p {

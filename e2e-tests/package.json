@@ -1,0 +1,22 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed --project chromium",
+    "test:docker-compose": "PW_FRONTEND_URL=http://localhost:3090 PW_GRAPHIQL_URL=http://localhost:3091 playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.9"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
+  }
+}
