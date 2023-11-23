@@ -9,7 +9,7 @@ tasks:
     init: |
       gp sync-await build
     command: |
-      export PETCLINIC_ALLOWED_ORIGINS=`gp url 9977`,`gp url 3080`
+      export SPRING_DOCKER_COMPOSE_FILE=/workspace/spring-petclinic-graphql/docker-compose.yml
       ./mvnw spring-boot:run -pl backend
   - name: "Frontend"
     init: |
