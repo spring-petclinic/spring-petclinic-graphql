@@ -1,11 +1,11 @@
-# Spring PetClinic Sample Application using spring-graphql
+# PetClinic Sample Application using Spring for GraphQL
 
 This PetClinic example uses [Spring for GraphQL](https://github.com/spring-projects/spring-graphql), that is part of Spring Boot [since version 2.7](https://spring.io/blog/2022/05/19/spring-for-graphql-1-0-release).
 
 It implements a [GraphQL API](http://graphql.org/) for the PetClinic and
 provides an example Frontend for the API.
 
-Versions curretly used are **Spring Boot 3.2.x** with **Spring for GraphQL 1.2.x**.
+Versions currently in use are **Spring Boot 3.2.x** and **Spring for GraphQL 1.2.x**.
 
 [![Java CI with Maven](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-graphql/actions/workflows/maven-build.yml)
 
